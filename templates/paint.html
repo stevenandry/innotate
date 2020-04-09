@@ -2,37 +2,19 @@
 
 {% block content %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_paint.css') }}">
-    <body onload="rectangle()">
+    <body onload="reset()">
         <!-- <p><h2 id="title">Welcome, {{ name }} to AI Training Application</h2></p> -->
         <p><table>
             <tr>
             <td>
                 <fieldset id="toolset">
                 <img hidden id="imagetest" src="static/test.jpg" alt="Test Image">
-                <!-- <br>
-                <br>
-                <button id="penciltool" type="button" style="height: 25px; width: 100px;" onclick="pencil()">Pencil</button>
                 <br>
                 <br>
+                <button id="penciltool" type="button" style="height: 25px; width: 100px;" onclick="pencil()">Dot</button>
                 <br>
-                <a href="save"><button id="savebtn" type="button" style="height: 25px; width: 100px;">Saved Images</button></a>
-                <br>
-                <br>
-                <br>
-                <button id="linetool" type="button" style="height: 25px; width: 100px;" onclick="line()">Line</button>
-                <br> -->
-                <!-- <br>
                 <br>
                 <button id="rectangletool" type="button" style="height: 25px; width: 100px;" onclick="rectangle()">Rectangle</button> 
-                <br>
-                <br>
-                <br>
-                <button id="circletool" type="button" style="height: 25px; width: 100px;" onclick="circle()">Circle</button> 
-                <br>
-                <br>
-                <br>
-                <button id="erasertool" type="button" style="height: 25px; width: 100px;" onclick="eraser()">Eraser</button> 
-                <br> -->
                 <br>
                 <br>
                 <button id="resettool" type="button" style="height: 25px; width: 100px;" onclick="reset()">Reset</button> 
