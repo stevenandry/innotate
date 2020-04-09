@@ -1,0 +1,5 @@
+{
+    "python.pythonPath": "venv\\Scripts\\python.exe",
+    "editor.autoIndent": "none",
+    "editor.insertSpaces": false
+}

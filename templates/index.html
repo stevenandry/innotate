@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+  Welcome to AI Data Modelling Application.
+</h1>
+{% if not current_user.is_authenticated %}
+<h2 class="subtitle">
+Please Login to continue!
+</h2>
+{% endif %}
+{% if current_user.is_authenticated %}
+<h2 class="subtitle">
+Hello, {{ name }} !!
+</h2>
+{% endif %}
+{% endblock %}
