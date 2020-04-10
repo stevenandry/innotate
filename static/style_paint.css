@@ -3,14 +3,14 @@
     height    : 440px;
     position  : absolute;
     left      : 0px;
-    top       : 50px; 
+    top       : 55px; 
     background: #000000;
 }
 
 #paint {
     position  : absolute;
     left      : 130px;
-    top       : 50px;
+    top       : 55px;
 }
 
 #colorset {
