@@ -19,11 +19,27 @@ def index():
 def index_loggedin():
 	return render_template('index.html', name=current_user.name)
 
+@main.route('/resize')
+@login_required
+def resize():
+	return render_template('canvas-size.html')
+
+@main.route('/resize', methods=['POST'])
+@login_required
+def resize_post():
+	resizewidth=request.form.get('canvas-width')
+	resizeheight=request.form.get('canvas-height')
+	if (resizewidth == '' or resizeheight == '' ) :
+		flash("Please fill all the forms!")
+		return redirect(url_for('main.resize'))
+	# return render_template('paint.html', width=resizewidth, height=resizeheight)
+	return redirect(url_for('main.profile', width = resizewidth, height = resizeheight))
+
 @main.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
 	if request.method == 'GET':
-		return render_template('paint.html')
+		return render_template('paint.html', cnvswidth=request.args.get('width'), cnvsheight=request.args.get('height') )
 
 	# POST Method using SQLITE DB with 3 data values
 	if request.method == 'POST':

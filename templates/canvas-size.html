@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">Please insert canvas size to use : </h1>
+<div class="box">
+        {% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="notification is-danger">
+        {{ messages[0] }}
+    </div>
+{% endif %}
+{% endwith %}
+<form method="POST" action="/resize">
+	<div class="field">
+		<div class="control">
+			<input class="input is-large" name="canvas-width" type="text" placeholder="Canvas Width" >
+		</div>
+	</div>
+
+	<div class="field">
+		<div class="control">
+			<input class="input is-large" name="canvas-height" type="text" placeholder="Canvas Height">
+		</div>
+	</div>
+	<center><button class="button is-block is-info is-large is-fullwidth" >Generate Canvas</button></center>
+</form>
+
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src=" {{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}
