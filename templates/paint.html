@@ -21,7 +21,7 @@
                 </fieldset>
             </td>
             <td>
-                <canvas id="paint" width="750" height="450" style="border: 5px solid #000000;"></canvas>
+                <canvas id="paint" width={{cnvswidth}} height={{cnvsheight}} style="border: 5px solid #000000;"></canvas>
             </td>
             </tr>
         </table></p>
@@ -102,6 +102,7 @@
                 <td><label>Line Width</label></td>
                 <td><button id="pixel_plus" type="button" onclick="add_pixel()" style="width: 25px;">+</button></td>
                 <td><button id="pixel_minus" type="button" onclick="reduce_pixel()" style="width: 25px;">-</button></td>
+                <td><button id="nextbtn" type="button" onclick="nextpicture()" style="width: 40px;">Next</button></td>
             </tr>
             </table>
             <label>file name</label><input id="fname" type="text"><button id="save" onclick="save()">Save</button>
