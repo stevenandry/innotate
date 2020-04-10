@@ -1,6 +1,10 @@
 .navbar-end {
     background-color: #333;
     overflow: hidden;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 1366px;
 }
 
 .navbar-item {
@@ -12,6 +16,29 @@
     font-size: 17px;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.title{
+    position:relative;
+    top:50px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:25px;
+
+}
+
+.subtitle{
+    position: relative;
+    margin-top: 55px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:25px;
+}
+
+.field{
+    position: relative;
+    top: 50px;
+}
+
 
 .navbar-item:hover {
     background-color: #ddd;
@@ -26,6 +53,8 @@
 .notification.is-danger {
     color:red;
     text-align: center;
+    position: relative;
+    top: 50px;
 }
 
 .field {
@@ -35,7 +64,8 @@
 }
 
 .button.is-block.is-info.is-large.is-fullwidth {
-    margin-bottom: 10px;
+    position: relative;
+   top: 50px;
 
 }
 
@@ -46,6 +76,6 @@ h3{
 }
 
 .column.is-4.is-offset-4 {
-    border:1px solid black;
+    
 }
 

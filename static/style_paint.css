@@ -2,15 +2,15 @@
     width     : 100px;
     height    : 440px;
     position  : absolute;
-    left      : 0px;
-    top       : 55px; 
-    background: #000000;
+    left      : 6px;
+    top       : 56px; 
+    background: #333;
 }
 
 #paint {
     position  : absolute;
     left      : 130px;
-    top       : 55px;
+    top       : 56px;
 }
 
 #colorset {
@@ -21,7 +21,7 @@
 }
  
 #title {
-    position  : absolute:
+    position  : absolute;
     left      : 500px;
 }
 
@@ -34,6 +34,16 @@
     -webkit-border-radius: 0 15px 15px 0;
     -moz-border-radius: 0 15px 15px 0;
     box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+}
+
+#penciltool:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+#penciltool:active {
+    background-color: #4CAF50;
+    color: white;
 }
 
 #linetool {
@@ -56,6 +66,16 @@
     -webkit-border-radius: 0 15px 15px 0;
     -moz-border-radius: 0 15px 15px 0;
     box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
+}
+
+#rectangletool:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+#rectangletool:active {
+    background-color: #4CAF50;
+    color: white;
 }
 
 #circletool {
@@ -91,6 +111,15 @@
     box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
 }           
 
+#resettool:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+#resettool:active {
+    background-color: #4CAF50;
+    color: white;
+}
 #pixel_plus {
     background: #358128; 
     color     : #f3f3f3;
@@ -111,6 +140,26 @@
     -moz-border-radius: 0 15px 15px 0;
     box-shadow: rgba(0, 0, 0, .75) 0 2px 6px;
 }   
+
+#pixel_plus:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+#pixel_plus:active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#pixel_minus:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+#pixel_minus:active {
+    background-color: #4CAF50;
+    color: white;
+}
 
 #fill {
     background: #358128; 
