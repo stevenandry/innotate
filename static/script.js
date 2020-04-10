@@ -1,14 +1,13 @@
 
-
-
 // window.onload = function() { 
 var canvas = document.getElementById("paint");
 var ctx = canvas.getContext("2d");
 var imgs = document.getElementById("imagetest");
-
 // }
 var width = canvas.width;
 var height = canvas.height;
+// canvas.width = width;
+// canvas.height = height;
 var curX, curY, prevX, prevY;
 var hold = false;
 ctx.lineWidth = 3;
@@ -100,7 +99,8 @@ function reduce_pixel(){
         
 function reset(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(imgs, 0, 0, 750, 450); //draw the image upon reset, which is called on load
+    // generatecanvas();
+    ctx.drawImage(imgs, 0, 0, canvas.width, canvas.height); //draw the image upon reset, which is called on load
     // canvas_data = { "pencil": [], "line": [], "rectangle": [], "circle": [], "eraser": [] }
     canvas_data = {"pencil": [],"rectangle": []}
     rectangle();
@@ -151,7 +151,7 @@ function outline(){
 }
         
 function pencil(){
-        
+    
     canvas.onmousedown = function(e){
         // getPosition(e); 
         curX = e.clientX - canvas.offsetLeft;
@@ -206,3 +206,15 @@ function save(){
 	// }
 } 
 
+// function generatecanvas(){
+//     var resizewidth = document.getElementById("canvas-width");
+//     var resizeheight = document.getElementById("canvas-height");
+    
+//     $.post("/resize", {canvaswidth : resizewidth, canvasheight: resizeheight});
+//     alert("Canvas set to " + resizewidth + "width and " + resizeheight + "height");
+    
+// }
+
+function alerttest(){
+    alert("success!");
+}
