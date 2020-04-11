@@ -45,8 +45,8 @@
     color: black;
 }
 
-.navbar-item.active {
-    background-color: #4CAF50;
+.navbar-item:active {
+    background-color: rgb(181, 202, 182);
     color: white;
 }
 
