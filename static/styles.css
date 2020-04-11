@@ -19,11 +19,19 @@
 
 .title{
     position:relative;
-    top:50px;
+    top:0px;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     font-size:25px;
 
+}
+
+.home-title{
+    position:relative;
+    top:45px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:25px;
 }
 
 .subtitle{
@@ -54,7 +62,8 @@
     color:red;
     text-align: center;
     position: relative;
-    top: 50px;
+    top: -10px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .field {
@@ -65,7 +74,7 @@
 
 .button.is-block.is-info.is-large.is-fullwidth {
     position: relative;
-    top: 50px;
+    top: 0px;
     border: none;
 	padding: 8px 15px 8px 15px;
 	background: #838583;
@@ -95,7 +104,14 @@ h3{
 }
 
 .column.is-4.is-offset-4 {
-    
+    max-width: 450px;
+    max-height: 500px;
+	background: #FAFAFA;
+	padding: 20px;
+	margin: 70px auto;
+	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+	border-radius: 10px;
+	border: 6px solid #333;
 }
 
 .input.is-large {
@@ -110,5 +126,13 @@ h3{
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
 	padding: 7px;
+    position : relative;
+    top: -50px;
 	outline: none;
 }
+
+.checkbox {
+    position :relative;
+    top : -50px;
+}
+
