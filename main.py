@@ -17,7 +17,16 @@ def index():
 
 @main.route('/home')
 def index_loggedin():
-	return render_template('index.html', name=current_user.name)
+	images = os.listdir('static/images')
+	imagelist = ['images/' + file for file in images]
+	return render_template('index.html', name=current_user.name, imagelist=imagelist)
+
+@main.route('/imagez')
+def imagez():
+	images = os.listdir('static/images')
+	imagelist = ['images/' + file for file in images]
+	# images = os.listdir(os.path.join(main.static_url_path, "images"))
+	return render_template('loadimage.html', imagelist=imagelist)#,images=images)
 
 @main.route('/resize')
 @login_required
@@ -48,7 +57,7 @@ def profile():
 		image = request.form['save_image']
 
 		dbdata=(filename, data, image)
-		con = sqlite3.connect("Drawings.db")
+		con = sqlite3.connect("Drawings2.db")
 		cur=con.cursor()
 		cur.execute("CREATE TABLE IF NOT EXISTS files(name text, data text, canvas_image text)")
 		cur.execute("INSERT INTO files VALUES(?, ?, ?)", dbdata)

@@ -1,17 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
+<h1 class="home-title">
   Welcome to AI Data Modelling Application.
 </h1>
 {% if not current_user.is_authenticated %}
 <h2 class="subtitle">
-Please Login to continue!
+  Please Login to continue!
 </h2>
 {% endif %}
 {% if current_user.is_authenticated %}
 <h2 class="subtitle">
-Hello, {{ name }} !!
+  Hello, {{ name }} !!
 </h2>
+<div class="column is-4 is-offset-4">
+  <h2 class="subtitle">Image list in static/images :</h2>
+  {% for imagezz in imagelist %}
+  <h1>
+    <a href="{{ url_for('static', filename=imagezz) }}">
+      <p style="text-align: center;">{{imagezz}}</p>
+    </a>
+  </h1>
+  <img hidden id="imagelist" src="static/{{imagezz}}" alt="{{imagezz}}">
+  {% endfor %}
+</div>
+
 {% endif %}
 {% endblock %}
