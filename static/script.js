@@ -24,8 +24,8 @@ var clientX = 0.0;
 var clientY = 0.0;
 
 canvas.addEventListener('mousemove', function (e) {
-    clientX = e.clientX;
-    clientY = e.clientY;
+    clientX = e.offsetX;
+    clientY = e.offsetY;
     document.getElementById("coordinatex").innerHTML = clientX;
     document.getElementById("coordinatey").innerHTML = clientY;
 });
