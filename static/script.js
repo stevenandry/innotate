@@ -4,6 +4,7 @@ $(window).on("load", function () {
     $(".loader-wrapper").fadeOut("slow");
 });
 var canvas = document.getElementById("paint");
+document.getElementById("paint").style.cursor = "crosshair";
 var ctx = canvas.getContext("2d");
 var imgs = document.getElementById("imagetest");
 // }
@@ -68,8 +69,10 @@ function rectangle() {
     color('#EE0000');
     canvas.onmousedown = function (e) {
         img = ctx.getImageData(0, 0, width, height); //supposed to be width & height var, but changed so that it takes the width and height realtime
-        prevX = e.clientX - canvas.offsetLeft;
-        prevY = e.clientY - canvas.offsetTop;
+        prevX = e.offsetX;                       
+        prevY = e.offsetY;                       
+        //prevX = e.clientX - canvas.offsetLeft;
+        //prevY = e.clientY - canvas.offsetTop;
         hold = true;
     };
 
@@ -77,8 +80,11 @@ function rectangle() {
         x.style.display = "inline";
         if (hold) {
             ctx.putImageData(img, 0, 0);
-            curX = e.clientX - canvas.offsetLeft - prevX;
-            curY = e.clientY - canvas.offsetTop - prevY;
+            curX = e.offsetX - prevX;                 
+            curY = e.offsetY - prevY;           
+            //previous drawing method          
+            //curX = e.clientX - canvas.offsetLeft - prevX;
+            //curY = e.clientY - canvas.offsetTop - prevY;
             ctx.strokeRect(prevX, prevY, curX, curY);
             if (fill_value) {
                 ctx.fillRect(prevX, prevY, curX, curY);
@@ -114,8 +120,10 @@ function pencil() {
     };
     canvas.onmousedown = function (e) {
         // getPosition(e); 
-        curX = e.clientX - canvas.offsetLeft;
-        curY = e.clientY - canvas.offsetTop;
+        curX = e.offsetX;            
+        curY = e.offsetY;            
+        //curX = e.clientX - canvas.offsetLeft;
+        //curY = e.clientY - canvas.offsetTop;
         drawCoordinates(curX, curY);
 
         prevX = curX;
