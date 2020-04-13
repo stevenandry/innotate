@@ -63,7 +63,6 @@ def profile():
 		cur.execute("INSERT INTO files VALUES(?, ?, ?)", dbdata)
 		con.commit()
 		con.close()
-		return redirect(url_for('save'))
 	
 @main.route('/save', methods=['GET', 'POST'])
 def save():
