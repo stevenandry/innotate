@@ -1,13 +1,15 @@
 
-// window.onload = function() { 
+// window.onload = function() { }
 $(window).on("load", function () {
     $(".loader-wrapper").fadeOut("slow");
 });
+
 var canvas = document.getElementById("paint");
 document.getElementById("paint").style.cursor = "crosshair";
 var ctx = canvas.getContext("2d");
 var imgs = document.getElementById("imagetest");
-// }
+var imgrealwidth = imgs.width;
+var imgrealheight = imgs.height;
 var width = canvas.width;
 var height = canvas.height;
 // canvas.width = width;
@@ -18,7 +20,6 @@ ctx.lineWidth = 3;
 var defaultlinewidth = ctx.lineWidth;
 var fill_value = true;
 var stroke_value = false;
-// var canvas_data = {"pencil": [], "line": [], "rectangle": [], "circle": [], "eraser": []}
 var canvas_data = { "pencil": [], "rectangle": [] }
 var x = document.getElementById("showcoordinate");
 var clientX = 0.0;
@@ -69,8 +70,8 @@ function rectangle() {
     color('#EE0000');
     canvas.onmousedown = function (e) {
         img = ctx.getImageData(0, 0, width, height); //supposed to be width & height var, but changed so that it takes the width and height realtime
-        prevX = e.offsetX;                       
-        prevY = e.offsetY;                       
+        prevX = e.offsetX;
+        prevY = e.offsetY;
         //prevX = e.clientX - canvas.offsetLeft;
         //prevY = e.clientY - canvas.offsetTop;
         hold = true;
@@ -80,22 +81,28 @@ function rectangle() {
         x.style.display = "inline";
         if (hold) {
             ctx.putImageData(img, 0, 0);
-            curX = e.offsetX - prevX;                 
-            curY = e.offsetY - prevY;           
-            //previous drawing method          
-            //curX = e.clientX - canvas.offsetLeft - prevX;
-            //curY = e.clientY - canvas.offsetTop - prevY;
+            curX = e.offsetX - prevX;
+            curY = e.offsetY - prevY;
             ctx.strokeRect(prevX, prevY, curX, curY);
-            if (fill_value) {
-                ctx.fillRect(prevX, prevY, curX, curY);
-            }
-            canvas_data.rectangle.push({ "starx": prevX, "stary": prevY, "width": curX, "height": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle, "fill": fill_value, "fill_color": ctx.fillStyle });
-
         }
     };
 
     canvas.onmouseup = function (e) {
         hold = false;
+        var realendx = curX + prevX;
+        var realendy = curY + prevY;
+
+        var startxcalc = imgrealwidth * prevX;
+        var startycalc = imgrealheight * prevY;
+        var endxcalc   = imgrealwidth * realendx;               
+        var endycalc   = imgrealheight * realendy;
+
+        var finalstartxcalc = startxcalc / width;
+        var finalstartycalc = startycalc / height;
+        var finalendxcalc = endxcalc / width;
+        var finalendycalc = endycalc / height;
+
+        canvas_data.rectangle.push({ "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
     };
 
     canvas.onmouseout = function (e) {
@@ -118,10 +125,11 @@ function pencil() {
     canvas.onmousemove = function (e) {
         x.style.display = "inline";
     };
+
     canvas.onmousedown = function (e) {
         // getPosition(e); 
-        curX = e.offsetX;            
-        curY = e.offsetY;            
+        curX = e.offsetX;
+        curY = e.offsetY;
         //curX = e.clientX - canvas.offsetLeft;
         //curY = e.clientY - canvas.offsetTop;
         drawCoordinates(curX, curY);
@@ -133,27 +141,22 @@ function pencil() {
     };
     // var pointSize = 3;
     function drawCoordinates(x, y) {
-        ctx.fillStyle = "#ff2626"; // Red color
+        ctx.fillStyle = "#ff2626"; 
         ctx.beginPath();
         ctx.arc(x, y, ctx.lineWidth, 0, Math.PI * 2, true);
         ctx.fill();
-        canvas_data.pencil.push({ "startx": prevX, "starty": prevY, "endx": curX, "endy": curY, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
+
+        var xcalculation = imgrealwidth * curX;
+        var ycalculation = imgrealheight * curY;
+        var finalxcalculation = xcalculation / width;
+        var finalycalculation = ycalculation / height;
+
+        canvas_data.pencil.push({ "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
     }
+
     canvas.onmouseout = function (e) {
         x.style.display = "none";
     }
-    // function draw(){
-    //     ctx.lineTo(curX, curY);
-    //     ctx.stroke();
-    //     canvas_data.pencil.push({ "startx": prevX, "starty": prevY, "endx": curX, "endy": curY, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
-    // }
-
-    // function getPosition(event){
-    //  var rect = canvas.getBoundingClientRect();
-    //  var x = event.clientX - rect.left;
-    //  var y = event.clientY - rect.top;
-    //  drawCoordinates(x,y);
-    // }
 }
 
 function save() {
@@ -176,22 +179,52 @@ function save() {
 }
 
 function alerttest() {
-    alert("success!");
+    alert("success!" + imgrealwidth + imgrealheight);
 }
 
 //commented, might be useful who knows
+// var canvas_data = {"pencil": [], "line": [], "rectangle": [], "circle": [], "eraser": []}
+//
 // Record the mouse position when it moves.
 // canvas.onmousemove = function (e)){
-
 // }
+//===============================
+//PENCIL TOOL COMMENTS
+// function draw(){
+//     ctx.lineTo(curX, curY);
+//     ctx.stroke();
+//     canvas_data.pencil.push({ "startx": prevX, "starty": prevY, "endx": curX, "endy": curY, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
+// }
+//
+//inside function drawCoordinates(x, y)
+//canvas_data.pencil.push({ "startx": prevX, "starty": prevY, "endx": curX, "endy": curY, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
+//
+// function getPosition(event){
+//  var rect = canvas.getBoundingClientRect();
+//  var x = event.clientX - rect.left;
+//  var y = event.clientY - rect.top;
+//  drawCoordinates(x,y);
+// }
+//=======================================
 // function generatecanvas(){
 //     var resizewidth = document.getElementById("canvas-width");
 //     var resizeheight = document.getElementById("canvas-height");
 
 //     $.post("/resize", {canvaswidth : resizewidth, canvasheight: resizeheight});
 //     alert("Canvas set to " + resizewidth + "width and " + resizeheight + "height");
-
 // }
+//==========================================
+//from RECTANGLE TOOL canvas.onmousemove
+//
+//previous drawing method          
+//curX = e.clientX - canvas.offsetLeft - prevX;
+//curY = e.clientY - canvas.offsetTop - prevY;
+// if (fill_value) {
+//     ctx.fillRect(prevX, prevY, curX, curY);
+// }
+//canvas_data.rectangle.push({ "starx": prevX, "stary": prevY, "width": curX, "height": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle, "fill": fill_value, "fill_color": ctx.fillStyle });
+//
+//===========================================
 // var image = new Image();
 //     console.log(image);
 //     image.onload = function(e) {
