@@ -28,6 +28,60 @@
   animation: loader 2s infinite ease;
 }
 
+.input-paint{
+    box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border: 1px solid #C2C2C2;
+	box-shadow: 1px 1px 4px #EBEBEB;
+	-moz-box-shadow: 1px 1px 4px #EBEBEB;
+	-webkit-box-shadow: 1px 1px 4px #EBEBEB;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	padding: 7px;
+    position : relative;
+    top: 0px;
+	outline: none;
+}
+
+.button-paint {
+    position: relative;
+    top: 0px;
+    left:5px;
+    border: none;
+	padding: 8px 15px 8px 15px;
+	background: #838583;
+	color: #fff;
+	box-shadow: 1px 1px 4px #DADADA;
+	-moz-box-shadow: 1px 1px 4px #DADADA;
+	-webkit-box-shadow: 1px 1px 4px #DADADA;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+
+.button-paint:hover{
+    background: #ddd;
+	color: black;
+}
+
+.button-paint:active {
+    background-color: rgb(181, 202, 182);
+    color: white;
+}
+
+.label-paint {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.showcoordinate{
+    display:none;
+    position:absolute;
+    left:900px;
+    top:80px;
+}
+
 #paint {
     position  : absolute;
     left      : 130px;
