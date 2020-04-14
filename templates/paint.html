@@ -13,7 +13,7 @@
                         <tr>
                                 <td>
                                         <fieldset id="toolset">
-                                                <img hidden id="imagetest" src="static/images/test.jpg"
+                                                <img hidden id="imagetest" src="static/images/test2.jpg"
                                                         alt="Test Image">
                                                 <font color="white">Canvas Width <font color="red">{{cnvswidth}}</font>
                                                 </font>
@@ -55,14 +55,36 @@
                                         <canvas id="paint" width={{cnvswidth}} height={{cnvsheight}}></canvas>
                                 </td>
                                 <td>
-                                        <div id="showcoordinate"
-                                                style="display:none;position:absolute;left: 900px ;top:80px">
-                                                <label>Coordinates : (</label>
-                                                <label id="coordinatex" style="color:red">x</label>
-                                                <label>,</label>
-                                                <label id="coordinatey" style="color:red">y</label>
-                                                <label>)</label>
+                                        <div id="showcoordinate" class="showcoordinate">
+                                                <div class="label-paint">
+                                                        <label>Coordinates : (</label>
+                                                        <label id="coordinatex" style="color:red">x</label>
+                                                        <label>,</label>
+                                                        <label id="coordinatey" style="color:red">y</label>
+                                                        <label>)</label>
+                                                </div>
                                         </div>
+
+                                        <div style="position:absolute;left: 900px ;top:80px">
+                                                <div class="label-paint">
+                                                        <br>
+                                                        <br>
+                                                        <label>Add Label
+                                                        </label><input id="labelname" class="input-paint"
+                                                                type="text"><button id="save" class="button-paint"
+                                                                onclick='addlabel()'>Add</button>
+                                                        <br>
+                                                        <br>   
+                                                        
+                                                        <div id="labellist" style="display:none">
+                                                        
+                                                                
+                                                                <!-- <label id="listvalue"> </label><button
+                                                                        style="background-color: red; height: 20px; width: 20px;"></button> -->
+                                                        </div>
+                                                </div>
+                                        </div>
+
                                 </td>
                         </tr>
                 </table>
@@ -71,7 +93,7 @@
                 <table>
                         <tr>
                                 <!-- <td><button style="height: 20px; width: 80px;" onclick="fill()">Fill</button> -->
-                                <td><button style="background-color: #000000; height: 20px; width: 20px;"
+                                <!-- <td><button style="background-color: #000000; height: 20px; width: 20px;"
                                                 onclick="color('#000000')"></button>
                                 <td><button style="background-color: #B0171F; height: 20px; width: 20px;"
                                                 onclick="color('#B0171F')"></button>
@@ -134,12 +156,12 @@
                                 <td><button style="background-color: #7D9EC0; height: 20px; width: 20px;"
                                                 onclick="color('#7D9EC0')"></button>
                                 <td><button style="background-color: #388E8E; height: 20px; width: 20px;"
-                                                onclick="color('#388E8E')"></button>
+                                                onclick="color('#388E8E')"></button> -->
 
                         </tr>
                         <tr>
                                 <!-- <td><button style="height: 20px; width: 80px" onclick="outline()">Outline</button> -->
-                                <td><button style="background-color: #71C671; height: 20px; width: 20px;"
+                                <!-- <td><button style="background-color: #71C671; height: 20px; width: 20px;"
                                                 onclick="color('#71C671')"></button>
                                 <td><button style="background-color: #8E8E38; height: 20px; width: 20px;"
                                                 onclick="color('#8E8E38')"></button>
@@ -202,10 +224,10 @@
                                 <td><button style="background-color: #FFC0CB; height: 20px; width: 20px;"
                                                 onclick="color('#FFC0CB')"></button>
                                 <td><button style="background-color: #7CFC00; height: 20px; width: 20px;"
-                                                onclick="color('#7CFC00')"></button>
+                                                onclick="color('#7CFC00')"></button> -->
                         </tr>
                         <tr>
-                                <td><label>Line Width</label></td>
+                                <td><label class="label-paint">Line Width</label></td>
                                 <td><button id="pixel_plus" type="button" onclick="add_pixel()"
                                                 style="width: 25px;">+</button></td>
                                 <td><button id="pixel_minus" type="button" onclick="reduce_pixel()"
@@ -214,7 +236,7 @@
                                                 style="width: 40px;">Next</button></td>
                         </tr>
                 </table>
-                <label>file name</label><input id="fname" type="text"><button id="save" onclick="save()">Save</button>
+                <label class="label-paint">File Name</label><input id="fname" type="text"><button class="button-paint" id="save" onclick="save()">Save</button>
 
         </fieldset>
         <script src="http://code.jquery.com/jquery-1.8.3.js"></script>

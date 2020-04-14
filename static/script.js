@@ -61,54 +61,74 @@ function reset() {
     ctx.drawImage(imgs, 0, 0, width, height); //draw the image upon reset, which is called on load
     // canvas_data = { "pencil": [], "line": [], "rectangle": [], "circle": [], "eraser": [] }
     canvas_data = { "pencil": [], "rectangle": [] }
-    rectangle();
+
+    canvas.onmousemove = function (e) {
+        x.style.display = "inline";
+    };
+
+    canvas.onmouseout = function (e) {
+        x.style.display = "none";
+    }
+
 }
 
 function rectangle() {
     fill_value = false;
     stroke_value = true;
-    color('#EE0000');
-    canvas.onmousedown = function (e) {
-        img = ctx.getImageData(0, 0, width, height); //supposed to be width & height var, but changed so that it takes the width and height realtime
-        prevX = e.offsetX;
-        prevY = e.offsetY;
-        //prevX = e.clientX - canvas.offsetLeft;
-        //prevY = e.clientY - canvas.offsetTop;
-        hold = true;
-    };
+    // color('#EE0000');
+    if (labelarray.length == 0) {
+        alert("Please create a label first!");
+    } else {
+        if (ctx.fillStyle == "#000000") {
+            alert("Please choose a color based on the label!")
+        } else {
+            canvas.onmousedown = function (e) {
+                img = ctx.getImageData(0, 0, width, height); //supposed to be width & height var, but changed so that it takes the width and height realtime
+                prevX = e.offsetX;
+                prevY = e.offsetY;
+                //prevX = e.clientX - canvas.offsetLeft;
+                //prevY = e.clientY - canvas.offsetTop;
+                hold = true;
+            };
 
-    canvas.onmousemove = function (e) {
-        x.style.display = "inline";
-        if (hold) {
-            ctx.putImageData(img, 0, 0);
-            curX = e.offsetX - prevX;
-            curY = e.offsetY - prevY;
-            ctx.strokeRect(prevX, prevY, curX, curY);
+            canvas.onmousemove = function (e) {
+                x.style.display = "inline";
+                if (hold) {
+                    ctx.putImageData(img, 0, 0);
+                    curX = e.offsetX - prevX;
+                    curY = e.offsetY - prevY;
+                    ctx.strokeRect(prevX, prevY, curX, curY);
+                }
+            };
+
+            canvas.onmouseup = function (e) {
+                hold = false;
+                var realendx = curX + prevX;
+                var realendy = curY + prevY;
+
+                var startxcalc = imgrealwidth * prevX;
+                var startycalc = imgrealheight * prevY;
+                var endxcalc = imgrealwidth * realendx;
+                var endycalc = imgrealheight * realendy;
+
+                var finalstartxcalc = startxcalc / width;
+                var finalstartycalc = startycalc / height;
+                var finalendxcalc = endxcalc / width;
+                var finalendycalc = endycalc / height;
+                for (var i = 0; i < labelarray.length; i++) {
+                    if (ctx.fillStyle == labelarray[i].value) {
+                        canvas_data.rectangle.push({"label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
+                    }else{}
+                }
+            };
+
+            canvas.onmouseout = function (e) {
+                hold = false;
+                x.style.display = "none";
+            };
         }
-    };
+    }
 
-    canvas.onmouseup = function (e) {
-        hold = false;
-        var realendx = curX + prevX;
-        var realendy = curY + prevY;
-
-        var startxcalc = imgrealwidth * prevX;
-        var startycalc = imgrealheight * prevY;
-        var endxcalc   = imgrealwidth * realendx;               
-        var endycalc   = imgrealheight * realendy;
-
-        var finalstartxcalc = startxcalc / width;
-        var finalstartycalc = startycalc / height;
-        var finalendxcalc = endxcalc / width;
-        var finalendycalc = endycalc / height;
-
-        canvas_data.rectangle.push({ "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
-    };
-
-    canvas.onmouseout = function (e) {
-        hold = false;
-        x.style.display = "none";
-    };
 }
 
 function fill() {
@@ -122,26 +142,37 @@ function outline() {
 }
 
 function pencil() {
-    canvas.onmousemove = function (e) {
-        x.style.display = "inline";
-    };
+    if (labelarray.length == 0) {
+        alert("Please create a label first!");
+    } else {
+        if (ctx.fillStyle == "#000000") {
+            alert("Please choose a color based on the label!")
+        } else {
+            canvas.onmousemove = function (e) {
+                x.style.display = "inline";
+            };
 
-    canvas.onmousedown = function (e) {
-        // getPosition(e); 
-        curX = e.offsetX;
-        curY = e.offsetY;
-        //curX = e.clientX - canvas.offsetLeft;
-        //curY = e.clientY - canvas.offsetTop;
-        drawCoordinates(curX, curY);
+            canvas.onmousedown = function (e) {
+                // getPosition(e); 
+                curX = e.offsetX;
+                curY = e.offsetY;
+                //curX = e.clientX - canvas.offsetLeft;
+                //curY = e.clientY - canvas.offsetTop;
+                drawCoordinates(curX, curY);
 
-        prevX = curX;
-        prevY = curY;
-        // // ctx.beginPath();
-        // // ctx.moveTo(prevX, prevY);
-    };
+                prevX = curX;
+                prevY = curY;
+                // // ctx.beginPath();
+                // // ctx.moveTo(prevX, prevY);
+            };
+            canvas.onmouseout = function (e) {
+                x.style.display = "none";
+            }
+        }
+    }
     // var pointSize = 3;
     function drawCoordinates(x, y) {
-        ctx.fillStyle = "#ff2626"; 
+        // ctx.fillStyle = "#ff2626";
         ctx.beginPath();
         ctx.arc(x, y, ctx.lineWidth, 0, Math.PI * 2, true);
         ctx.fill();
@@ -151,11 +182,12 @@ function pencil() {
         var finalxcalculation = xcalculation / width;
         var finalycalculation = ycalculation / height;
 
-        canvas_data.pencil.push({ "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
-    }
-
-    canvas.onmouseout = function (e) {
-        x.style.display = "none";
+        for (var i = 0; i < labelarray.length; i++) {
+            if (ctx.fillStyle == labelarray[i].value) {
+                canvas_data.pencil.push({ "label": labelarray[i].label, "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
+            } else {}
+        }
+        //canvas_data.pencil.push({ "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
     }
 }
 
@@ -179,7 +211,73 @@ function save() {
 }
 
 function alerttest() {
-    alert("success!" + imgrealwidth + imgrealheight);
+    alert("success! image width :" + imgrealwidth + "and height : " + imgrealheight);
+}
+// var labelarray = {namelabel,colorvalue};
+// labelarray.push("hello");
+
+
+var labelarray = [];
+
+
+function addlabel() {
+    var labellist = document.getElementById("labellist");
+    var labelname = document.getElementById("labelname").value;
+
+    if (labelname == "") {
+        alert("Label name must be filled!");
+    } else {
+        var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+        labelarray.push({ label: labelname, value: randomColor });
+        labellist.style.display = "inline";
+        //<table border = "1" cellpadding = "5" cellspacing = "5">
+        var html = "<table border = '3' bordercolor = '#333' cellpadding = '5' cellspacing = '5' ><th>Label Name</th><th>Color</th>";
+
+        //VIEWING THE TABLE
+        for (var i = 0; i < labelarray.length; i++) {
+            html += "<tr>";
+            html += "<td>" + labelarray[i].label + "</td>";
+            html += "<td><button style='background-color:" + labelarray[i].value + "; height: 20px; width: 20px'" + 'onclick=\'color("' + labelarray[i].value + '")\'>' + " " + "</button></td>";
+            // html += "<td>" + rows[i].email + "</td>";
+
+            html += "</tr>";
+
+        }
+        html += "</table>";
+        document.getElementById("labellist").innerHTML = html;
+    }
+}
+
+function testpusharray() {
+    var labellist = document.getElementById("labellist");
+    labellist.style.display = "inline";
+    var rows = [{
+        name: "John",
+        age: 20,
+        email: "xx@hotmail.com"
+    }, {
+        name: "Jack",
+        age: 50,
+        email: "xxx@hotmail.com"
+    }, {
+        name: "Son",
+        age: 45,
+        email: "xxxx@hotmail.com"
+    }];
+
+    var html = "<table border='1|1'>";
+    for (var i = 0; i < rows.length; i++) {
+        html += "<tr>";
+        html += "<td>" + rows[i].name + "</td>";
+        html += "<td>" + rows[i].age + "</td>";
+        html += "<td>" + rows[i].email + "</td>";
+
+        html += "</tr>";
+
+    }
+    html += "</table>";
+    document.getElementById("labellist").innerHTML = html;
 }
 
 //commented, might be useful who knows
