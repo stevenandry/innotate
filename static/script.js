@@ -117,8 +117,8 @@ function rectangle() {
                 var finalendycalc = endycalc / height;
                 for (var i = 0; i < labelarray.length; i++) {
                     if (ctx.fillStyle == labelarray[i].value) {
-                        canvas_data.rectangle.push({"label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
-                    }else{}
+                        canvas_data.rectangle.push({ "label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
+                    } else { }
                 }
             };
 
@@ -145,7 +145,7 @@ function pencil() {
     if (labelarray.length == 0) {
         alert("Please create a label first!");
     } else {
-        if (ctx.fillStyle == "#000000") {
+        if (ctx.fillStyle == "#000000" || ctx.fillstyle == "transparent") {
             alert("Please choose a color based on the label!")
         } else {
             canvas.onmousemove = function (e) {
@@ -185,7 +185,7 @@ function pencil() {
         for (var i = 0; i < labelarray.length; i++) {
             if (ctx.fillStyle == labelarray[i].value) {
                 canvas_data.pencil.push({ "label": labelarray[i].label, "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
-            } else {}
+            } else { }
         }
         //canvas_data.pencil.push({ "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
     }
@@ -219,35 +219,83 @@ function alerttest() {
 
 var labelarray = [];
 
+/* Set the width of the sidebar to 250px (show it) */
+function openNav() {
+    document.getElementById("mySidepanel").style.width = "250px";
+}
+
+/* Set the width of the sidebar to 0 (hide it) */
+function closeNav() {
+    document.getElementById("mySidepanel").style.width = "0";
+}
 
 function addlabel() {
-    var labellist = document.getElementById("labellist");
+    var labellistdisplay = document.getElementById("labellist");
     var labelname = document.getElementById("labelname").value;
-
+   
     if (labelname == "") {
         alert("Label name must be filled!");
     } else {
+        // Validation for same label, still not working 
+        // for (var y = 0; y < labelarray.length; y++) {
+        //     if(labelname == labelarray[i].label){
+        //         alert("Label already exists!");
+        //     }
+        // }
         var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
+        // for(var i = 0;i<10;i++){
+        // var colorIncrement = '#EE000' + i;
+        // }
         labelarray.push({ label: labelname, value: randomColor });
-        labellist.style.display = "inline";
+        labellistdisplay.style.display = "inline";
         //<table border = "1" cellpadding = "5" cellspacing = "5">
-        var html = "<table border = '3' bordercolor = '#333' cellpadding = '5' cellspacing = '5' ><th>Label Name</th><th>Color</th>";
-
-        //VIEWING THE TABLE
-        for (var i = 0; i < labelarray.length; i++) {
-            html += "<tr>";
-            html += "<td>" + labelarray[i].label + "</td>";
-            html += "<td><button style='background-color:" + labelarray[i].value + "; height: 20px; width: 20px'" + 'onclick=\'color("' + labelarray[i].value + '")\'>' + " " + "</button></td>";
-            // html += "<td>" + rows[i].email + "</td>";
-
-            html += "</tr>";
-
-        }
-        html += "</table>";
-        document.getElementById("labellist").innerHTML = html;
+        printlabelarray();
     }
 }
+
+function printlabelarray() {
+    var html = "<table border = '3' bordercolor = '#333' cellpadding = '5' cellspacing = '5' ><th>Label Name</th><th>Color</th>";
+    var html2= "<tr>"
+    for (var i = 0; i < labelarray.length; i++) {
+        html += "<tr>";
+        html += "<td>" + labelarray[i].label + "</td>";
+        html += "<td><button style='background-color:" + labelarray[i].value + "; height: 20px; width: 20px'" + 'onclick=\'changecolor(' + i + ')\'>' + " " + "</button></td>";
+        html += "<td><button class='button-paint' id='deletelabelbtn' onclick='deletelabel(" + i + ")'style='background-color:red'>Del</td>";     
+        html += "</tr>";
+        //creating buttons in toolset
+        html2 += "<td><button style='background-color:" + labelarray[i].value + "; height: 20px; width: 20px; margin-right:10px'" + 'onclick=\'changecolor(' + i + ')\'>' + " " + "</button>";
+    }
+    html += "</table>";
+    html2 += "</tr>";
+    document.getElementById("labellist").innerHTML = html;
+    document.getElementById("colortoolset").innerHTML = html2;
+}
+
+function changecolor(i) {
+    color(labelarray[i].value);
+    var labeling = document.getElementById("currentlabel");
+    labeling.style.display = "inline";
+
+    var changecurrentactivelabel = "Currently Labeling  " + labelarray[i].label;
+    document.getElementById("currentlabel").innerHTML = changecurrentactivelabel;
+}
+
+function deletelabel(y) {
+    if (confirm("Are you sure you want to delete  " + labelarray[y].label + "  ?")) {
+        alert("Label  " + labelarray[y].label + "  Deleted");
+        if (labelarray[y].value == ctx.fillStyle) {
+            color('transparent');
+            ctx.fillStyle = "transparent";
+            labelarray.splice(y, 1);
+            printlabelarray();
+        } else {
+            labelarray.splice(y, 1);
+            printlabelarray();
+        }
+    } else { }
+}
+
 
 function testpusharray() {
     var labellist = document.getElementById("labellist");
