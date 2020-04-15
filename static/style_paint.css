@@ -2,9 +2,80 @@
     width     : 100px;
     height    : 440px;
     position  : absolute;
-    left      : 6px;
+    left      : 180px;
     top       : 56px; 
     background: #333;
+}
+
+#paint {
+    position  : absolute;
+    left      : 300px;
+    top       : 56px;
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+	border-radius: 10px;
+	border: 6px solid #333;
+}
+
+#colorset {
+    position  : absolute;
+    left      : 175px;
+    top       : 525px;
+    width     : 860px;
+    background: powderblue;
+}
+
+.sidepanel {
+  height: 250px; /* Specify a height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 150px;
+  left: 0px;
+  background-color: white; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
+}
+
+/* The sidepanel links */
+.sidepanel a {
+  padding: 8px 8px 8px 50px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidepanel a:hover {
+  color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidepanel .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+/* Style the button that is used to open the sidepanel */
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #333;
+  color: white;
+  padding: 10px 15px;
+  position : absolute;
+  top:80px;
+  left:0;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
 }
 
 .loader-wrapper {
@@ -77,26 +148,10 @@
 
 .showcoordinate{
     display:none;
-    position:absolute;
-    left:900px;
-    top:80px;
-}
-
-#paint {
-    position  : absolute;
-    left      : 130px;
-    top       : 56px;
-    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
-	border-radius: 10px;
-	border: 6px solid #333;
-}
-
-#colorset {
-    position  : absolute;
-    left      : 0px;
-    top       : 525px;
-    width     : 860px;
-    background: powderblue;
+    position:relative;
+    left:450px;
+    top:0;
+    z-index: 1;
 }
  
 #title {
