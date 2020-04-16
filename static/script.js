@@ -1,5 +1,3 @@
-
-// window.onload = function() { }
 $(window).on("load", function () {
     $(".loader-wrapper").fadeOut("slow");
 });
@@ -7,23 +5,24 @@ $(window).on("load", function () {
 var canvas = document.getElementById("paint");
 document.getElementById("paint").style.cursor = "crosshair";
 var ctx = canvas.getContext("2d");
+var clientX = 0.0;
+var clientY = 0.0;
+var curX, curY, prevX, prevY;
+ctx.lineWidth = 3;
+var colorList = ["Push", "#EE0000", "#334CFF", "#52FF6D", "#AF5AFF", "#FF5A5A", "#FF7ECC", "#00C5FF", "#7EF5FF", "#FBFF00", "#FFBD00"];
+var count2 = 0;
+var height = canvas.height;
+var width = canvas.width;
+var hold = false;
 var imgs = document.getElementById("imagetest");
 var imgrealwidth = imgs.width;
 var imgrealheight = imgs.height;
-var width = canvas.width;
-var height = canvas.height;
-// canvas.width = width;
-// canvas.height = height;
-var curX, curY, prevX, prevY;
-var hold = false;
-ctx.lineWidth = 3;
 var defaultlinewidth = ctx.lineWidth;
-var fill_value = true;
-var stroke_value = false;
+var fill_value = false;
+var stroke_value = true;
 var canvas_data = { "pencil": [], "rectangle": [] }
 var x = document.getElementById("showcoordinate");
-var clientX = 0.0;
-var clientY = 0.0;
+var labelarray = [];
 
 canvas.addEventListener('mousemove', function (e) {
     clientX = e.offsetX;
@@ -31,6 +30,13 @@ canvas.addEventListener('mousemove', function (e) {
     document.getElementById("coordinatex").innerHTML = clientX;
     document.getElementById("coordinatey").innerHTML = clientY;
 });
+canvas.onmousemove = function (e) {
+    x.style.display = "inline";
+};
+
+canvas.onmouseout = function (e) {
+    x.style.display = "none";
+};
 
 function color(color_value) {
     ctx.strokeStyle = color_value;
@@ -57,33 +63,20 @@ function reduce_pixel() {
 
 function reset() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // generatecanvas();
-    ctx.drawImage(imgs, 0, 0, width, height); //draw the image upon reset, which is called on load
-    // canvas_data = { "pencil": [], "line": [], "rectangle": [], "circle": [], "eraser": [] }
+    ctx.drawImage(imgs, 0, 0, width, height);
+
     canvas_data = { "pencil": [], "rectangle": [] }
-
-    canvas.onmousemove = function (e) {
-        x.style.display = "inline";
-    };
-
-    canvas.onmouseout = function (e) {
-        x.style.display = "none";
-    }
-
 }
 
 function rectangle() {
-    fill_value = false;
-    stroke_value = true;
-    // color('#EE0000');
     if (labelarray.length == 0) {
         alert("Please create a label first!");
     } else {
         if (ctx.fillStyle == "#000000") {
-            alert("Please choose a color based on the label!")
+            alert("Please choose a color based on the label!");
         } else {
             canvas.onmousedown = function (e) {
-                img = ctx.getImageData(0, 0, width, height); //supposed to be width & height var, but changed so that it takes the width and height realtime
+                img = ctx.getImageData(0, 0, width, height);
                 prevX = e.offsetX;
                 prevY = e.offsetY;
                 //prevX = e.clientX - canvas.offsetLeft;
@@ -97,6 +90,7 @@ function rectangle() {
                     ctx.putImageData(img, 0, 0);
                     curX = e.offsetX - prevX;
                     curY = e.offsetY - prevY;
+
                     ctx.strokeRect(prevX, prevY, curX, curY);
                 }
             };
@@ -118,7 +112,7 @@ function rectangle() {
                 for (var i = 0; i < labelarray.length; i++) {
                     if (ctx.fillStyle == labelarray[i].value) {
                         canvas_data.rectangle.push({ "label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
-                    } else { }
+                    }
                 }
             };
 
@@ -131,16 +125,6 @@ function rectangle() {
 
 }
 
-function fill() {
-    fill_value = true;
-    stroke_value = false;
-}
-
-function outline() {
-    fill_value = false;
-    stroke_value = true;
-}
-
 function pencil() {
     if (labelarray.length == 0) {
         alert("Please create a label first!");
@@ -151,7 +135,6 @@ function pencil() {
             canvas.onmousemove = function (e) {
                 x.style.display = "inline";
             };
-
             canvas.onmousedown = function (e) {
                 // getPosition(e); 
                 curX = e.offsetX;
@@ -170,9 +153,7 @@ function pencil() {
             }
         }
     }
-    // var pointSize = 3;
     function drawCoordinates(x, y) {
-        // ctx.fillStyle = "#ff2626";
         ctx.beginPath();
         ctx.arc(x, y, ctx.lineWidth, 0, Math.PI * 2, true);
         ctx.fill();
@@ -185,9 +166,8 @@ function pencil() {
         for (var i = 0; i < labelarray.length; i++) {
             if (ctx.fillStyle == labelarray[i].value) {
                 canvas_data.pencil.push({ "label": labelarray[i].label, "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
-            } else { }
+            }
         }
-        //canvas_data.pencil.push({ "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
     }
 }
 
@@ -210,22 +190,10 @@ function save() {
     // }
 }
 
-function alerttest() {
-    alert("success! image width :" + imgrealwidth + "and height : " + imgrealheight);
-}
-// var labelarray = {namelabel,colorvalue};
-// labelarray.push("hello");
-
-var labelarray = [];
-var colorList = ["Push","#EE0000","#334CFF","#52FF6D","#AF5AFF","#FF5A5A","#FF7ECC","#00C5FF","#7EF5FF","#FBFF00","#FFBD00"];
-var count2 = 0;
-
-/* Set the width of the sidebar to 250px (show it) */
 function openNav() {
     document.getElementById("mySidepanel").style.width = "270px";
 }
 
-/* Set the width of the sidebar to 0 (hide it) */
 function closeNav() {
     document.getElementById("mySidepanel").style.width = "0";
 }
@@ -233,10 +201,10 @@ function closeNav() {
 function addlabel() {
 
     var labelname = document.getElementById("labelname").value;
-   
+
     if (labelname == "") {
         alert("Label name must be filled!");
-    }else if(labelarray.length >= 10){
+    } else if (labelarray.length >= 10) {
         alert("You have reached maximum label limit!");
     } else {
         // Validation for same label, still not working 
@@ -246,12 +214,12 @@ function addlabel() {
         //     }
         // }
         count2++;
-        
+
         // for(var i = 0;i<labelarray.length;i++){
         //     ++count2;
         // }
-        
-        
+
+
         var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
         // for(var i = 0;i<10;i++){
@@ -265,12 +233,12 @@ function addlabel() {
 
 function printlabelarray() {
     var html = "<table cellpadding = '5' cellspacing = '5' style='color:white'><th>Label Name</th><th>Color</th>";
-    var html2= "<tr>"
+    var html2 = "<tr>";
     for (var i = 0; i < labelarray.length; i++) {
         html += "<tr>";
         html += "<td>" + labelarray[i].label + "</td>";
         html += "<td><button style='background-color:" + labelarray[i].value + "; height: 20px; width: 20px'" + 'onclick=\'changecolor(' + i + ')\'>' + " " + "</button></td>";
-        html += "<td><button class='button-paint' id='deletelabelbtn' onclick='deletelabel(" + i + ")'style='background-color:red'>Del</td>";     
+        html += "<td><button class='button-paint' id='deletelabelbtn' onclick='deletelabel(" + i + ")'style='background-color:red'>Del</td>";
         html += "</tr>";
         //creating buttons in toolset
         html2 += "<td><button style='background-color:" + labelarray[i].value + "; height: 20px; width: 20px; margin-right:10px'" + 'onclick=\'changecolor(' + i + ')\'>' + " " + "</button>";
@@ -305,39 +273,11 @@ function deletelabel(y) {
             labelarray.splice(y, 1);
             printlabelarray();
         }
-    } 
+    }
 }
 
-
-function testpusharray() {
-    var labellist = document.getElementById("labellist");
-    labellist.style.display = "inline";
-    var rows = [{
-        name: "John",
-        age: 20,
-        email: "xx@hotmail.com"
-    }, {
-        name: "Jack",
-        age: 50,
-        email: "xxx@hotmail.com"
-    }, {
-        name: "Son",
-        age: 45,
-        email: "xxxx@hotmail.com"
-    }];
-
-    var html = "<table border='1|1'>";
-    for (var i = 0; i < rows.length; i++) {
-        html += "<tr>";
-        html += "<td>" + rows[i].name + "</td>";
-        html += "<td>" + rows[i].age + "</td>";
-        html += "<td>" + rows[i].email + "</td>";
-
-        html += "</tr>";
-
-    }
-    html += "</table>";
-    document.getElementById("labellist").innerHTML = html;
+function alerttest() {
+    alert("success! image width :" + imgrealwidth + "and height : " + imgrealheight);
 }
 
 //commented, might be useful who knows
