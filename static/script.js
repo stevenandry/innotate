@@ -110,7 +110,7 @@ function rectangle() {
                 var finalendxcalc = endxcalc / width;
                 var finalendycalc = endycalc / height;
                 for (var i = 0; i < labelarray.length; i++) {
-                    if (ctx.fillStyle == labelarray[i].value) {
+                    if (ctx.fillStyle.toUpperCase() == labelarray[i].value) {
                         canvas_data.rectangle.push({ "label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
                     }
                 }
@@ -162,9 +162,9 @@ function pencil() {
         var ycalculation = imgrealheight * curY;
         var finalxcalculation = xcalculation / width;
         var finalycalculation = ycalculation / height;
-
+        
         for (var i = 0; i < labelarray.length; i++) {
-            if (ctx.fillStyle == labelarray[i].value) {
+            if (ctx.fillStyle.toUpperCase() == labelarray[i].value) {
                 canvas_data.pencil.push({ "label": labelarray[i].label, "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
             }
         }
