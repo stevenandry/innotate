@@ -10,24 +10,50 @@
   {% endfor %}
 </section> -->
 <canvas id="paint2" width=750 height=450 style="border: 5px solid #000000;"></canvas>
-<button type="button" onclick="nextimage()" style="width: 40px;">Next</button>
+<button type="button" onclick="ajaxx()" style="width: 40px;">Next</button>
 <!-- <img id="imagelist" src="static/images/test.jpg" alt="test.jpg"> -->
 {% for imagezz in imagelist %}
 <img hidden id="imagelist" src="static/{{imagezz}}" alt="{{imagezz}}">
+<label hidden id="imagename">{{imagezz}}</label>
 {% endfor %}
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <script>
 	var canvas2 = document.getElementById("paint2");
 	var ctx2 = canvas2.getContext("2d");
-	
+	var dir = "static/images/";
+	var fileextension = ".JPG";
+	var count = 0;
+	var filename;
+	function ajaxx(){
+	$.ajax({
+		//This will retrieve the contents of the folder if the folder is configured as 'browsable'
+		url: dir,
+		success: function (data) {
+			//List all .png file names in the page
+			$(data).find("a:contains(" + fileextension + ")").each(function () {
+				filename = this.href.replace(window.location.host, "").replace("http://", "");
+				$("body").append("<img src='" + dir + filename + "'>");
+			});
+		}
+	});
+	}
+
 	function nextimage() {
-	// var i;
-	// for(i = 0;i<5;i++){
-	var imagz = document.getElementById("imagelist");
-	imagz.src = "static/images/test.jpg";
-	 ctx2.drawImage(imagz, 0,0);
-	// }
-	alert("imagezz");
+		// var i;
+		++count;
+		// for(i = 0;i<5;i++){
+		var html;
+		// for (var i = 0; i < count; i++) {
+		// 	html = "<img src="
+		// }
+		var test = "{{imagelist}}";
+		var test2 = test.replace("&#39;", "");
+		var imagz2 = document.getElementById("imagename");
+		var imagz = document.getElementById("imagelist");
+		imagz.src = "static/images/test.jpg";
+		ctx2.drawImage(imagz, 0, 0);
+		// }
+		alert(filename);
 	}
 
 </script>
