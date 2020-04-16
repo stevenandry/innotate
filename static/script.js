@@ -216,12 +216,13 @@ function alerttest() {
 // var labelarray = {namelabel,colorvalue};
 // labelarray.push("hello");
 
-
 var labelarray = [];
+var colorList = ["Push","#EE0000","#334CFF","#52FF6D","#AF5AFF","#FF5A5A","#FF7ECC","#00C5FF","#7EF5FF","#FBFF00","#FFBD00"];
+var count2 = 0;
 
 /* Set the width of the sidebar to 250px (show it) */
 function openNav() {
-    document.getElementById("mySidepanel").style.width = "250px";
+    document.getElementById("mySidepanel").style.width = "270px";
 }
 
 /* Set the width of the sidebar to 0 (hide it) */
@@ -230,11 +231,13 @@ function closeNav() {
 }
 
 function addlabel() {
-    var labellistdisplay = document.getElementById("labellist");
+
     var labelname = document.getElementById("labelname").value;
    
     if (labelname == "") {
         alert("Label name must be filled!");
+    }else if(labelarray.length >= 10){
+        alert("You have reached maximum label limit!");
     } else {
         // Validation for same label, still not working 
         // for (var y = 0; y < labelarray.length; y++) {
@@ -242,20 +245,26 @@ function addlabel() {
         //         alert("Label already exists!");
         //     }
         // }
+        count2++;
+        
+        // for(var i = 0;i<labelarray.length;i++){
+        //     ++count2;
+        // }
+        
+        
         var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
         // for(var i = 0;i<10;i++){
         // var colorIncrement = '#EE000' + i;
         // }
-        labelarray.push({ label: labelname, value: randomColor });
-        labellistdisplay.style.display = "inline";
-        //<table border = "1" cellpadding = "5" cellspacing = "5">
+        labelarray.push({ label: labelname, value: colorList[count2] });
+        // colorList.pop();
         printlabelarray();
     }
 }
 
 function printlabelarray() {
-    var html = "<table border = '3' bordercolor = '#333' cellpadding = '5' cellspacing = '5' ><th>Label Name</th><th>Color</th>";
+    var html = "<table cellpadding = '5' cellspacing = '5' style='color:white'><th>Label Name</th><th>Color</th>";
     var html2= "<tr>"
     for (var i = 0; i < labelarray.length; i++) {
         html += "<tr>";
@@ -283,17 +292,20 @@ function changecolor(i) {
 
 function deletelabel(y) {
     if (confirm("Are you sure you want to delete  " + labelarray[y].label + "  ?")) {
-        alert("Label  " + labelarray[y].label + "  Deleted");
         if (labelarray[y].value == ctx.fillStyle) {
             color('transparent');
             ctx.fillStyle = "transparent";
+            colorList.push(labelarray[y].value);
+
             labelarray.splice(y, 1);
             printlabelarray();
         } else {
+            colorList.push(labelarray[y].value);
+
             labelarray.splice(y, 1);
             printlabelarray();
         }
-    } else { }
+    } 
 }
 
 
