@@ -21,7 +21,7 @@
     left      : 175px;
     top       : 525px;
     width     : 860px;
-    background: powderblue;
+    background: #cdfcff;
 }
 
 .sidepanel {
@@ -65,7 +65,7 @@
 .openbtn {
   font-size: 20px;
   cursor: pointer;
-  background-color: #333;
+  background-color: black;
   color: white;
   padding: 10px 15px;
   position : absolute;
