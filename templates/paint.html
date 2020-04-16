@@ -86,21 +86,16 @@
         </p>
         <fieldset id="colorset">
                 <table>
-                        <div id="colortoolset">
-
-                        </div>
-                        <tr>
-                                
-                        </tr>
                         <tr>
                                 <td><label class="label-paint">Line Width</label></td>
                                 <td><button id="pixel_plus" type="button" onclick="add_pixel()"
                                                 style="width: 25px;">+</button></td>
                                 <td><button id="pixel_minus" type="button" onclick="reduce_pixel()"
                                                 style="width: 25px;">-</button></td>
-                                <td><button id="nextbtn" type="button" onclick="nextpicture()"
-                                                style="width: 40px;">Next</button></td>
-                                <td></td>
+                                <td><button id="nextbtn" class="button-paint" type="button" onclick="nextpicture()">Next</button></td>
+                                <div id="colortoolset">
+                                
+                                </div>
                                 <td>
                                         <div id="showcoordinate" class="showcoordinate">
                                                 <div class="label-paint">
@@ -118,7 +113,7 @@
                         id="save" onclick="save()">Save</button>
                 <label id="currentlabel"
                         style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px"></label>
-
+                
         </fieldset>
         <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
         <script src=" {{ url_for('static', filename='script.js') }}"></script>
