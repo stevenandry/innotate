@@ -15,6 +15,7 @@ var height = canvas.height;
 var width = canvas.width;
 var hold = false;
 var imgs = document.getElementById("imagetest");
+var imgs2 = document.getElementById("imagetest2");
 var imgrealwidth = imgs.width;
 var imgrealheight = imgs.height;
 var defaultlinewidth = ctx.lineWidth;
@@ -39,6 +40,10 @@ canvas.onmousemove = function (e) {
 canvas.onmouseout = function (e) {
     x.style.display = "none";
 };
+
+function nextimage() {
+    ctx.drawImage(imgs2, 0, 0 ,width, height);
+}
 
 function color(color_value) {
     ctx.strokeStyle = color_value;
