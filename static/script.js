@@ -1,7 +1,9 @@
 $(window).on("load", function () {
     $(".loader-wrapper").fadeOut("slow");
+    loadimage();
+    nextimage();
 });
-
+//Canvas Variables
 var canvas = document.getElementById("paint");
 document.getElementById("paint").style.cursor = "crosshair";
 var ctx = canvas.getContext("2d");
@@ -9,27 +11,35 @@ var clientX = 0.0;
 var clientY = 0.0;
 var curX, curY, prevX, prevY;
 ctx.lineWidth = 3;
-var colorList = ["Push", "#EE0000", "#334CFF", "#52FF6D", "#AF5AFF", "#FF5A5A", "#FF7ECC", "#00C5FF", "#7EF5FF", "#FBFF00", "#FFBD00"];
-var count2 = 0;
 var height = canvas.height;
 var width = canvas.width;
+var canvas_data = { "pencil": [], "rectangle": [] }
+
+//IMAGE AND COLOR VARIABLES
+var colorList = ["Push", "#EE0000", "#334CFF", "#52FF6D", "#AF5AFF", "#FF5A5A", "#FF7ECC", "#00C5FF", "#7EF5FF", "#FBFF00", "#FFBD00"];
+var count2 = 0;
 var hold = false;
 var imgs = document.getElementById("imagetest");
 var imgs2 = document.getElementById("imagetest2");
-var imgrealwidth = imgs.width;
-var imgrealheight = imgs.height;
+var imgrealwidth,imgrealheight;
 var defaultlinewidth = ctx.lineWidth;
 var fill_value = false;
 var stroke_value = true;
-var canvas_data = { "pencil": [], "rectangle": [] }
-var testpushdb = "test!this is no json";
 var pushimagename, pushlabel, pushstartx, pushstarty, pushendx, pushendy, pushtool, pushcolor;
-
+var counterimage = 0;
+var drawimage;
 
 var x = document.getElementById("showcoordinate");
 var labelarray = [];
+var imagearray = [];
 var dottoolactive = false;
 var rectoolactive = false;
+
+$(document).ready(function () {
+    $('.imageclass').each(function (index, element) {
+        imagearray.push($(element).text());
+    });
+});
 
 canvas.addEventListener('mousemove', function (e) {
     clientX = e.offsetX;
@@ -37,6 +47,7 @@ canvas.addEventListener('mousemove', function (e) {
     document.getElementById("coordinatex").innerHTML = clientX;
     document.getElementById("coordinatey").innerHTML = clientY;
 });
+
 canvas.onmousemove = function (e) {
     x.style.display = "inline";
 };
@@ -45,8 +56,24 @@ canvas.onmouseout = function (e) {
     x.style.display = "none";
 };
 
+function loadimage() {
+    var html = "";
+    for (var i = 0; i < imagearray.length; i++) {
+        html += "<img id='image" + i + "' src='static/images/" + imagearray[i] + "'>";
+    }
+    document.getElementById("listimages").innerHTML = html;
+}
+
 function nextimage() {
-    ctx.drawImage(imgs2, 0, 0, width, height);
+    ++counterimage;
+
+    for (var i = 0; i < counterimage; i++) {
+        drawimage = document.getElementById('image' + i);
+        ctx.drawImage(drawimage, 0, 0, canvas.width, canvas.height);
+        imgrealwidth = drawimage.width;
+        imgrealheight = drawimage.height;
+        pushimagename = imagearray[i];
+    }
 }
 
 function color(color_value) {
@@ -74,7 +101,7 @@ function reduce_pixel() {
 
 function reset() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(imgs, 0, 0, width, height);
+    ctx.drawImage(drawimage, 0, 0, canvas.width, canvas.height);
     rectoolactive = false;
     dottoolactive = false;
     canvas_data = { "pencil": [], "rectangle": [] }
@@ -292,10 +319,10 @@ function pencil() {
 }
 
 function savepost() {
-    $.post("/profile", { save_label: pushlabel, save_startx: pushstartx, save_starty: pushstarty, save_endx: pushendx, save_endy: pushendy, save_tool: pushtool, save_color: pushcolor });
+    $.post("/profile", { save_imagename:pushimagename, save_label: pushlabel, save_startx: pushstartx, save_starty: pushstarty, save_endx: pushendx, save_endy: pushendy, save_tool: pushtool, save_color: pushcolor });
 }
 
-function savedot(){
+function savedot() {
     $.post("/profile", { save_label: pushlabel, save_startx: pushstartx, save_starty: pushstarty, save_endx: pushendx, save_endy: pushendy, save_tool: pushtool, save_color: pushcolor });
 }
 
