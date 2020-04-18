@@ -49,20 +49,41 @@ def resize_post():
 def profile():
 	if request.method == 'GET':
 		return render_template('paint.html', cnvswidth=request.args.get('width'), cnvsheight=request.args.get('height') )
-
-	# POST Method using SQLITE DB with 3 data values
+	
 	if request.method == 'POST':
-		filename=request.form['save_fname']
-		data=request.form['save_cdata']
-		image = request.form['save_image']
+		label = request.form['save_label']
+		startx = request.form['save_startx']
+		starty = request.form['save_starty']
+		endx = request.form['save_endx']
+		endy = request.form['save_endy']
+		tool = request.form['save_tool']
+		color = request.form['save_color']
 
-		dbdata=(filename, data, image)
-		con = sqlite3.connect("Drawings2.db")
+		dbdata = (label,startx,starty,endx,endy,tool,color)
+		
+		con = sqlite3.connect("Annotations.db")
 		cur=con.cursor()
-		cur.execute("CREATE TABLE IF NOT EXISTS files(name text, data text, canvas_image text)")
-		cur.execute("INSERT INTO files VALUES(?, ?, ?)", dbdata)
+		cur.execute("CREATE TABLE IF NOT EXISTS Coordinates(Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text)")
+		cur.execute("INSERT INTO Coordinates VALUES(?, ?, ?, ?, ?, ?, ?)", dbdata)
 		con.commit()
 		con.close()
+		
+	
+# POST Method using SQLITE DB with 3 data values
+	# if request.method == 'POST':
+	# 	filename=request.form['save_fname']
+	# 	data=request.form['save_cdata']
+	# 	image = request.form['save_image']
+	
+	# 	dbdata=(filename, data, image)
+
+	# 	con = sqlite3.connect("Drawings2.db")
+	# 	cur=con.cursor()
+	# 	cur.execute("CREATE TABLE IF NOT EXISTS files(name text, data text, canvas_image text)")
+	# 	cur.execute("INSERT INTO files VALUES(?, ?, ?)", dbdata)
+	# 	con.commit()
+	# 	con.close()
+		
 	
 @main.route('/save', methods=['GET', 'POST'])
 def save():
