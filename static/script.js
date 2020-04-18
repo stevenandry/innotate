@@ -22,6 +22,10 @@ var defaultlinewidth = ctx.lineWidth;
 var fill_value = false;
 var stroke_value = true;
 var canvas_data = { "pencil": [], "rectangle": [] }
+var testpushdb = "test!this is no json";
+var pushimagename, pushlabel, pushstartx, pushstarty, pushendx, pushendy, pushtool, pushcolor;
+
+
 var x = document.getElementById("showcoordinate");
 var labelarray = [];
 var dottoolactive = false;
@@ -42,7 +46,7 @@ canvas.onmouseout = function (e) {
 };
 
 function nextimage() {
-    ctx.drawImage(imgs2, 0, 0 ,width, height);
+    ctx.drawImage(imgs2, 0, 0, width, height);
 }
 
 function color(color_value) {
@@ -84,56 +88,65 @@ function rectangle() {
             alert("Please choose a color based on the label!");
         } else {
             if (dottoolactive == true) {
-                if (confirm("We detected annotations of Dot tool. Do you want to reset and switch to Rectangle tool?")) {
-                    reset();
-                    canvas.onmousedown = function (e) {
-                        rectoolactive = true;
-                        img = ctx.getImageData(0, 0, width, height);
-                        prevX = e.offsetX;
-                        prevY = e.offsetY;
-                        //prevX = e.clientX - canvas.offsetLeft;
-                        //prevY = e.clientY - canvas.offsetTop;
-                        hold = true;
-                    };
+                alert("We detected annotations of Dot tool. Please refresh the page to change tools!");
+                // if (confirm("We detected annotations of Dot tool. Do you want to reset and switch to Rectangle tool?")) {
+                //     reset();
+                //     canvas.onmousedown = function (e) {
+                //         rectoolactive = true;
+                //         img = ctx.getImageData(0, 0, width, height);
+                //         prevX = e.offsetX;
+                //         prevY = e.offsetY;
+                //         //prevX = e.clientX - canvas.offsetLeft;
+                //         //prevY = e.clientY - canvas.offsetTop;
+                //         hold = true;
+                //     };
 
-                    canvas.onmousemove = function (e) {
-                        x.style.display = "inline";
-                        if (hold) {
-                            ctx.putImageData(img, 0, 0);
-                            curX = e.offsetX - prevX;
-                            curY = e.offsetY - prevY;
+                //     canvas.onmousemove = function (e) {
+                //         x.style.display = "inline";
+                //         if (hold) {
+                //             ctx.putImageData(img, 0, 0);
+                //             curX = e.offsetX - prevX;
+                //             curY = e.offsetY - prevY;
 
-                            ctx.strokeRect(prevX, prevY, curX, curY);
-                        }
-                    };
+                //             ctx.strokeRect(prevX, prevY, curX, curY);
+                //         }
+                //     };
 
-                    canvas.onmouseup = function (e) {
-                        hold = false;
-                        var realendx = curX + prevX;
-                        var realendy = curY + prevY;
+                //     canvas.onmouseup = function (e) {
+                //         hold = false;
+                //         var realendx = curX + prevX;
+                //         var realendy = curY + prevY;
 
-                        var startxcalc = imgrealwidth * prevX;
-                        var startycalc = imgrealheight * prevY;
-                        var endxcalc = imgrealwidth * realendx;
-                        var endycalc = imgrealheight * realendy;
+                //         var startxcalc = imgrealwidth * prevX;
+                //         var startycalc = imgrealheight * prevY;
+                //         var endxcalc = imgrealwidth * realendx;
+                //         var endycalc = imgrealheight * realendy;
 
-                        var finalstartxcalc = startxcalc / width;
-                        var finalstartycalc = startycalc / height;
-                        var finalendxcalc = endxcalc / width;
-                        var finalendycalc = endycalc / height;
-                        for (var i = 0; i < labelarray.length; i++) {
-                            if (ctx.fillStyle.toUpperCase() == labelarray[i].value) {
-                                canvas_data.rectangle.push({ "label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
-                            }
-                        }
-                    };
+                //         var finalstartxcalc = startxcalc / width;
+                //         var finalstartycalc = startycalc / height;
+                //         var finalendxcalc = endxcalc / width;
+                //         var finalendycalc = endycalc / height;
+                //         for (var i = 0; i < labelarray.length; i++) {
+                //             if (ctx.fillStyle.toUpperCase() == labelarray[i].value) {
+                //                 pushlabel = labelarray[i].label;
+                //                 pushstartx = finalstartxcalc;
+                //                 pushstarty = finalstartycalc;
+                //                 pushendx = finalendxcalc;
+                //                 pushendy = finalendycalc;
+                //                 pushtool = "Rectangle Tool";
+                //                 pushcolor = labelarray[i].value;
+                //                 savepost();
+                //                 //canvas_data.rectangle.push({ "label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
+                //             }
+                //         }
+                //     };
 
-                    canvas.onmouseout = function (e) {
-                        hold = false;
-                        x.style.display = "none";
-                    };
+                //     canvas.onmouseout = function (e) {
+                //         hold = false;
+                //         x.style.display = "none";
+                //     };
 
-                }
+                //}
             } else {
                 canvas.onmousedown = function (e) {
                     img = ctx.getImageData(0, 0, width, height);
@@ -172,7 +185,15 @@ function rectangle() {
                     var finalendycalc = endycalc / height;
                     for (var i = 0; i < labelarray.length; i++) {
                         if (ctx.fillStyle.toUpperCase() == labelarray[i].value) {
-                            canvas_data.rectangle.push({ "label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
+                            pushlabel = labelarray[i].label;
+                            pushstartx = finalstartxcalc;
+                            pushstarty = finalstartycalc;
+                            pushendx = finalendxcalc;
+                            pushendy = finalendycalc;
+                            pushtool = "Rectangle Tool";
+                            pushcolor = labelarray[i].value;
+                            savepost();
+                            //canvas_data.rectangle.push({ "label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
                         }
                     }
                 };
@@ -195,29 +216,30 @@ function pencil() {
             alert("Please choose a color based on the label!")
         } else {
             if (rectoolactive == true) {
-                if (confirm("We detected annotations of Rectangle tool. do you want to reset and switch to Dot tool?")) {
-                    reset();
-                    canvas.onmousemove = function (e) {
-                        x.style.display = "inline";
-                    };
-                    canvas.onmousedown = function (e) {
-                        // getPosition(e); 
-                        dottoolactive = true;
-                        curX = e.offsetX;
-                        curY = e.offsetY;
-                        //curX = e.clientX - canvas.offsetLeft;
-                        //curY = e.clientY - canvas.offsetTop;
-                        drawCoordinates(curX, curY);
+                alert("We detected annotations of Rectangle tool. Please refresh the page to change tools!");
+                // if (confirm("We detected annotations of Rectangle tool. do you want to reset and switch to Dot tool?")) {
+                //     reset();
+                //     canvas.onmousemove = function (e) {
+                //         x.style.display = "inline";
+                //     };
+                //     canvas.onmousedown = function (e) {
+                //         // getPosition(e); 
+                //         dottoolactive = true;
+                //         curX = e.offsetX;
+                //         curY = e.offsetY;
+                //         //curX = e.clientX - canvas.offsetLeft;
+                //         //curY = e.clientY - canvas.offsetTop;
+                //         drawCoordinates(curX, curY);
 
-                        prevX = curX;
-                        prevY = curY;
-                        // // ctx.beginPath();
-                        // // ctx.moveTo(prevX, prevY);
-                    };
-                    canvas.onmouseout = function (e) {
-                        x.style.display = "none";
-                    }
-                }
+                //         prevX = curX;
+                //         prevY = curY;
+                //         // // ctx.beginPath();
+                //         // // ctx.moveTo(prevX, prevY);
+                //     };
+                //     canvas.onmouseout = function (e) {
+                //         x.style.display = "none";
+                //     };
+                // }
             } else {
                 canvas.onmousemove = function (e) {
                     x.style.display = "inline";
@@ -238,7 +260,7 @@ function pencil() {
                 };
                 canvas.onmouseout = function (e) {
                     x.style.display = "none";
-                }
+                };
             }
         }
     }
@@ -254,10 +276,27 @@ function pencil() {
 
         for (var i = 0; i < labelarray.length; i++) {
             if (ctx.fillStyle.toUpperCase() == labelarray[i].value) {
-                canvas_data.pencil.push({ "label": labelarray[i].label, "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
+                pushlabel = labelarray[i].label;
+                pushstartx = finalxcalculation;
+                pushstarty = finalycalculation;
+                pushendx = 0;
+                pushendy = 0;
+                pushtool = "Dot Tool";
+                pushcolor = labelarray[i].value;
+                savepost();
+                // alert(pushtool);
+                //canvas_data.pencil.push({ "label": labelarray[i].label, "startx": finalxcalculation, "starty": finalycalculation, "thick": ctx.lineWidth, "color": ctx.strokeStyle });
             }
         }
     }
+}
+
+function savepost() {
+    $.post("/profile", { save_label: pushlabel, save_startx: pushstartx, save_starty: pushstarty, save_endx: pushendx, save_endy: pushendy, save_tool: pushtool, save_color: pushcolor });
+}
+
+function savedot(){
+    $.post("/profile", { save_label: pushlabel, save_startx: pushstartx, save_starty: pushstarty, save_endx: pushendx, save_endy: pushendy, save_tool: pushtool, save_color: pushcolor });
 }
 
 function save() {
@@ -341,9 +380,12 @@ function printlabelarray() {
 function changecolor(i) {
     color(labelarray[i].value);
     var labeling = document.getElementById("currentlabel");
+    var labeling2 = document.getElementById("currentlabel2");
+    labeling2.style.display = "inline";
     labeling.style.display = "inline";
+    labeling.style.color = labelarray[i].value;
 
-    var changecurrentactivelabel = "Currently Labeling  " + labelarray[i].label;
+    var changecurrentactivelabel = " " + labelarray[i].label;
     document.getElementById("currentlabel").innerHTML = changecurrentactivelabel;
 }
 
