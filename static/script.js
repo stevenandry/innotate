@@ -21,7 +21,7 @@ var count2 = 0;
 var hold = false;
 var imgs = document.getElementById("imagetest");
 var imgs2 = document.getElementById("imagetest2");
-var imgrealwidth,imgrealheight;
+var imgrealwidth, imgrealheight;
 var defaultlinewidth = ctx.lineWidth;
 var fill_value = false;
 var stroke_value = true;
@@ -68,11 +68,13 @@ function nextimage() {
     ++counterimage;
 
     for (var i = 0; i < counterimage; i++) {
-        drawimage = document.getElementById('image' + i);
-        ctx.drawImage(drawimage, 0, 0, canvas.width, canvas.height);
-        imgrealwidth = drawimage.width;
-        imgrealheight = drawimage.height;
-        pushimagename = imagearray[i];
+        if (counterimage <= imagearray.length) {
+            drawimage = document.getElementById('image' + i);
+            ctx.drawImage(drawimage, 0, 0, canvas.width, canvas.height);
+            imgrealwidth = drawimage.width;
+            imgrealheight = drawimage.height;
+            pushimagename = imagearray[i];
+        }
     }
 }
 
@@ -319,7 +321,7 @@ function pencil() {
 }
 
 function savepost() {
-    $.post("/profile", { save_imagename:pushimagename, save_label: pushlabel, save_startx: pushstartx, save_starty: pushstarty, save_endx: pushendx, save_endy: pushendy, save_tool: pushtool, save_color: pushcolor });
+    $.post("/profile", { save_imagename: pushimagename, save_label: pushlabel, save_startx: pushstartx, save_starty: pushstarty, save_endx: pushendx, save_endy: pushendy, save_tool: pushtool, save_color: pushcolor });
 }
 
 function savedot() {
