@@ -14,16 +14,27 @@
   Hello, {{ name }} !!
 </h2>
 <div class="column is-4 is-offset-4">
-  <h2 class="subtitle">Image list in static/images :</h2>
-  {% for imagezz in imagelist %}
+  <h2 class="subtitle">Total Images Loaded :</h2>
   <h1>
-    <a href="{{ url_for('static', filename=imagezz) }}">
-      <p style="text-align: center;">{{imagezz}}</p>
-    </a>
+    <p id="countimage" style="text-align: center;font-size:45px"></p>
   </h1>
-  <img hidden id="imagelist" src="static/{{imagezz}}" alt="{{imagezz}}">
+  {% for imagezz in imagelist %}
+
+  <li style="display:none">{{imagezz}}</li>
   {% endfor %}
 </div>
 
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script>
+  var counter = 0;
+  $(document).ready(function () {
+    $("li").each(function (index, element) {
+      //alert(index + " : " + $(element).text());
+      //testis += $(element).text();
+      ++counter;
+    });
+    document.getElementById("countimage").innerHTML = counter;
+  });
+</script>
 {% endif %}
 {% endblock %}
