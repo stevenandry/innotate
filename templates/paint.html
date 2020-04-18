@@ -32,8 +32,10 @@
                         <tr>
                                 <td>
                                         <fieldset id="toolset">
-                                                <img style="display:none" id="imagetest" src="static/images/test.jpg" alt="Test Image">
-                                                <img style="display:none" id="imagetest2" src="static/images/test2.jpg" alt="Test Image 2">
+                                                <img style="display:none" id="imagetest" src="static/images/test.jpg"
+                                                        alt="Test Image">
+                                                <img style="display:none" id="imagetest2" src="static/images/test2.jpg"
+                                                        alt="Test Image 2">
                                                 <font color="white">Canvas Width <font color="red">{{cnvswidth}}</font>
                                                 </font>
                                                 <br>
@@ -84,6 +86,14 @@
                         </tr>
                 </table>
         </p>
+        <ul style="display:none">
+                {% for imagezz in imagelist %}
+                <li class="imageclass">{{imagezz}}</li>
+                {% endfor %}
+        </ul>
+        <div hidden id="listimages">
+
+        </div>
         <fieldset id="colorset">
                 <table>
                         <tr>
@@ -92,9 +102,12 @@
                                                 style="width: 25px;">+</button></td>
                                 <td><button id="pixel_minus" type="button" onclick="reduce_pixel()"
                                                 style="width: 25px;">-</button></td>
-                                <td><button id="nextbtn" class="button-paint" type="button" onclick="nextimage()">Next</button></td>
+                                <td><button id="nextbtn" class="button-paint" type="button"
+                                                onclick="nextimage()">Next</button></td>
+                                <!-- <td><button id="loadimagebtn" class="button-paint" type="button"
+                                                onclick="loadimage()">Load Image</button></td> -->
                                 <div id="colortoolset">
-                                
+
                                 </div>
                                 <td>
                                         <div id="showcoordinate" class="showcoordinate">
@@ -111,9 +124,10 @@
                 </table>
                 <label class="label-paint">File Name</label><input id="fname" type="text"><button class="button-paint"
                         id="save" onclick="save()">Save</button>
-               <label style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px" id="currentlabel2">Currently Labeling</label> <label id="currentlabel"
+                <label style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px"
+                        id="currentlabel2">Currently Labeling</label> <label id="currentlabel"
                         style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px"></label>
-                
+
         </fieldset>
         <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
         <script src=" {{ url_for('static', filename='script.js') }}"></script>
