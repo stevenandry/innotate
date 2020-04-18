@@ -34,7 +34,7 @@
 	var filename;
 	var testis = "";
 	var testisarray = [];
-
+	var realimagewidth,realimageheight;
 	$(document).ready(function () {
 		$('li').each(function (index, element) {
 			//alert(index + " : " + $(element).text());
@@ -71,9 +71,12 @@
 		for (var i = 0; i < count; i++) {
 			var imagetest = document.getElementById('image' + i);
 			ctx.drawImage(imagetest, 0, 0, canvas.width, canvas.height);
+			realimagewidth = imagetest.width;
+			realimageheight = imagetest.height;
+			
 		}
 
-
+		alert("Current Image Width/Height : "+ realimagewidth +" / "+ realimageheight);
 		// alert(testambildalamdiv);
 	}
 
