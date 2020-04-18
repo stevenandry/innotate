@@ -20,7 +20,7 @@
   </h1>
   {% for imagezz in imagelist %}
 
-  <li style="display:none">{{imagezz}}</li>
+  <li class="idli" style="display:none">{{imagezz}}</li>
   {% endfor %}
 </div>
 
@@ -28,7 +28,7 @@
 <script>
   var counter = 0;
   $(document).ready(function () {
-    $("li").each(function (index, element) {
+    $(".idli").each(function (index, element) {
       //alert(index + " : " + $(element).text());
       //testis += $(element).text();
       ++counter;
