@@ -1,4 +1,5 @@
 from flask import Flask
+#from flask_mysqldb import MySQL
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
@@ -11,7 +12,13 @@ def create_app():
 	app.config['SECRET_KEY'] = '9OLWxND4o83j4K4iuopO'
 	app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
+	# app.config['MYSQL_HOST'] = 'localhost:81'
+	# app.config['MYSQL_USER'] = 'root'
+	# app.config['MYSQL_PASSWORD'] = 'root'
+	# app.config['MYSQL_DB'] = 'Flask'
+
 	db.init_app(app)
+	
 
 	login_manager = LoginManager()
 	login_manager.login_view = 'auth.login'
@@ -33,3 +40,4 @@ def create_app():
 	app.register_blueprint(main_blueprint)
 
 	return app
+
