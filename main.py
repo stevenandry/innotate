@@ -48,9 +48,12 @@ def resize_post():
 @login_required
 def profile():
 	if request.method == 'GET':
-		return render_template('paint.html', cnvswidth=request.args.get('width'), cnvsheight=request.args.get('height') )
+		images = os.listdir('static/images')
+		imagelist = [file for file in images]
+		return render_template('paint.html', cnvswidth=request.args.get('width'), cnvsheight=request.args.get('height'), imagelist=imagelist )
 	
 	if request.method == 'POST':
+		imagename = request.form['save_imagename']
 		label = request.form['save_label']
 		startx = request.form['save_startx']
 		starty = request.form['save_starty']
@@ -59,12 +62,12 @@ def profile():
 		tool = request.form['save_tool']
 		color = request.form['save_color']
 
-		dbdata = (label,startx,starty,endx,endy,tool,color)
+		dbdata = (imagename,label,startx,starty,endx,endy,tool,color)
 		
 		con = sqlite3.connect("Annotations.db")
 		cur=con.cursor()
-		cur.execute("CREATE TABLE IF NOT EXISTS Coordinates(Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text)")
-		cur.execute("INSERT INTO Coordinates VALUES(?, ?, ?, ?, ?, ?, ?)", dbdata)
+		cur.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text)")
+		cur.execute("INSERT INTO Coordinates VALUES(?, ?, ?, ?, ?, ?, ?, ?)", dbdata)
 		con.commit()
 		con.close()
 		
