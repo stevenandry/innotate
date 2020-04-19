@@ -155,7 +155,7 @@
 .showcoordinate{
     display:none;
     position:relative;
-    left:450px;
+    left:320px;
     top:0;
     z-index: 1;
 }

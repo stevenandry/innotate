@@ -48,9 +48,15 @@
                                                         </font>
                                                         <br>
                                                         <br>
-                                                        <font color="white">Line Width <font color="red"><a
-                                                                                id="currentlw"> 3
-                                                                        </a></font>
+                                                        <font color="white">Line Width
+                                                                <font color="red" id="currentlw"> 3 </font>
+                                                        </font>
+                                                        <br>
+                                                        <br>
+                                                        <font color="white">Image
+                                                                <font color="red" id="imagenumber"></font>
+                                                                <label>/</label>
+                                                                <font color="red" id="totalimagenumber"></font>
                                                         </font>
                                                 </div>
                                                 <br>
@@ -60,9 +66,7 @@
                                                 <br>
                                                 <br>
                                                 <br>
-                                                <br>
-                                                <br>
-                                                <br>
+                                                <br>                                              
                                                 <button id="penciltool" type="button"
                                                         style="height: 25px; width: 100px;"
                                                         onclick="pencil()">Dot</button>
@@ -84,7 +88,7 @@
 
 
                                         <div style="position:absolute;left: 900px ;top:80px">
-                                                
+
                                         </div>
 
                                 </td>
@@ -111,6 +115,9 @@
                                                 onclick="nextimage()">Next</button></td>
                                 <!-- <td><button id="loadimagebtn" class="button-paint" type="button"
                                                 onclick="loadimage()">Load Image</button></td> -->
+                                <td><label style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px"
+                                        id="currentlabel2">Currently Labeling</label> <label id="currentlabel"
+                                        style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px"></label></td>
                                 <div id="colortoolset">
 
                                 </div>
@@ -127,11 +134,9 @@
                                 </td>
                         </tr>
                 </table>
-                <label class="label-paint">File Name</label><input id="fname" type="text"><button class="button-paint"
-                        id="save" onclick="save()">Save</button>
-                <label style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px"
-                        id="currentlabel2">Currently Labeling</label> <label id="currentlabel"
-                        style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px"></label>
+                <!-- <label class="label-paint">File Name</label><input id="fname" type="text"><button class="button-paint"
+                        id="save" onclick="save()">Save</button> -->
+
 
         </fieldset>
         <script src="http://code.jquery.com/jquery-1.8.3.js"></script>

@@ -39,6 +39,7 @@ $(document).ready(function () {
     $('.imageclass').each(function (index, element) {
         imagearray.push($(element).text());
     });
+    document.getElementById("totalimagenumber").innerHTML = imagearray.length;
 });
 
 canvas.addEventListener('mousemove', function (e) {
@@ -74,8 +75,11 @@ function nextimage() {
             imgrealwidth = drawimage.width;
             imgrealheight = drawimage.height;
             pushimagename = imagearray[i];
+        }else{
+            counterimage = imagearray.length;
         }
     }
+    document.getElementById("imagenumber").innerHTML = counterimage;
 }
 
 function color(color_value) {
@@ -104,8 +108,6 @@ function reduce_pixel() {
 function reset() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(drawimage, 0, 0, canvas.width, canvas.height);
-    rectoolactive = false;
-    dottoolactive = false;
     canvas_data = { "pencil": [], "rectangle": [] }
 }
 
@@ -117,7 +119,7 @@ function rectangle() {
             alert("Please choose a color based on the label!");
         } else {
             if (dottoolactive == true) {
-                alert("We detected annotations of Dot tool. Please refresh the page to change tools!");
+                alert("Dot tool is currently active. Please refresh the page to change tools!");
                 // if (confirm("We detected annotations of Dot tool. Do you want to reset and switch to Rectangle tool?")) {
                 //     reset();
                 //     canvas.onmousedown = function (e) {
@@ -245,7 +247,7 @@ function pencil() {
             alert("Please choose a color based on the label!")
         } else {
             if (rectoolactive == true) {
-                alert("We detected annotations of Rectangle tool. Please refresh the page to change tools!");
+                alert("Rectangle tool is currently active. Please refresh the page to change tools!");
                 // if (confirm("We detected annotations of Rectangle tool. do you want to reset and switch to Dot tool?")) {
                 //     reset();
                 //     canvas.onmousemove = function (e) {
