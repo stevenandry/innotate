@@ -1,7 +1,6 @@
 $(window).on("load", function () {
     $(".loader-wrapper").fadeOut("slow");
-    loadimage();
-    nextimage();
+    
 });
 //Canvas Variables
 var canvas = document.getElementById("paint");
@@ -39,6 +38,8 @@ $(document).ready(function () {
     $('.imageclass').each(function (index, element) {
         imagearray.push($(element).text());
     });
+    loadimage();
+    nextimage();
     document.getElementById("totalimagenumber").innerHTML = imagearray.length;
     document.getElementById("recordannotation").innerHTML = recordannotation;
 });
