@@ -23,11 +23,11 @@
                                 Home
                             </a>
                             {% endif %}
-                            {% if current_user.is_authenticated %}
+                            <!-- {% if current_user.is_authenticated %}
                             <a href="{{ url_for('main.imagez') }}" class="navbar-item">
                                 Load Image
                             </a>
-                            {% endif %}
+                            {% endif %} -->
                             {% if current_user.is_authenticated %}
                             <a href="{{ url_for('main.index_loggedin') }}" class="navbar-item">
                                 Home
