@@ -28,7 +28,7 @@ var stroke_value = true;
 var pushimagename, pushlabel, pushstartx, pushstarty, pushendx, pushendy, pushtool, pushcolor;
 var counterimage = 0;
 var drawimage;
-
+var recordannotation = 0;
 var x = document.getElementById("showcoordinate");
 var labelarray = [];
 var imagearray = [];
@@ -40,6 +40,7 @@ $(document).ready(function () {
         imagearray.push($(element).text());
     });
     document.getElementById("totalimagenumber").innerHTML = imagearray.length;
+    document.getElementById("recordannotation").innerHTML = recordannotation;
 });
 
 canvas.addEventListener('mousemove', function (e) {
@@ -227,6 +228,8 @@ function rectangle() {
                             //canvas_data.rectangle.push({ "label": labelarray[i].label, "starx": finalstartxcalc, "stary": finalstartycalc, "endx": finalendxcalc, "endy": finalendycalc, "recwidth": curX, "recheight": curY, "thick": ctx.lineWidth, "stroke": stroke_value, "stroke_color": ctx.strokeStyle });
                         }
                     }
+                    ++recordannotation;
+                    document.getElementById("recordannotation").innerHTML = recordannotation;
                 };
 
                 canvas.onmouseout = function (e) {
@@ -283,7 +286,8 @@ function pencil() {
                     //curX = e.clientX - canvas.offsetLeft;
                     //curY = e.clientY - canvas.offsetTop;
                     drawCoordinates(curX, curY);
-
+                    ++recordannotation;
+                    document.getElementById("recordannotation").innerHTML = recordannotation;
                     prevX = curX;
                     prevY = curY;
                     // // ctx.beginPath();
@@ -392,7 +396,7 @@ function addlabel() {
 
 function printlabelarray() {
     var html = "<table cellpadding = '5' cellspacing = '5' style='color:white'><th>Label Name</th><th>Color</th>";
-    var html2 = "<tr>";
+    var html2 = "";
     for (var i = 0; i < labelarray.length; i++) {
         html += "<tr>";
         html += "<td>" + labelarray[i].label + "</td>";
@@ -400,10 +404,11 @@ function printlabelarray() {
         html += "<td><button class='button-paint' id='deletelabelbtn' onclick='deletelabel(" + i + ")'style='background-color:red'>Del</td>";
         html += "</tr>";
         //creating buttons in toolset
-        html2 += "<td><button style='background-color:" + labelarray[i].value + "; height: 20px; width: 20px; margin-right:10px'" + 'onclick=\'changecolor(' + i + ')\'>' + " " + "</button>";
+        html2 += "<td><button style='background-color:" + labelarray[i].value + "; height: 20px; width: 20px; margin-right:10px'" + 'onclick=\'changecolor(' + i + ')\'>' + " " + "</button></td>";
     }
     html += "</table>";
-    html2 += "</tr>";
+    // html2 += "</tr>";
+
     document.getElementById("labellist").innerHTML = html;
     document.getElementById("colortoolset").innerHTML = html2;
 }
