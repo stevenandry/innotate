@@ -1,6 +1,6 @@
 $(window).on("load", function () {
     $(".loader-wrapper").fadeOut("slow");
-    
+
 });
 //Canvas Variables
 var canvas = document.getElementById("paint");
@@ -59,6 +59,30 @@ canvas.onmouseout = function (e) {
     x.style.display = "none";
 };
 
+function dialog(message, yesCallback, noCallback) {
+    $('.titlemessage').html(message);
+    var dialog = $('#modal_dialog').dialog();
+
+    $('#btnYes').click(function () {
+        dialog.dialog('close');
+        yesCallback();
+    });
+    $('#btnNo').click(function () {
+        dialog.dialog('close');
+        noCallback();
+    });
+    //     dialog('Are you sure you want to do this?',
+    //     function() {
+    //         // Do something
+    //         alert("Hello Yes!");
+    //     },
+    //     function() {
+    //         // Do something else
+    //         alert("Hello No!");
+    //     }
+    // );
+}
+
 function loadimage() {
     var html = "";
     for (var i = 0; i < imagearray.length; i++) {
@@ -77,7 +101,7 @@ function nextimage() {
             imgrealwidth = drawimage.width;
             imgrealheight = drawimage.height;
             pushimagename = imagearray[i];
-        }else{
+        } else {
             counterimage = imagearray.length;
         }
     }
