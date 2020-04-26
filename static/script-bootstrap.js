@@ -2,6 +2,9 @@ $(window).on("load", function () {
     $(".loader-wrapper").fadeOut("slow");
 
 });
+// $('#myModal').on('shown.bs.modal', function () {
+//     $('#myInput').trigger('focus')
+// })
 //Canvas Variables
 var canvas = document.getElementById("paint");
 document.getElementById("paint").style.cursor = "crosshair";
@@ -33,6 +36,7 @@ var labelarray = [];
 var imagearray = [];
 var dottoolactive = false;
 var rectoolactive = false;
+var modaltitle, modalbody, modalfooter;
 
 $(document).ready(function () {
     $('.imageclass').each(function (index, element) {
@@ -137,15 +141,33 @@ function reset() {
     canvas_data = { "pencil": [], "rectangle": [] }
 }
 
+function warningmodal(){
+    modaltitle = "You can't do that.";
+    modalfooter = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
+}
+
+function callmodal() {
+    document.getElementById("exampleModalLabel").innerHTML = modaltitle;
+    document.getElementById("modalBody").innerHTML = modalbody;
+    document.getElementById("modalFooter").innerHTML = modalfooter;
+    $('#exampleModal').modal('toggle');
+}
+
 function rectangle() {
     if (labelarray.length == 0) {
-        alert("Please create a label first!");
+        modalbody = "Please create a label first!";
+        warningmodal();
+        callmodal();
     } else {
         if (ctx.fillStyle == "#000000") {
-            alert("Please choose a color based on the label!");
+            modalbody="Please choose a color based on the label!";
+            warningmodal();
+            callmodal();
         } else {
             if (dottoolactive == true) {
-                alert("Dot tool is currently active. Please refresh the page to change tools!");
+                modalbody="Pencil tool is active. Please refresh the page to change tools!";
+                warningmodal();
+                callmodal();
                 // if (confirm("We detected annotations of Dot tool. Do you want to reset and switch to Rectangle tool?")) {
                 //     reset();
                 //     canvas.onmousedown = function (e) {
@@ -241,7 +263,7 @@ function rectangle() {
                     var finalendxcalc = endxcalc / width;
                     var finalendycalc = endycalc / height;
                     for (var i = 0; i < labelarray.length; i++) {
-                        if (ctx.fillStyle.toUpperCase() == labelarray[i].value) {
+                        if (ctx.fillStyle.toUpperCase() == labelarray[i].value.toUpperCase()) {
                             pushlabel = labelarray[i].label;
                             pushstartx = finalstartxcalc;
                             pushstarty = finalstartycalc;
@@ -269,13 +291,19 @@ function rectangle() {
 
 function pencil() {
     if (labelarray.length == 0) {
-        alert("Please create a label first!");
+        modalbody = "Please create a label first!";
+        warningmodal();
+        callmodal();
     } else {
         if (ctx.fillStyle == "#000000" || ctx.fillstyle == "transparent") {
-            alert("Please choose a color based on the label!")
+            modalbody = "Please choose a color based on the label!";
+            warningmodal();
+            callmodal();
         } else {
             if (rectoolactive == true) {
-                alert("Rectangle tool is currently active. Please refresh the page to change tools!");
+                modalbody="Rectangle tool is currently active. Please refresh the page to change tools!";
+                warningmodal();
+                callmodal();
                 // if (confirm("We detected annotations of Rectangle tool. do you want to reset and switch to Dot tool?")) {
                 //     reset();
                 //     canvas.onmousemove = function (e) {
@@ -335,7 +363,7 @@ function pencil() {
         var finalycalculation = ycalculation / height;
 
         for (var i = 0; i < labelarray.length; i++) {
-            if (ctx.fillStyle.toUpperCase() == labelarray[i].value) {
+            if (ctx.fillStyle.toUpperCase() == labelarray[i].value.toUpperCase()) {
                 pushlabel = labelarray[i].label;
                 pushstartx = finalxcalculation;
                 pushstarty = finalycalculation;
@@ -378,44 +406,43 @@ function save() {
     // }
 }
 
-function openNav() {
-    document.getElementById("mySidepanel").style.width = "270px";
-}
-
-function closeNav() {
-    document.getElementById("mySidepanel").style.width = "0";
-}
-
 function addlabel() {
-
+    var labeltrigger = false;
     var labelname = document.getElementById("labelname").value;
 
     if (labelname == "") {
-        alert("Label name must be filled!");
+        modalbody = "Label name must be filled!"
+        warningmodal();
+        callmodal();
     } else if (labelarray.length >= 10) {
-        alert("You have reached maximum label limit!");
+        modalbody = "Maximum label limit reached!"
+        warningmodal();
+        callmodal();
     } else {
-        // Validation for same label, still not working 
-        // for (var y = 0; y < labelarray.length; y++) {
-        //     if(labelname == labelarray[i].label){
-        //         alert("Label already exists!");
-        //     }
-        // }
-        count2++;
+        for (var y = 0; y < labelarray.length; y++) {
+            if (labelname == labelarray[y].label) {
+                modalbody = "Label already exists!";
+                warningmodal();
+                callmodal();
+                labeltrigger = true;
+            }
+        }
+        if (labeltrigger == false) {
+            count2++;
 
-        // for(var i = 0;i<labelarray.length;i++){
-        //     ++count2;
-        // }
+            // for(var i = 0;i<labelarray.length;i++){
+            //     ++count2;
+            // }
+            var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
 
+            // for(var i = 0;i<10;i++){
+            // var colorIncrement = '#EE000' + i;
+            // }
+            labelarray.push({ label: labelname, value: colorList[count2] });
+            // colorList.pop();
+            printlabelarray();
 
-        var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-
-        // for(var i = 0;i<10;i++){
-        // var colorIncrement = '#EE000' + i;
-        // }
-        labelarray.push({ label: labelname, value: colorList[count2] });
-        // colorList.pop();
-        printlabelarray();
+        }
     }
 }
 
@@ -435,7 +462,7 @@ function printlabelarray() {
     // html2 += "</tr>";
 
     document.getElementById("labellist").innerHTML = html;
-    document.getElementById("colortoolset").innerHTML = html2;
+    //document.getElementById("colortoolset").innerHTML = html2;
 }
 
 function changecolor(i) {
@@ -451,20 +478,42 @@ function changecolor(i) {
 }
 
 function deletelabel(y) {
-    if (confirm("Are you sure you want to delete  " + labelarray[y].label + "  ?")) {
-        if (labelarray[y].value == ctx.fillStyle) {
-            color('transparent');
-            ctx.fillStyle = "transparent";
-            colorList.push(labelarray[y].value);
+    modaltitle = "Please Confirm Action";
+    modalbody = "Are you sure you want to delete  " + labelarray[y].label + "  ?";
+    modalfooter = '<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deletelabelconfirmed(' + y + ')">Delete</button>'
+                + '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>';
+    callmodal();
 
-            labelarray.splice(y, 1);
-            printlabelarray();
-        } else {
-            colorList.push(labelarray[y].value);
+    // if (confirm("Are you sure you want to delete  " + labelarray[y].label + "  ?")) {
+    //     if (labelarray[y].value == ctx.fillStyle) {
+    //         color('transparent');
+    //         ctx.fillStyle = "transparent";
+    //         colorList.push(labelarray[y].value);
 
-            labelarray.splice(y, 1);
-            printlabelarray();
-        }
+    //         labelarray.splice(y, 1);
+    //         printlabelarray();
+    //         alert("Same");
+    //     } else {
+    //         colorList.push(labelarray[y].value);
+
+    //         labelarray.splice(y, 1);
+    //         printlabelarray();
+    //         alert("Different");
+    //     }
+    // }
+}
+
+function deletelabelconfirmed(y) {
+    if (labelarray[y].value.toUpperCase() == ctx.fillStyle.toUpperCase()) {
+        color('transparent');
+        ctx.fillStyle = "transparent";
+        colorList.push(labelarray[y].value);
+        labelarray.splice(y, 1);
+        printlabelarray();
+    } else {
+        colorList.push(labelarray[y].value);
+        labelarray.splice(y, 1);
+        printlabelarray();
     }
 }
 
@@ -577,3 +626,10 @@ function alerttest() {
 //         }
 //         clicked = !clicked;
 //       };
+//============================================
+// function openNav() {
+//     document.getElementById("mySidepanel").style.width = "270px";
+// }
+// function closeNav() {
+//     document.getElementById("mySidepanel").style.width = "0";
+// }

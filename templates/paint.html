@@ -20,8 +20,32 @@
                 {% endfor %}
         </ul>
         <div hidden id="listimages">
-
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                        </button>
+                                </div>
+                                <div class="modal-body" id="modalBody">
+                                        
+                                </div>
+                                <div class="modal-footer" id="modalFooter">
+                                        <!-- <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Dismiss</button> -->
+                                        <!-- <button type="button" class="btn btn-primary">Save
+                                                changes</button> -->
+                                </div>
+                        </div>
+                </div>
+        </div>
+
         <!-- <div class="container"> -->
         <div id="mySidepanel" class="row">
                 <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
@@ -85,16 +109,16 @@
                                 </div>
                         </div>
                         <div class="border shadow p-4 mb-2 bg-white">
-                                <button id="penciltool" type="button" class="btn btn-success mt-2"
+                                <button id="penciltool" type="button" class="btn btn-success mt-2 w-50"
                                         onclick="pencil()">Dot</button>
                                 <br>
-                                <button id="rectangletool" type="button" class="btn btn-success mt-2"
+                                <button id="rectangletool" type="button" class="btn btn-success mt-2 w-50"
                                         onclick="rectangle()">Rectangle</button>
                                 <br>
-                                <button id="resettool" type="button" class="btn btn-warning mt-2"
+                                <button id="resettool" type="button" class="btn btn-warning mt-2 w-50"
                                         onclick="reset()">Reset</button>
                                 <br>
-                                <button id="nextbtn" class="btn btn-primary mt-2" type="button"
+                                <button id="nextbtn" class="btn btn-primary mt-2 w-50" type="button"
                                         onclick="nextimage()">Next</button>
                                 <br>
                                 <button class="btn btn-secondary mt-2" id="pixel_plus" type="button"
@@ -102,15 +126,11 @@
                                 <button class="btn btn-secondary mt-2" id="pixel_minus" type="button"
                                         onclick="reduce_pixel()">-</button>
                                 <br>
-                                <!-- <div id="showcoordinate" style="display:none">
-                                        <div>
-                                                <label>Coordinates : (</label>
-                                                <label id="coordinatex" style="color:red">x</label>
-                                                <label>,</label>
-                                                <label id="coordinatey" style="color:red">y</label>
-                                                <label>)</label>
-                                        </div>
-                                </div> -->
+                                <!-- Button trigger modal -->
+                                <!-- <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
+                                        data-target="#exampleModal">
+                                        Test Modal
+                                </button> -->
                         </div>
                 </div>
         </div>
@@ -134,7 +154,7 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
-        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
