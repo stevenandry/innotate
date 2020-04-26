@@ -1,100 +1,19 @@
-{% extends "base.html" %}
-
+{% extends "base-bootstrap.html" %}
 {% block content %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_paint.css') }}">
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+</head>
 
 <body onload="reset()">
-        <p>
-                <!-- <div class="loader"></div> -->
-                <div class="loader-wrapper">
-                        <span class="loader"><span class="loader-inner"></span></span>
-                </div>
-                <div id="mySidepanel" class="sidepanel">
-                        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                        <div class="label-paint">
-                                <label style="color:white">Add Label
-                                </label><br><input id="labelname" class="input-paint" type="text"><button id="save"
-                                        class="button-paint" onclick='addlabel()'>Add</button>
-                                <br>
-                                <br>
 
-                                <div id="labellist">
-
-
-                                       
-                                </div>
-                        </div>
-                </div>
-
-                <button class="openbtn" onmouseover="openNav()">&#9776; Label List</button>
-                <table>
-                        <tr>
-                                <td>
-                                        <fieldset id="toolset">
-                                                <img style="display:none" id="imagetest" src="static/images/test.jpg"
-                                                        alt="Test Image">
-                                                <img style="display:none" id="imagetest2" src="static/images/test2.jpg"
-                                                        alt="Test Image 2">
-                                                <div class="toolsetindicator">
-                                                        <font color="white">Canvas Width <font color="red">{{cnvswidth}}
-                                                                </font>
-                                                        </font>
-                                                        <br>
-                                                        <br>
-                                                        <font color="white">Canvas Height <font color="red">
-                                                                        {{cnvsheight}}
-                                                                </font>
-                                                        </font>
-                                                        <br>
-                                                        <br>
-                                                        <font color="white">Line Width
-                                                                <font color="red" id="currentlw"> 3 </font>
-                                                        </font>
-                                                        <br>
-                                                        <br>
-                                                        <font color="white">Image
-                                                                <font color="red" id="imagenumber"></font>
-                                                                <label>/</label>
-                                                                <font color="red" id="totalimagenumber"></font>
-                                                        </font>
-                                                </div>
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <button id="penciltool" type="button"
-                                                        style="height: 25px; width: 100px;"
-                                                        onclick="pencil()">Dot</button>
-                                                <br>
-                                                <br>
-                                                <button id="rectangletool" type="button"
-                                                        style="height: 25px; width: 100px;"
-                                                        onclick="rectangle()">Rectangle</button>
-                                                <br>
-                                                <br>
-                                                <button id="resettool" type="button" style="height: 25px; width: 100px;"
-                                                        onclick="reset()">Reset</button>
-                                        </fieldset>
-                                </td>
-                                <td>
-                                        <canvas id="paint" width={{cnvswidth}} height={{cnvsheight}}></canvas>
-                                </td>
-                                <td>
-
-
-                                        <div style="position:absolute;left: 900px ;top:80px">
-
-                                        </div>
-
-                                </td>
-                        </tr>
-                </table>
-        </p>
+        <div class="loader-wrapper">
+                <span class="loader"><span class="loader-inner"></span></span>
+        </div>
         <ul style="display:none">
                 {% for imagezz in imagelist %}
                 <li class="imageclass">{{imagezz}}</li>
@@ -103,53 +22,120 @@
         <div hidden id="listimages">
 
         </div>
-        <fieldset id="colorset">
-                <table>
-                        <tr>
-                                <div id="colortoolset">
+        <!-- <div class="container"> -->
+        <div id="mySidepanel" class="row">
+                <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
+                <div class="col">
+                        <div class="border shadow p-4 bg-white overflow-auto" style="height:570px;width:240px">
+                                <h6>Add Label</h6>
+                                <input id="labelname" class="input-paint" type="text">
+                                <button id="save" class="btn btn-primary mt-2" onclick='addlabel()'>Add</button>
+                                <br>
+                                <br>
 
+                                <div id="labellist">
                                 </div>
-                        </tr>
-                        <tr>
-                                <td><label class="label-paint">Line Width</label></td>
-                                <td><button id="pixel_plus" type="button" onclick="add_pixel()"
-                                                style="width: 25px;">+</button></td>
-                                <td><button id="pixel_minus" type="button" onclick="reduce_pixel()"
-                                                style="width: 25px;">-</button></td>
-                                <td><button id="nextbtn" class="button-paint" type="button"
-                                                onclick="nextimage()">Next</button></td>
-                                <td><label style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px"
-                                                id="currentlabel2">Currently Labeling</label> <label id="currentlabel"
-                                                style="display:none;font-family: Arial, Helvetica, sans-serif;position:relative;left:10px"></label>
-                                </td>
-                        </tr>
-                </table>
+                        </div>
+                </div>
+                <div class="col">
+                        <div class="border shadow p-4 bg-white overflow-auto" style="height:570px;width:800px ">
+                                <canvas style="box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.35)" id="paint"
+                                        width={{cnvswidth}} height={{cnvsheight}}></canvas>
+                                <br>
+                                <div id="currentlabel2" style="display:none">
+                                        <h6>Currently Labeling <font color="red" id="currentlabel"></font>
+                                        </h6>
+                                </div>
 
-                <table>
-                        <tr>
-                                <td><label class="label-paint">Total Annotations Recorded : </label>
-                                        <font class="label-paint" id="recordannotation" color="red"></font>
-                                </td>
-                                <td>
-                                        <div id="showcoordinate" class="showcoordinate">
-                                                <div class="label-paint">
-                                                        <label>Coordinates : (</label>
-                                                        <label id="coordinatex" style="color:red">x</label>
-                                                        <label>,</label>
-                                                        <label id="coordinatey" style="color:red">y</label>
-                                                        <label>)</label>
-                                                </div>
+                                <!-- <div id="colortoolset">
+                                </div> -->
+                        </div>
+                </div>
+                <div class="col">
+                        <div class="border shadow p-4 mb-2 bg-white" style="height:250px">
+                                <h6 class="mb-3">Canvas Width <font color="red">{{cnvswidth}}
+                                        </font>
+                                </h6>
+                                <h6 class="mb-3">Canvas Height <font color="red">
+                                                {{cnvsheight}}
+                                        </font>
+                                </h6>
+                                <h6 class="mb-3">Line Width
+                                        <font color="red" id="currentlw"> 3
+                                        </font>
+                                </h6>
+                                <h6 class="mb-3">Annotations
+                                        <font id="recordannotation" color="red"></font>
+                                </h6>
+                                <h6 class="mb-2">Image
+                                        <font color="red" id="imagenumber">
+                                        </font>
+                                        <label>/</label>
+                                        <font color="red" id="totalimagenumber">
+                                        </font>
+                                </h6>
+                                <div id="showcoordinate" style="display:none">
+                                        <h6>
+                                                <label>Coordinates</label>
+                                                <label id="coordinatex" style="color:red"></label>
+                                                <label>,</label>
+                                                <label id="coordinatey" style="color:red"></label>
+                                                <label></label>
+                                        </h6>
+                                </div>
+                        </div>
+                        <div class="border shadow p-4 mb-2 bg-white">
+                                <button id="penciltool" type="button" class="btn btn-success mt-2"
+                                        onclick="pencil()">Dot</button>
+                                <br>
+                                <button id="rectangletool" type="button" class="btn btn-success mt-2"
+                                        onclick="rectangle()">Rectangle</button>
+                                <br>
+                                <button id="resettool" type="button" class="btn btn-warning mt-2"
+                                        onclick="reset()">Reset</button>
+                                <br>
+                                <button id="nextbtn" class="btn btn-primary mt-2" type="button"
+                                        onclick="nextimage()">Next</button>
+                                <br>
+                                <button class="btn btn-secondary mt-2" id="pixel_plus" type="button"
+                                        onclick="add_pixel()">+</button>
+                                <button class="btn btn-secondary mt-2" id="pixel_minus" type="button"
+                                        onclick="reduce_pixel()">-</button>
+                                <br>
+                                <!-- <div id="showcoordinate" style="display:none">
+                                        <div>
+                                                <label>Coordinates : (</label>
+                                                <label id="coordinatex" style="color:red">x</label>
+                                                <label>,</label>
+                                                <label id="coordinatey" style="color:red">y</label>
+                                                <label>)</label>
                                         </div>
-                                </td>
-                        </tr>
-                </table>
-        </fieldset>
+                                </div> -->
+                        </div>
+                </div>
+        </div>
+        <!-- <div class="row">
+                <div class="col-*-4">
+
+
+                </div>
+                <div class="col-*-4">
+                       
+
+                </div>
+        </div> -->
+        <!-- </div> -->
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_loader.css') }}">
         <!-- <script src="http://code.jquery.com/jquery-1.8.3.js"></script> -->
-        <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-        <!-- Latest compiled JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src=" {{ url_for('static', filename='script-bootstrap.js') }}"></script>
 
-        <script src=" {{ url_for('static', filename='script.js') }}"></script>
-        {% endblock %}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
+        <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+</body>
+
+</html>
+{% endblock %}
