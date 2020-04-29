@@ -41,3 +41,7 @@ def create_app():
 
 	return app
 
+# def mysqlconnection():
+#     conn = MySQLdb.connect(host="localhost:81",user = "root",password = "root",db = "flask")
+#     c = conn.cursor()
+#     return c, conn
