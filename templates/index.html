@@ -1,32 +1,50 @@
 {% extends "base-bootstrap.html" %}
 
 {% block content %}
-  <h1 class="home-title">
-    Welcome to AI Data Modelling Application.
-  </h1>
-  {% if not current_user.is_authenticated %}
-  <h2 class="home-title">
-    Please Login to continue!
-  </h2>
-{% endif %}
-{% if current_user.is_authenticated %}
-<h2 class="home-title">
-  Hello, {{ name }} !!
-</h2>
-<div class="animate-bottom">
-  <div class="column is-4 is-offset-4" style="top:500px">
-    <h2 class="subtitle">Total Images Loaded :</h2>
-    <h1>
-      <p id="countimage" style="text-align: center;font-size:45px"></p>
-    </h1>
-    {% for imagezz in imagelist %}
+<!DOCTYPE html>
+<html lang="en">
 
-    <li class="idli" style="display:none">{{imagezz}}</li>
-    {% endfor %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <div class="text-center mt-5">
+    <h3>
+      Welcome to AI Data Modelling Application.
+    </h3>
+    {% if not current_user.is_authenticated %}
+    <h3>
+      Please Login to continue!
+    </h3>
+    {% endif %}
+
+    {% if current_user.is_authenticated %}
+    <h3>
+      Hello, <font color="red">{{ name }}</font> !!
+    </h3>
+    <div class="animate-bottom">
+      <div class="mx-auto w-25">
+        <div class="border border-dark shadow-lg p-4 bg-white rounded mt-5">
+          <h4>Total Images Loaded :</h4>
+          <h1>
+            <p id="countimage"></p>
+          </h1>
+          {% for imagezz in imagelist %}
+
+          <li class="idli" style="display:none">{{imagezz}}</li>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  </div>
+{% endif %}
+</body>
 
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+</html>
+
 <script>
   var counter = 0;
   $(document).ready(function () {
@@ -38,5 +56,4 @@
     document.getElementById("countimage").innerHTML = counter;
   });
 </script>
-{% endif %}
 {% endblock %}

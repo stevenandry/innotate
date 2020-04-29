@@ -1,39 +1,88 @@
 {% extends "base-bootstrap.html" %}
 
 {% block content %}
-<div class="animate-bottom">
-    <div class="column is-4 is-offset-4">
-        <h3 class="title">Sign Up</h3>
-        <div class="box">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            <div class="notification is-danger">
-                {{ messages[0] }}. or go to <a href="{{ url_for('auth.login') }}">login page</a>.
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="animate-bottom">
+        <div class="mx-auto w-50">
+            <div class="border border-dark shadow-lg p-4 bg-white rounded mt-5">
+                <h3 class="text-center">Sign Up</h3>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ messages[0] }}. or go to <a href="{{ url_for('auth.login') }}">login page</a>.
+                </div>
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="/signup">
+                    <div class="form-group">
+                        <label for="email">Email Address :</label>
+                        <input class="form-control" type="email" name="email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name :</label>
+                        <input class="form-control" type="text" name="name" placeholder="Name" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password :</label>
+                        <input class="form-control" type="password" name="password" placeholder="Password" id="pwd">
+                    </div>
+                    <div class="text-center"><button class="btn btn-secondary" style="width:100px">Sign up</button>
+                    </div>
+                </form>
             </div>
-            {% endif %}
-            {% endwith %}
-            <form method="POST" action="/signup">
-                <div class="field">
-                    <div class="control">
-                        <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <div class="control">
-                        <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="">
-                    </div>
-                </div>
-
-                <div class="field">
-                    <div class="control">
-                        <input class="input is-large" type="password" name="password" placeholder="Password">
-                    </div>
-                </div>
-
-                <center><button class="button is-block is-info is-large is-fullwidth">Sign Up</button></center>
-            </form>
         </div>
     </div>
-</div>
+</body>
+
+</html>
 {% endblock %}
+<!-- <div class="animate-bottom">
+        <div class="column is-4 is-offset-4">
+            <h3 class="title">Sign Up</h3>
+            <div class="box">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ messages[0] }}. or go to <a href="{{ url_for('auth.login') }}">login page</a>.
+                </div>
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="/signup">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <input class="input is-large" type="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+
+                    <center><button class="button is-block is-info is-large is-fullwidth">Sign Up</button></center>
+                </form>
+            </div>
+        </div>
+    </div> -->

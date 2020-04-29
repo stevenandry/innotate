@@ -1,34 +1,47 @@
 {% extends "base-bootstrap.html" %}
 
 {% block content %}
-<div class="animate-bottom">
-	<div class="column is-4 is-offset-4">
-		<h1 class="title">Please insert canvas size to use : </h1>
-		<div class="box">
-			{% with messages = get_flashed_messages() %}
-			{% if messages %}
-			<div class="notification is-danger">
-				{{ messages[0] }}
-			</div>
-			{% endif %}
-			{% endwith %}
-			<form method="POST" action="/resize">
-				<div class="field">
-					<div class="control">
-						<input class="input is-large" name="canvas-width" type="text" placeholder="Canvas Width">
-					</div>
-				</div>
+<!DOCTYPE html>
+<html lang="en">
 
-				<div class="field">
-					<div class="control">
-						<input class="input is-large" name="canvas-height" type="text" placeholder="Canvas Height">
-					</div>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="animate-bottom">
+		<div class="mx-auto w-50">
+			<div class="border border-dark shadow-lg p-4 bg-white rounded mt-5">
+				<h4 class="text-center">Please insert canvas size to use : </h4>
+				{% with messages = get_flashed_messages() %}
+				{% if messages %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					{{ messages[0] }}
 				</div>
-				<center><button class="button is-block is-info is-large is-fullwidth">Generate Canvas</button></center>
-			</form>
+				{% endif %}
+				{% endwith %}
+				<form method="POST" action="/resize">
+					<div class="form-group">
+						<label for="canvas-width">Canvas Width :</label>
+						<input class="form-control" name="canvas-width" type="text" placeholder="Canvas Width">
+					</div>
+					<div class="form-group">
+						<label for="canvas-height">Canvas Height :</label>
+						<input class="form-control" name="canvas-height" type="text" placeholder="Canvas Height">
+					</div>
+					<div class="text-center"><button class="btn btn-secondary">Generate Canvas</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
-</div>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-<script src=" {{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
 {% endblock %}
