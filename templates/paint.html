@@ -6,11 +6,9 @@
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
 </head>
 
-<body onload="reset()">
-
+<body onload="nextimage()">
         <div class="loader-wrapper">
                 <span class="loader"><span class="loader-inner"></span></span>
         </div>
@@ -22,7 +20,7 @@
         <div hidden id="listimages">
         </div>
 
-        <!-- Modal -->
+        <!-- Modal Custom Alert-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -34,7 +32,7 @@
                                         </button>
                                 </div>
                                 <div class="modal-body" id="modalBody">
-                                        
+
                                 </div>
                                 <div class="modal-footer" id="modalFooter">
                                         <!-- <button type="button" class="btn btn-secondary"
@@ -51,20 +49,34 @@
                 <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
                 <div class="col">
                         <div class="border shadow p-4 bg-white overflow-auto" style="height:570px;width:240px">
-                                <h6>Add Label</h6>
-                                <input id="labelname" class="input-paint" type="text">
-                                <button id="save" class="btn btn-primary mt-2" onclick='addlabel()'>Add</button>
+                                <div class="form-group">
+                                        <h6 for="email">Add Label :</h6>
+                                        <input class="form-control" type="text" placeholder="Label Name" id="labelname">
+                                </div>
+                                <!-- <h6>Add Label</h6>
+                                <input id="labelname" class="input-paint" type="text"> -->
+                                <button id="save" class="btn btn-primary" onclick='addlabel()'>Add</button>
                                 <br>
-                                <br>
-
-                                <div id="labellist">
+                                <div id="labellist" class="mt-2">
                                 </div>
                         </div>
                 </div>
                 <div class="col">
                         <div class="border shadow p-4 bg-white overflow-auto" style="height:570px;width:800px ">
-                                <canvas style="box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.35)" id="paint"
-                                        width={{cnvswidth}} height={{cnvsheight}}></canvas>
+                                <div style="position:relative">
+                                        <canvas style="box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.35)" id="paint"
+                                                width={{cnvswidth}} height={{cnvsheight}}></canvas>
+                                        <svg id="svgovercanvas" style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:crosshair" width={{cnvswidth}} height={{cnvsheight}}>
+                                                <!-- <circle id="testcircle" cx="50" cy="50" r="40" fill="yellow" onclick="alerttest()" onmouseover="dummyjs()" onmouseout="hidedummyjs()"/>
+                                                <circle style="display:none" id="testcircle1" cx="50" cy="50" r="40" fill="none" stroke="green" stroke-width="4" />
+                                                <circle style="display:none" id="deltestcircle1" cx="90" cy="30" r="20" fill="red" onclick="deldummyjs()"/>  -->
+                                        </svg>
+                                        <div id="overcanvasrect"></div>
+                                        <div id="overcanvas">
+                                                <!-- <div style="position:absolute;width:100px;height:100px;top:100px;left:300px;border-radius:50%;background-color:#555">   </div> -->
+                                                <!-- <button style="position:absolute;top:50px;right:350px">test</button> -->
+                                        </div>
+                                </div>
                                 <br>
                                 <div id="currentlabel2" style="display:none">
                                         <h6>Currently Labeling <font color="red" id="currentlabel"></font>
@@ -110,10 +122,10 @@
                         </div>
                         <div class="border shadow p-4 mb-2 bg-white text-center">
                                 <button id="penciltool" type="button" class="btn btn-success mt-2 w-100"
-                                        onclick="pencil()">Dot</button>
+                                        onclick="dotelement()">Dot</button>
                                 <br>
                                 <button id="rectangletool" type="button" class="btn btn-success mt-2 w-100"
-                                        onclick="rectangle()">Rectangle</button>
+                                        onclick="rectelement()">Rectangle</button>
                                 <br>
                                 <button id="resettool" type="button" class="btn btn-warning mt-2 w-100"
                                         onclick="reset()">Reset</button>
