@@ -7,53 +7,199 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <!-- <link rel="stylesheet" href="static/styles.css"> -->
 </head>
 
 <body>
-  <div class="text-center mt-5">
-    <h3>
-      Welcome to AI Data Modelling Application.
-    </h3>
-    {% if not current_user.is_authenticated %}
-    <h3>
-      Please Login to continue!
-    </h3>
-    {% endif %}
+  <div class="container">
+    <div class="text-center mt-3">
+      {% if not current_user.is_authenticated %}
+      <h3>
+        Welcome to AI Data Modelling Application.
+      </h3>
 
-    {% if current_user.is_authenticated %}
-    <h3>
-      Hello, <font color="red">{{ name }}</font> !!
-    </h3>
-    <div class="animate-bottom">
-      <div class="mx-auto w-25">
-        <div class="border border-dark shadow-lg p-4 bg-white rounded mt-5">
-          <h4>Total Images Loaded :</h4>
-          <h1>
-            <p id="countimage"></p>
-          </h1>
-          {% for imagezz in imagelist %}
+      <h3>
+        Please Login to continue!
+      </h3>
+      {% endif %}
 
-          <li class="idli" style="display:none">{{imagezz}}</li>
-          {% endfor %}
+      {% if current_user.is_authenticated %}
+      <h3 class="display-4" style="font-size: 35px;">
+        Hello, <font id="username" class="text-primary">{{ name }}</font> !!
+      </h3>
+      <h3 class="display-4" style="font-size: 30px;">
+        Current Statistics :
+      </h3>
+    </div>
+
+    <div class="row">
+      <div class="col">
+          <div class="animate-bottom hvr-grow">
+            <!-- <div class="mx-auto w-25"> -->
+            <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
+              data-toggle="popover" data-placement="top" title="Images Loaded"
+              data-content="Total images that are loaded in the application.">
+              <h4 class="display-4" style="font-size: 25px;">Images Loaded</h4>
+              <h1>
+                <p id="countimage"></p>
+              </h1>
+              <!-- <button >test</button> -->
+              {% for imagezz in imagelist %}
+
+              <li class="totalimages" style="display:none">{{imagezz}}</li>
+              {% endfor %}
+            </div>
+
+            <!-- </div> -->
+          </div>
+      </div>
+      <div class="col">
+        <div class="animate-bottom hvr-grow">
+          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
+            data-toggle="popover" data-placement="top" title="Images Annotated"
+            data-content="How many images that have been annotated.">
+            <h4 class="display-4" style="font-size: 25px;">Images Annotated</h4>
+            <h1>
+              <p id="countannotatedimage"></p>
+            </h1>
+            {% for images in image_name %}
+
+            <li class="annotatedimage" style="display:none">{{images}}</li>
+            {% endfor %}
+          </div>
         </div>
       </div>
+      <div class="col">
+        <div class="animate-bottom hvr-grow">
+          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
+            data-toggle="popover" data-placement="top" title="Images Ready to Annotate"
+            data-content="Total images that are ready to annotate.">
+            <h4 class="display-4" style="font-size: 25px;">Images Ready to Annotate</h4>
+            <h1>
+              <p id="readytoannotate"></p>
+            </h1>
+          </div>
+        </div>
+      </div>
+
     </div>
+    {% for x in annotator %}
+    <li class="annotatorname" style="display:none">{{x}}</li>
+    {% endfor %}
+
+    <!-- <h4 class="text-center mt-3">Your Statistics</h4> -->
+    <div class="row">
+
+      <div class="col-4 ">
+        <div class="animate-bottom hvr-grow">
+          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
+            data-toggle="popover" data-placement="top" title="Your Annotations"
+            data-content="Total annotations that You did within the application.">
+            <h4 class="display-4" style="font-size: 25px;">Your Annotations</h4>
+            <h1>
+              <p id="yourannotations"></p>
+            </h1>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-4 ">
+        <div class="animate-bottom hvr-grow">
+          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
+            data-toggle="popover" data-placement="top" title="Your Annotated Images"
+            data-content="How many images that you have annotated.">
+            <h4 class="display-4" style="font-size: 25px;">Your Annotated Images</h4>
+            <h1>
+              <p id="yourimagesannotated"></p>
+            </h1>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    {% endif %}
   </div>
-  </div>
-{% endif %}
 </body>
 
 </html>
 
 <script>
   var counter = 0;
+  var annotatedcounter = 0;
+  var readytoannotate = 0;
+  var yourannotationcounter = 0;
+  var totalimages = [];
+  var totalforcomparison = [];
+  var annotatedimages = [];
+  var readytoannotateimages = [];
+  var annotatorname = [];
+  var yourimagesannotated = [];
+  var username = document.getElementById("username").textContent;
+
   $(document).ready(function () {
-    $(".idli").each(function (index, element) {
+    $(".totalimages").each(function (index, element) {
       //alert(index + " : " + $(element).text());
       //testis += $(element).text();
+      totalimages.push($(element).text());
+      //totalforcomparison.push($(element).text());
       ++counter;
     });
+    $(".annotatedimage").each(function (index, element) {
+
+      annotatedimages.push($(element).text());
+      // ++annotatedcounter;
+    });
+    $(".annotatorname").each(function (index, element) {
+
+      annotatorname.push($(element).text());
+      // ++annotatedcounter;
+    });
+    $('[data-toggle="popover"]').popover();
+
+    let annotatedimagesunique = [...new Set(annotatedimages)];
+    for (var i = 0; i < annotatedimagesunique.length; i++) {
+      for (var y = 0; y < totalimages.length; y++) {
+        if (annotatedimagesunique[i] == totalimages[y]) {
+          totalimages.splice(y, 1);
+        }
+      }
+
+    }
+
+    // for (var i = 0; i < annotatedimages.length; i++) {
+    //   for (var y = 0; y < totalforcomparison.length; y++) {
+    //     if (annotatedimages[i] == totalforcomparison[y]) {
+    //       var index = totalforcomparison.indexOf(annotatedimages[i]);
+    //       if (index > -1) {
+    //         //splice for delete image names that are annotated, so that un touched images are left in the list
+    //         totalforcomparison.splice(index, 1);
+    //         ++annotatedcounter;
+    //         //Annotated counter for counting annotated images
+    //       }
+    //     }
+    //   }
+    // }
+
+
+    for (var i = 0; i < annotatorname.length; i++) {
+      if (annotatorname[i] == username) {
+        ++yourannotationcounter;
+        yourimagesannotated.push(annotatedimages[i]);
+      }
+    }
+
+    let yourimagesunique = [...new Set(yourimagesannotated)];
+
     document.getElementById("countimage").innerHTML = counter;
+    document.getElementById("countannotatedimage").innerHTML = annotatedimagesunique.length;
+    document.getElementById("readytoannotate").innerHTML = totalimages.length;
+    document.getElementById("yourannotations").innerHTML = yourannotationcounter;
+    document.getElementById("yourimagesannotated").innerHTML = yourimagesunique.length;
   });
+
 </script>
 {% endblock %}
