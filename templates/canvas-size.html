@@ -8,12 +8,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	<script src=" {{ url_for('static', filename='script-bootstrap.js') }}"></script>
 </head>
 
 <body>
 	<div class="animate-bottom">
 		<div class="mx-auto w-50">
-			<div class="border border-dark shadow-lg p-4 bg-white rounded mt-5">
+			<div class="border shadow-lg p-4 bg-white rounded mt-5">
 				<h4 class="text-center">Please insert canvas size to use : </h4>
 				{% with messages = get_flashed_messages() %}
 				{% if messages %}
@@ -25,18 +26,20 @@
 				</div>
 				{% endif %}
 				{% endwith %}
-				<form method="POST" action="/resize">
+				<form method="POST" action="/resizeconfig">
 					<div class="form-group">
 						<label for="canvas-width">Canvas Width :</label>
-						<input class="form-control" name="canvas-width" type="text" placeholder="Canvas Width">
+						<input class="form-control" name="canvas-width" id="canvas-width" type="text" placeholder="Canvas Width">
 					</div>
 					<div class="form-group">
 						<label for="canvas-height">Canvas Height :</label>
-						<input class="form-control" name="canvas-height" type="text" placeholder="Canvas Height">
+						<input class="form-control" name="canvas-height" id="canvas-height" type="text" placeholder="Canvas Height">
 					</div>
-					<div class="text-center"><button class="btn btn-secondary">Generate Canvas</button>
-					</div>
+					<div class="text-center"><button class="btn btn-primary">Generate Canvas</button></div>
+					<div class="text-center"><button class="btn btn-sm btn-secondary mt-2" onclick="postdefaultcanvas()">Use Default Settings</button></div>
 				</form>
+					
+				<label class="mt-4" style="font-size: 15px;font-style: italic;">*These settings will be saved for future use.</label>
 			</div>
 		</div>
 	</div>
