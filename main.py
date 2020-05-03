@@ -25,10 +25,31 @@ def index():
 	return render_template('index.html')
 
 @main.route('/home')
+@login_required
 def index_loggedin():
 	images = os.listdir('static/images')
-	imagelist = ['images/' + file for file in images]
-	return render_template('index.html', name=current_user.name, imagelist=imagelist)
+	imagelist = [file for file in images]
+	conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+	c = conn.cursor()
+	c.execute('SELECT * FROM coordinates')
+	dbdata = c.fetchall()
+
+	image_list = []
+	annotatorlist = []
+	for col in dbdata:
+		image_name = col[0]
+		annotator = col[8]
+		image_list.append(image_name)
+		annotatorlist.append(annotator)
+		# print(image_list + annotatorlist)
+		# label = col[1]
+		# startx = col[2]
+		# starty = col[3]
+		# endx = col[4]
+		# endy = col[5]
+		# tool = col[6]
+		# color = col[7]
+	return render_template('index.html', name=current_user.name, imagelist=imagelist, image_name=image_list, annotator=annotatorlist)
 
 @main.route('/imagez')
 def imagez():
@@ -37,21 +58,130 @@ def imagez():
 	# images = os.listdir(os.path.join(main.static_url_path, "images"))
 	return render_template('loadimage.html', imagelist=imagelist)#,images=images)
 
+@main.route('/deletelabel', methods=['GET','POST'])
+def delete_label() :
+	if request.method == 'POST':
+		colorvalue = request.form['delete_labelcolor']
+		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		c = conn.cursor()
+		c.execute('DELETE FROM label WHERE colorvalue = %s ', [colorvalue])
+		conn.commit()
+		conn.close()
+		return 'success~'
+
+@main.route('/deletelabelall', methods=['GET','POST'])
+def delete_label_all() :
+	if request.method == 'POST':
+		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		c = conn.cursor()
+		c.execute('TRUNCATE TABLE label')
+		conn.commit()
+		conn.close()
+		return 'success~'
+
+@main.route('/savelabel', methods=['GET','POST'])
+def save_label():
+	if request.method == 'POST':
+		labelname = request.form['save_labelname']
+		colorvalue = request.form['save_colorvalue']
+		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		c = conn.cursor()
+		c.execute("CREATE TABLE IF NOT EXISTS label(labelname varchar(10),colorvalue varchar(10))")
+		c.execute('INSERT INTO label(labelname, colorvalue) VALUES (%s,%s)', (labelname,colorvalue))
+		conn.commit()
+		conn.close()
+		return 'success~'
+
+@main.route('/resizeconfig', methods=['GET','POST'])
+@login_required
+def resize_config():
+	if request.method == 'GET':
+		return render_template('canvas-size.html')
+
+	if request.method == 'POST':
+		resizewidth=request.form.get('canvas-width')
+		resizeheight=request.form.get('canvas-height')
+		if (resizewidth == '' or resizeheight == '' ) :
+			flash("Please fill all the forms!")
+			return redirect(url_for('main.resize_config'))
+
+		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		c = conn.cursor()
+		# c.execute("CREATE TABLE IF NOT EXISTS canvas(canvaswidth varchar,canvasheight varchar)")
+		c.execute('TRUNCATE TABLE canvas')
+		c.execute('INSERT INTO canvas(canvaswidth, canvasheight) VALUES (%s,%s)', (resizewidth,resizeheight))
+		conn.commit()
+		conn.close()
+		# return render_template('paint.html', width=resizewidth, height=resizeheight)
+		return redirect(url_for('main.profile', width = resizewidth, height = resizeheight))
+
 @main.route('/resize')
 @login_required
 def resize():
-	return render_template('canvas-size.html')
+	conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+	c = conn.cursor()
+	c.execute("SELECT * FROM canvas")
+	# c.execute("SELECT canvaswidth FROM canvas")
+	# c.execute("SELECT canvasheight FROM canvas")
+	dbdata = c.fetchall()
+	# dbcwidth = c.fetchall()
+	# dbcheight = c.fetchall()
+	if dbdata:
+		for col in dbdata:
+			resizewidth = col[0]
+			resizeheight = col[1]
+		return redirect(url_for('main.profile', width = resizewidth, height = resizeheight))
+		# return render_template('paint.html', width = cnvswidth, height = cnvsheight)
 
-@main.route('/resize', methods=['POST'])
-@login_required
-def resize_post():
-	resizewidth=request.form.get('canvas-width')
-	resizeheight=request.form.get('canvas-height')
-	if (resizewidth == '' or resizeheight == '' ) :
-		flash("Please fill all the forms!")
-		return redirect(url_for('main.resize'))
-	# return render_template('paint.html', width=resizewidth, height=resizeheight)
-	return redirect(url_for('main.profile', width = resizewidth, height = resizeheight))
+	else :
+		# return render_template('canvas-size.html')
+		return redirect(url_for('main.resize_config'))
+
+
+class SVGList:
+	def __init__(self,image_name,label,startx,starty,endx,endy,tool,color,index):
+		self.image_name = image_name
+		self.label = label
+		self.startx = startx
+		self.starty = starty
+		self.endx = endx
+		self.endy = endy
+		self.tool = tool
+		self.color = color
+		self.index = index
+		# self.iterate = 0
+
+	@classmethod
+	def from_json(cls, json_string):
+		json_dict = json.loads(json_string)
+		return cls(**json_dict)
+
+	def __repr__(self):
+		return f'{self.image_name},{self.label},{self.startx},{self.starty},{self.endx},{self.endy},{self.tool},{self.color}'
+
+	# def __iter__(self):
+	# 	return self
+
+	# def __next__(self):
+	# 	# if self.iterate > self.high:
+	# 	# 	raise StopIteration
+	# 	# else:
+	# 	# 	self.current += 1
+	# 	# 	return self.current - 1
+	# 	self.iterate+1
+	# 	return self
+
+
+
+# class SVGIterator:
+# 	def __init__(self, svg):
+# 		self._svg = svg
+
+# 		self._index = 0
+
+# 	def __next__(self):
+
+
 
 @main.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -59,7 +189,12 @@ def profile():
 	if request.method == 'GET':
 		images = os.listdir('static/images')
 		imagelist = [file for file in images]
-		return render_template('paint.html', cnvswidth=request.args.get('width'), cnvsheight=request.args.get('height'), imagelist=imagelist )
+		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		c = conn.cursor()
+		c.execute("SELECT * FROM label")
+		labeldata = c.fetchall()
+
+		return render_template('paint.html', name=current_user.name, cnvswidth=request.args.get('width'), cnvsheight=request.args.get('height'), imagelist=imagelist, labeldata=labeldata )
 	
 	if request.method == 'POST':
 		imagename = request.form['save_imagename']
@@ -70,7 +205,41 @@ def profile():
 		endy = request.form['save_endy']
 		tool = request.form['save_tool']
 		color = request.form['save_color']
+		annotator = request.form['save_annotator']
+		# jsondot = request.form['dotsvgdata']
+		# svgdot = SVGList.from_json(jsondot)
 		
+		# data_list = []
+		
+		# svgdot = json.loads(jsondot)
+
+		# print(json.dumps(svgdot, indent=4))
+		# loaded_json = json.loads(jsondot)
+		# for x in loaded_json:
+		# 	print("%s: %s" % (x, loaded_json))
+		# user = SVGList.from_json(jsondot)
+		# print(user.label)
+		# print(user.startx)
+
+		# for u in svgdot:
+		# 	data_list.append(u)
+		
+		# print(svgdot[0])
+		# print(data_list)
+		# data_tuple = tuple(data_list)
+		# print(data_tuple)
+		# for u in svgdot:
+		# 	data_list.append(SVGList(**u))
+		
+		# for data in data_list:
+		# 	print(data_list[data])
+		
+		# for data in data_list:
+		# 	test = data[0]
+		# tuplee = (data_list[0])
+		# print(tuplee)
+		
+		# return Response("test", status=200, mimetype= 'text/html')
 		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
 		c = conn.cursor()
 
@@ -82,12 +251,16 @@ def profile():
 
 		# c.execute("SELECT * FROM flask")
 
-		dbdata = (imagename,label,startx,starty,endx,endy,tool,color)
+		dbdata = (imagename,label,startx,starty,endx,endy,tool,color,annotator)
+		# query = "INSERT INTO Coordinates(Image, Label, StartX, StartY, EndX, EndY, Tool, Color) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
 		
-		c.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text)")
-		# c.execute('INSERT INTO Coordinates VALUES(?, ?, ?, ?, ?, ?, ?, ?)', dbdata) > pake ini error mysql
-		c.execute('INSERT INTO Coordinates(Image, Label, StartX, StartY, EndX, EndY, Tool, Color) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)', dbdata)
-
+		c.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text, Annotator text)")
+		# c.execute("CREATE TABLE IF NOT EXISTS Coordinates_dummy(Image text)")
+		# c.execute('INSERT INTO Coordinates_dummy(Image) VALUES (%s)', data_list)
+		
+		# # c.execute('INSERT INTO Coordinates VALUES(?, ?, ?, ?, ?, ?, ?, ?)', dbdata) > pake ini error mysql
+		c.execute('INSERT INTO Coordinates(Image, Label, StartX, StartY, EndX, EndY, Tool, Color, Annotator) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)', dbdata)
+		# c.executemany(query, data_list)
 		conn.commit()
 		conn.close()
 		return 'success~'
@@ -112,7 +285,7 @@ def profile():
 	# 	con.commit()
 	# 	con.close()
 		
-	
+
 # POST Method using SQLITE DB with 3 data values
 	# if request.method == 'POST':
 	# 	filename=request.form['save_fname']
@@ -194,3 +367,8 @@ def profile():
 	#     conn.commit()
 	#     conn.close()
 	#     return redirect(url_for('save'))
+
+# @main.route('/resize')
+	# @login_required
+	# def resize():
+	# 	return render_template('canvas-size.html')
