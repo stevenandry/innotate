@@ -12,6 +12,7 @@
         <div class="loader-wrapper">
                 <span class="loader"><span class="loader-inner"></span></span>
         </div>
+        <label class="username" id="username" style="display:none">{{name}}</label>
         <ul style="display:none">
                 {% for imagezz in imagelist %}
                 <li class="imageclass">{{imagezz}}</li>
@@ -48,7 +49,7 @@
         <div id="mySidepanel" class="row">
                 <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
                 <div class="col">
-                        <div class="border shadow p-4 bg-white overflow-auto" style="height:570px;width:240px">
+                        <div class="border shadow p-4 bg-white overflow-auto" style="height:400px;width:240px">
                                 <div class="form-group">
                                         <h6 for="email">Add Label :</h6>
                                         <input class="form-control" type="text" placeholder="Label Name" id="labelname">
@@ -56,33 +57,67 @@
                                 <!-- <h6>Add Label</h6>
                                 <input id="labelname" class="input-paint" type="text"> -->
                                 <button id="save" class="btn btn-primary" onclick='addlabel()'>Add</button>
+                                <button id="deleteall" class="btn btn-danger" onclick='deletelabelall()'>Delete All</button>
                                 <br>
                                 <div id="labellist" class="mt-2">
+                                        <table cellpadding='5' cellspacing='5'>
+                                                <th>Label Name</th>
+                                                <th>Color</th>
+                                                {% for item in labeldata %}
+                                                <tr>
+                                                        <td class="labelclass">{{item[0]}}</td>
+                                                        <td class="labelcolor" style="display:none">{{item[1]}}</td>
+                                                        <td><button class="btn btn-sm" style='background-color:{{item[1]}}; height: 20px; width: 20px' onclick="changecolor('{{item[0]}}','{{item[1]}}')"></button></td>
+                                                        <td><button class='btn btn-danger btn-sm' id='deletelabelbtn' onclick='deletelabel("{{item[0]}}","{{item[1]}}")'style='background-color:red'>Del</td>
+                                                </tr>
+                                                {% endfor %}
+                                        </table>
+                                </div>
+                        </div>
+                        <div class="border shadow p-4 mt-2 bg-white overflow-auto" style="width:240px;height:163px"> 
+                                <h6>Last Annotation</h6>
+                                <div id="annotationdata">
+                                
                                 </div>
                         </div>
                 </div>
                 <div class="col">
-                        <div class="border shadow p-4 bg-white overflow-auto" style="height:570px;width:800px ">
-                                <div style="position:relative">
-                                        <canvas style="box-shadow: 1px 1px 20px rgba(0, 0, 0, 0.35)" id="paint"
-                                                width={{cnvswidth}} height={{cnvsheight}}></canvas>
-                                        <svg id="svgovercanvas" style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:crosshair" width={{cnvswidth}} height={{cnvsheight}}>
+                        <div class="border shadow bg-white" style="width:801px;height:570px">
+                                <div style="position:relative;width:800px;height:506px" class="overflow-auto">
+                                        <canvas id="paint" width={{cnvswidth}} height={{cnvsheight}}></canvas>
+                                        <svg id="svgovercanvas" 
+                                                style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:crosshair"
+                                                width={{cnvswidth}} height={{cnvsheight}}>
+                                                <!-- <img id="deletebtnimage" src="static/pngguru.com.png" width=100px height=100px style="position:absolute;top:50px; left:50px;display:none" > -->
                                                 <!-- <circle id="testcircle" cx="50" cy="50" r="40" fill="yellow" onclick="alerttest()" onmouseover="dummyjs()" onmouseout="hidedummyjs()"/>
                                                 <circle style="display:none" id="testcircle1" cx="50" cy="50" r="40" fill="none" stroke="green" stroke-width="4" />
                                                 <circle style="display:none" id="deltestcircle1" cx="90" cy="30" r="20" fill="red" onclick="deldummyjs()"/>  -->
                                         </svg>
+                                       
                                         <div id="overcanvasrect"></div>
+
                                         <div id="overcanvas">
                                                 <!-- <div style="position:absolute;width:100px;height:100px;top:100px;left:300px;border-radius:50%;background-color:#555">   </div> -->
                                                 <!-- <button style="position:absolute;top:50px;right:350px">test</button> -->
                                         </div>
                                 </div>
-                                <br>
-                                <div id="currentlabel2" style="display:none">
-                                        <h6>Currently Labeling <font color="red" id="currentlabel"></font>
-                                        </h6>
+                                <div class="row mt-2 ">
+                                        <div class="col ml-3">
+                                                <div id="currentlabel2" style="display:none">
+                                                        <h6 style="display:inline">Currently Labeling <font color="red" id="currentlabel"></font>
+                                                        </h6>
+                                                        
+                                                </div>
+                                        </div>
+                                        <div class="col-4 text-right mr-3">
+                                                <div style="display:inline;">
+                                                        <button onclick="location.href = 'resizeconfig';" class="btn btn-secondary" type="button">Resize</button>
+                                                        <button id="infobtn" class="btn btn-primary popover-test" data-trigger="focus" data-toggle="popover" data-placement="top" title="Image Details" data-content="">
+                                                                Info
+                                                        </button>     
+                                                </div>
+                                        </div>
                                 </div>
-
                                 <!-- <div id="colortoolset">
                                 </div> -->
                         </div>
@@ -97,7 +132,7 @@
                                         </font>
                                 </h6>
                                 <h6 class="mb-3">Line Width
-                                        <font color="red" id="currentlw"> 3
+                                        <font color="red" id="currentlw"> 4
                                         </font>
                                 </h6>
                                 <h6 class="mb-3">Annotations
@@ -131,8 +166,9 @@
                                         onclick="reset()">Reset</button>
                                 <br>
                                 <button id="nextbtn" class="btn btn-primary mt-2 w-100" type="button"
-                                        onclick="nextimage()">Next</button>
+                                        onclick="nextimagevalidation()">Next</button>
                                 <br>
+                                
                                 <button class="btn btn-secondary mt-2 " id="pixel_plus" type="button"
                                         onclick="add_pixel()">+</button>
                                 <button class="btn btn-secondary mt-2 " id="pixel_minus" type="button"
