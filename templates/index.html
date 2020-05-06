@@ -16,11 +16,11 @@
   <div class="container">
     <div class="text-center mt-3">
       {% if not current_user.is_authenticated %}
-      <h3>
+      <h3 class="display-4" style="font-size: 35px;">
         Welcome to AI Data Modelling Application.
       </h3>
 
-      <h3>
+      <h3 class="display-4" style="font-size: 35px;">
         Please Login to continue!
       </h3>
       {% endif %}
@@ -36,30 +36,28 @@
 
     <div class="row">
       <div class="col">
-          <div class="animate-bottom hvr-grow">
-            <!-- <div class="mx-auto w-25"> -->
-            <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
-              data-toggle="popover" data-placement="top" title="Images Loaded"
-              data-content="Total images that are loaded in the application.">
-              <h4 class="display-4" style="font-size: 25px;">Images Loaded</h4>
-              <h1>
-                <p id="countimage"></p>
-              </h1>
-              <!-- <button >test</button> -->
-              {% for imagezz in imagelist %}
+        <div class="animate-bottom hvr-grow">
+          <!-- <div class="mx-auto w-25"> -->
+          <div class="border shadow p-4 bg-light rounded mt-3 text-center " data-trigger="hover" data-toggle="popover"
+            data-placement="top" title="Images Loaded" data-content="Total images that are loaded in the application.">
+            <h4 class="display-4" style="font-size: 25px;">Images Loaded</h4>
+            <h1>
+              <p id="countimage"></p>
+            </h1>
+            <!-- <button >test</button> -->
+            {% for imagezz in imagelist %}
 
-              <li class="totalimages" style="display:none">{{imagezz}}</li>
-              {% endfor %}
-            </div>
-
-            <!-- </div> -->
+            <li class="totalimages" style="display:none">{{imagezz}}</li>
+            {% endfor %}
           </div>
+
+          <!-- </div> -->
+        </div>
       </div>
       <div class="col">
         <div class="animate-bottom hvr-grow">
-          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
-            data-toggle="popover" data-placement="top" title="Images Annotated"
-            data-content="How many images that have been annotated.">
+          <div class="border shadow p-4 bg-light rounded mt-3 text-center " data-trigger="hover" data-toggle="popover"
+            data-placement="top" title="Images Annotated" data-content="How many images that have been annotated.">
             <h4 class="display-4" style="font-size: 25px;">Images Annotated</h4>
             <h1>
               <p id="countannotatedimage"></p>
@@ -73,8 +71,8 @@
       </div>
       <div class="col">
         <div class="animate-bottom hvr-grow">
-          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
-            data-toggle="popover" data-placement="top" title="Images Ready to Annotate"
+          <div class="border shadow p-4 bg-light rounded mt-3 text-center " data-trigger="hover" data-toggle="popover"
+            data-placement="top" title="Images Ready to Annotate"
             data-content="Total images that are ready to annotate.">
             <h4 class="display-4" style="font-size: 25px;">Images Ready to Annotate</h4>
             <h1>
@@ -92,10 +90,10 @@
     <!-- <h4 class="text-center mt-3">Your Statistics</h4> -->
     <div class="row">
 
-      <div class="col-4 ">
+      <div class="col ">
         <div class="animate-bottom hvr-grow">
-          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
-            data-toggle="popover" data-placement="top" title="Your Annotations"
+          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover" data-toggle="popover"
+            data-placement="top" title="Your Annotations"
             data-content="Total annotations that You did within the application.">
             <h4 class="display-4" style="font-size: 25px;">Your Annotations</h4>
             <h1>
@@ -106,14 +104,25 @@
 
       </div>
 
-      <div class="col-4 ">
+      <div class="col ">
         <div class="animate-bottom hvr-grow">
-          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover"
-            data-toggle="popover" data-placement="top" title="Your Annotated Images"
-            data-content="How many images that you have annotated.">
+          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover" data-toggle="popover"
+            data-placement="top" title="Your Annotated Images" data-content="How many images that you have annotated.">
             <h4 class="display-4" style="font-size: 25px;">Your Annotated Images</h4>
             <h1>
               <p id="yourimagesannotated"></p>
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="col ">
+        <div class="animate-bottom hvr-grow">
+          <div class="border shadow p-4 bg-light rounded mt-5 text-center " data-trigger="hover" data-toggle="popover"
+            data-placement="top" title="Your Images Left" data-content="Your images left to annotate">
+            <h4 class="display-4" style="font-size: 25px;">Your Images Left</h4>
+            <h1>
+              <p id="yourimagesleft"></p>
             </h1>
           </div>
         </div>
@@ -141,6 +150,7 @@
   var username = document.getElementById("username").textContent;
 
   $(document).ready(function () {
+    //startTime();
     $(".totalimages").each(function (index, element) {
       //alert(index + " : " + $(element).text());
       //testis += $(element).text();
@@ -199,6 +209,9 @@
     document.getElementById("readytoannotate").innerHTML = totalimages.length;
     document.getElementById("yourannotations").innerHTML = yourannotationcounter;
     document.getElementById("yourimagesannotated").innerHTML = yourimagesunique.length;
+    document.getElementById("yourimagesleft").innerHTML = counter - yourimagesunique.length;
+
+   
   });
 
 </script>
