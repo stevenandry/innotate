@@ -15,9 +15,9 @@
 </head>
 
 <body>
-	<nav class="navbar-dark navbar-expand-sm bg-primary">
+	<nav class="navbar navbar-dark navbar-expand-sm bg-primary">
 		<!-- Links -->
-		<ul class="navbar-nav">
+		<ul class="navbar-nav mr-auto">
 			{% if not current_user.is_authenticated %}
 			<li class="nav-item">
 				<a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
@@ -44,7 +44,12 @@
 				<a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
 			</li>
 			{% endif %}
+			
 		</ul>
+		<div class="navbar-text"></div>
+			<span class="text-light mr-1">Server Time </span>
+  			<div class="text-light" id="servertime"> </div>   
+		</div>
 	</nav>
 	<div class="container-fluid pt-2">
 	{% block content %}
@@ -53,3 +58,25 @@
 </body>
 
 </html>
+
+<script>
+$(document).ready(function () {
+	startTime();
+});
+
+function startTime() {
+      var today = new Date();
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      document.getElementById('servertime').innerHTML = h + ":" + m + ":" + s;
+      var t = setTimeout(startTime, 500);
+}
+
+function checkTime(i) {
+    if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+    return i;
+}
+</script>
