@@ -1,0 +1,130 @@
+{% extends "base-bootstrap.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- <a href="{{ url_for('static', filename=imagezz) }}">
+      <p style="text-align: center;">{{imagezz}}</p>
+    </a> >>utk klik langsung buka image dr folder static-->
+	<label style="display:none" id="username">{{name}}</label>
+	<ul style="display:none">
+		{% for images in imagelist %}
+		<li class="imageclass">{{images}}</li>
+		{% endfor %}
+		{% for imagename in imagenamelist %}
+		<li class="imagenameclass">{{imagename}}</li>
+		{% endfor %}
+		{% for imagelabel in imagelabellist %}
+		<li class="imagelabelclass">{{imagelabel}}</li>
+		{% endfor %}
+		{% for startx in startxlist %}
+		<li class="startxclass">{{startx}}</li>
+		{% endfor %}
+		{% for starty in startylist %}
+		<li class="startyclass">{{starty}}</li>
+		{% endfor %}
+		{% for endx in endxlist %}
+		<li class="endxclass">{{endx}}</li>
+		{% endfor %}
+		{% for endy in endylist %}
+		<li class="endyclass">{{endy}}</li>
+		{% endfor %}
+		{% for tool in toollist %}
+		<li class="toolclass">{{tool}}</li>
+		{% endfor %}
+		{% for color in colorlist %}
+		<li class="colorclass">{{color}}</li>
+		{% endfor %}
+		{% for annotator in annotatorlist %}
+		<li class="annotatorclass">{{annotator}}</li>
+		{% endfor %}
+		{% for annotateindex in annotateindexlist %}
+		<li class="annotateindexclass">{{annotateindex}}</li>
+		{% endfor %}
+		{% for annotationid in annotationidlist %}
+		<li class="annotationidclass">{{annotationid}}</li>
+		{% endfor %}
+	</ul>
+	<div hidden id="listimages">
+	</div>
+</head>
+
+<body onload="loadyourresult()">
+
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a href="#yourresult" class="nav-link active" data-toggle="tab">Your Result</a>
+		</li>
+		<li class="nav-item">
+			<a href="#otherresult" class="nav-link" data-toggle="tab">Other Result</a>
+		</li>
+	</ul>
+	<img hidden id="images10.jpg" src="static/images/images10.jpg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
+	<div class="tab-content">
+		<div class="tab-pane fade show active container-fluid" id="yourresult">
+			<h4 class="mt-2 mb-3">Your Results</h4>
+			<div id="yourresultlist">
+			<!-- <img src="static/images/images10.jpg" style="border-style: solid;border-width: 5px;" class="mb-3 mr-3 hvr-border-fade" width=300 height=300> -->
+		<!-- <div class="row">
+			<div class="col-1">
+			<div style="position:relative">
+				<img src="static/images/images10.jpg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
+				<svg class="hvr-fade" id="svgovercanvas" style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:pointer"
+                width=300 height=300> 
+					<rect x="0" y="0" width="50" height="50" fill="red" stroke="red" stroke-width="4"/>'
+				</svg>
+			</div>
+			</div>
+			<div class="col-2">
+			<div style="position:relative">
+				<img src="static/images/images10.jpg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
+				<svg class="hvr-fade" id="svgovercanvas" style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:pointer"
+                width=300 height=300> 
+					<rect x="0" y="0" width="50" height="50" fill="red" stroke="red" stroke-width="4"/>'
+				</svg>
+			</div>
+			</div>
+		</div> -->
+				<!-- <svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">
+					<image xlink:href="static/images/images1.jpeg" width="300" height="300" x="0" y="0" />
+				</svg>
+				<svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">
+					<image xlink:href="static/images/images1.jpeg" width="300" height="300" x="0" y="0" />
+				</svg>
+				<svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">
+					<image xlink:href="static/images/images1.jpeg" width="300" height="300" x="0" y="0" />
+				</svg>
+				<svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">
+					<image xlink:href="static/images/images1.jpeg" width="300" height="300" x="0" y="0" />
+				</svg> -->
+				<!-- <img src="static/images/images (2).jpeg" onclick="alerttest()" class="mb-3 mr-3 hvr-grow" width=300 height=300>
+			
+			<img src="static/images/images (2).jpeg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
+			<img src="static/images/images (2).jpeg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
+			<img src="static/images/images (2).jpeg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
+			<img src="static/images/images (2).jpeg" class="mb-3 mr-3 hvr-grow" width=300 height=300> -->
+			</div>
+		</div>
+		<div class="tab-pane fade" id="otherresult">
+			<h4 class="mt-2">Other Results</h4>
+
+		</div>
+	</div>
+	<!-- <script src=" {{ url_for('static', filename='ramda.js') }}"></script> -->
+
+	<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+	<script src=" {{ url_for('static', filename='script-result.js') }}"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
+
+{% endblock %}

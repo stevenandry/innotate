@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body onload="nextimage()">
+<body onload="currentimage()">
         <div class="loader-wrapper">
                 <span class="loader"><span class="loader-inner"></span></span>
         </div>
@@ -17,7 +17,39 @@
                 {% for imagezz in imagelist %}
                 <li class="imageclass">{{imagezz}}</li>
                 {% endfor %}
+                {% for imagename in imagenamelist %}
+                <li class="imagenameclass">{{imagename}}</li>
+                {% endfor %}
+                {% for imagelabel in imagelabellist %}
+                <li class="imagelabelclass">{{imagelabel}}</li>
+                {% endfor %}
+                {% for startx in startxlist %}
+                <li class="startxclass">{{startx}}</li>
+                {% endfor %}
+                {% for starty in startylist %}
+                <li class="startyclass">{{starty}}</li>
+                {% endfor %}
+                {% for endx in endxlist %}
+                <li class="endxclass">{{endx}}</li>
+                {% endfor %}
+                {% for endy in endylist %}
+                <li class="endyclass">{{endy}}</li>
+                {% endfor %}
+                {% for tool in toollist %}
+                <li class="toolclass">{{tool}}</li>
+                {% endfor %}
+                {% for color in colorlist %}
+                <li class="colorclass">{{color}}</li>
+                {% endfor %}
+                {% for annotator in annotatorlist %}
+                <li class="annotatorclass">{{annotator}}</li>
+                {% endfor %}
+                {% for annotateindex in annotateindexlist %}
+                <li class="annotateindexclass">{{annotateindex}}</li>
+                {% endfor %}         
+                <li class="cursor">{{cursor}}</li>  
         </ul>
+        
         <div hidden id="listimages">
         </div>
 
@@ -49,41 +81,43 @@
         <div id="mySidepanel" class="row">
                 <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
                 <div class="col">
-                        <div class="border shadow p-4 bg-white overflow-auto" style="height:400px;width:240px">
+                        <div class="border shadow p-4 bg-white overflow-auto" style="height:280px;width:240px">
                                 <div class="form-group">
                                         <h6 for="email">Add Label :</h6>
-                                        <input class="form-control" type="text" placeholder="Label Name" id="labelname">
+                                        <input class="form-control input-sm" type="text" placeholder="Label Name" id="labelname">
                                 </div>
                                 <!-- <h6>Add Label</h6>
                                 <input id="labelname" class="input-paint" type="text"> -->
-                                <button id="save" class="btn btn-primary" onclick='addlabel()'>Add</button>
-                                <button id="deleteall" class="btn btn-danger" onclick='deletelabelall()'>Delete All</button>
+                                <button id="save" class="btn btn-sm btn-primary" onclick='addlabel()'>Add</button>
+                                <button id="deleteall" class="btn btn-sm btn-danger" onclick='deletelabelall()'>Delete All</button>
                                 <br>
                                 <div id="labellist" class="mt-2">
                                         <table cellpadding='5' cellspacing='5'>
-                                                <th>Label Name</th>
-                                                <th>Color</th>
+                                                <!-- <th>Label Name</th>
+                                                <th>Color</th> -->
                                                 {% for item in labeldata %}
                                                 <tr>
                                                         <td class="labelclass">{{item[0]}}</td>
                                                         <td class="labelcolor" style="display:none">{{item[1]}}</td>
-                                                        <td><button class="btn btn-sm" style='background-color:{{item[1]}}; height: 20px; width: 20px' onclick="changecolor('{{item[0]}}','{{item[1]}}')"></button></td>
+                                                        <td><button class="btn btn-sm mr-4" style='background-color:{{item[1]}}; height: 20px; width: 20px' onclick="changecolor('{{item[0]}}','{{item[1]}}')"></button></td>
                                                         <td><button class='btn btn-danger btn-sm' id='deletelabelbtn' onclick='deletelabel("{{item[0]}}","{{item[1]}}")'style='background-color:red'>Del</td>
                                                 </tr>
                                                 {% endfor %}
                                         </table>
                                 </div>
                         </div>
-                        <div class="border shadow p-4 mt-2 bg-white overflow-auto" style="width:240px;height:163px"> 
-                                <h6>Last Annotation</h6>
+                        <div class="border shadow p-2 mt-2 bg-white overflow-auto" style="width:240px;height:272px"> 
+                                <!-- <h6>Last Annotation</h6>
                                 <div id="annotationdata">
                                 
+                                </div> -->
+                                <div id="navigateimages">
                                 </div>
                         </div>
                 </div>
                 <div class="col">
-                        <div class="border shadow bg-white" style="width:801px;height:570px">
-                                <div style="position:relative;width:800px;height:506px" class="overflow-auto">
+                        <div class="border shadow bg-white" style="width:801px;height:560px">
+                                <div id="svgwrapper" style="position:relative;width:800px;height:506px" class="overflow-auto">
                                         <canvas id="paint" width={{cnvswidth}} height={{cnvsheight}}></canvas>
                                         <svg id="svgovercanvas" 
                                                 style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:crosshair"
@@ -93,7 +127,12 @@
                                                 <circle style="display:none" id="testcircle1" cx="50" cy="50" r="40" fill="none" stroke="green" stroke-width="4" />
                                                 <circle style="display:none" id="deltestcircle1" cx="90" cy="30" r="20" fill="red" onclick="deldummyjs()"/>  -->
                                         </svg>
-                                       
+                                        <div id="svgloader" class="svgloader"></div>
+                                        <svg id="svgprevannotation" 
+                                                style="position:absolute;left: 0px; top:0px;z-index: -1;cursor:crosshair"
+                                                width={{cnvswidth}} height={{cnvsheight}}>
+                                                 
+                                        </svg>
                                         <div id="overcanvasrect"></div>
 
                                         <div id="overcanvas">
@@ -108,11 +147,16 @@
                                                         </h6>
                                                         
                                                 </div>
+                                                <div id="previnfo" style="display:none">
+                                                        <h6 style="display:inline">Annotations by <font color="red" id="prevannotator"></font>
+                                                        </h6>
+                                                        
+                                                </div>
                                         </div>
                                         <div class="col-4 text-right mr-3">
                                                 <div style="display:inline;">
-                                                        <button onclick="location.href = 'resizeconfig';" class="btn btn-secondary" type="button">Resize</button>
-                                                        <button id="infobtn" class="btn btn-primary popover-test" data-trigger="focus" data-toggle="popover" data-placement="top" title="Image Details" data-content="">
+                                                        <button onclick="location.href = 'resizeconfig';" class="btn btn-sm btn-secondary" type="button">Resize</button>
+                                                        <button id="infobtn" class="btn btn-sm btn-primary popover-test" data-trigger="focus" data-toggle="popover" data-placement="top" title="Image Details" data-content="">
                                                                 Info
                                                         </button>     
                                                 </div>
@@ -123,22 +167,22 @@
                         </div>
                 </div>
                 <div class="col">
-                        <div class="border shadow p-4 mb-2 bg-white" style="height:250px">
-                                <h6 class="mb-3">Canvas Width <font color="red">{{cnvswidth}}
+                        <div class="border shadow p-4 mb-2 bg-white" style="height:220px">
+                                <h6 style="font-size:14px" class="mb-3">Canvas Width <font color="red">{{cnvswidth}}
                                         </font>
                                 </h6>
-                                <h6 class="mb-3">Canvas Height <font color="red">
+                                <h6 style="font-size:14px" class="mb-3">Canvas Height <font color="red">
                                                 {{cnvsheight}}
                                         </font>
                                 </h6>
-                                <h6 class="mb-3">Line Width
+                                <h6 style="font-size:14px" class="mb-3">Line Width
                                         <font color="red" id="currentlw"> 4
                                         </font>
                                 </h6>
-                                <h6 class="mb-3">Annotations
+                                <h6 style="font-size:14px" class="mb-3">Annotations
                                         <font id="recordannotation" color="red"></font>
                                 </h6>
-                                <h6 class="mb-2">Image
+                                <h6 style="font-size:14px" class="mb-2">Image
                                         <font color="red" id="imagenumber">
                                         </font>
                                         <label>/</label>
@@ -146,7 +190,7 @@
                                         </font>
                                 </h6>
                                 <div id="showcoordinate" style="display:none">
-                                        <h6>
+                                        <h6 style="font-size:14px">
                                                 <label>Coordinates</label>
                                                 <label id="coordinatex" style="color:red"></label>
                                                 <label>,</label>
@@ -155,23 +199,29 @@
                                         </h6>
                                 </div>
                         </div>
-                        <div class="border shadow p-4 mb-2 bg-white text-center">
-                                <button id="penciltool" type="button" class="btn btn-success mt-2 w-100"
+                        <div class="border shadow p-3 bg-white text-center">
+                                <button id="penciltool" type="button" class="btn btn-sm btn-success mt-2 w-100"
                                         onclick="dotelement()">Dot</button>
                                 <br>
                                 <button id="rectangletool" type="button" class="btn btn-success mt-2 w-100"
                                         onclick="rectelement()">Rectangle</button>
                                 <br>
                                 <button id="resettool" type="button" class="btn btn-warning mt-2 w-100"
-                                        onclick="reset()">Reset</button>
+                                        onclick="resetvalidation()">Reset</button>
                                 <br>
                                 <button id="nextbtn" class="btn btn-primary mt-2 w-100" type="button"
-                                        onclick="nextimagevalidation()">Next</button>
+                                        onclick="nextimagevalidation()">Submit</button>
                                 <br>
-                                
-                                <button class="btn btn-secondary mt-2 " id="pixel_plus" type="button"
+                                <button id="prevbtn" class="btn btn-primary mt-2 w-100" type="button"
+                                        onclick="cursorprevimage()">Previous</button>
+                                <br>
+                                <div style="display:none" id="prevannotationdiv">
+                                        <input onclick="togglepreviousannotation()" id="annotatecheckbox" type="checkbox"> Other Annotations
+                                </div>
+                                <br>
+                                <button class="btn btn-sm btn-secondary mt-2 " id="pixel_plus" type="button"
                                         onclick="add_pixel()">+</button>
-                                <button class="btn btn-secondary mt-2 " id="pixel_minus" type="button"
+                                <button class="btn btn-sm btn-secondary mt-2 " id="pixel_minus" type="button"
                                         onclick="reduce_pixel()">-</button>
                                 <br>
                                 <!-- Button trigger modal -->
@@ -182,27 +232,19 @@
                         </div>
                 </div>
         </div>
-        <!-- <div class="row">
-                <div class="col-*-4">
-
-
-                </div>
-                <div class="col-*-4">
-                       
-
-                </div>
-        </div> -->
-        <!-- </div> -->
 
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style_loader.css') }}">
-        <!-- <script src="http://code.jquery.com/jquery-1.8.3.js"></script> -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
+        <!-- <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css.map"> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
         <script src=" {{ url_for('static', filename='script-bootstrap.js') }}"></script>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script> -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> 
+        <!-- <script src="static/js/bootstrap.min.js"></script>
+        <script src="static/js/bootstrap.min.js.map"></script> -->
+        
 </body>
 
 </html>
