@@ -171,8 +171,6 @@ class SVGList:
 	# 	self.iterate+1
 	# 	return self
 
-
-
 # class SVGIterator:
 # 	def __init__(self, svg):
 # 		self._svg = svg
@@ -181,20 +179,157 @@ class SVGList:
 
 # 	def __next__(self):
 
+class Counter:
+    def __init__(self, low, high):
+        self.current = low - 1
+        self.high = high
 
+    def __iter__(self):
+        return self
+
+    def __next__(self): # Python 2: def next(self)
+        self.current += 1
+        if self.current < self.high:
+            return self.current
+        raise StopIteration
+
+# counterlist = []
+# for c in Counter(3, 25):
+#     counterlist.append(c)
+
+@main.route('/dbdelete', methods=['GET', 'POST'])
+@login_required
+def dbdelete():
+	if request.method == 'POST':
+		del_imagename = request.form['del_imagename']
+		del_startx = request.form['del_startx']
+		del_starty = request.form['del_starty']
+		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		c = conn.cursor()
+		deldbdata = (del_imagename,del_startx,del_starty)
+		c.execute("DELETE FROM coordinates WHERE Image = %s AND StartX = %s AND StartY = %s",deldbdata)
+		conn.commit()
+		conn.close()
+		return 'success'
+
+@main.route('/updatecursor', methods=['GET', 'POST'])
+@login_required
+def updatecursor():
+	if request.method == 'POST':
+		cursor = request.form['update_cursor']
+		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		c = conn.cursor()
+		c.execute("TRUNCATE TABLE current_cursor")
+		c.execute('INSERT INTO current_cursor(Position) VALUES (%s)', [cursor])
+		conn.commit()
+		conn.close()
+	return 'success'
+
+@main.route('/result', methods=['GET', 'POST'])
+@login_required
+def result():
+	if request.method == 'GET':
+		images = os.listdir('static/images')
+		imagelist = [file for file in images]
+		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		c = conn.cursor()
+		c.execute("SELECT * FROM coordinates")
+		coordinatesdata = c.fetchall()
+		imagenamelist = []
+		imagelabellist = []
+		startxlist = []
+		startylist = []
+		endxlist = []
+		endylist = []
+		toollist = []
+		colorlist = []
+		annotatorlist = []
+		annotateindexlist = []
+		annotationidlist = []
+		for col in coordinatesdata :
+			imagename = col[0]
+			imagelabel = col[1]
+			startx = col[2]
+			starty = col[3]
+			endx = col[4]
+			endy = col[5]
+			tool = col[6]
+			color = col[7]
+			annotator = col[8]
+			annotateindex =col[9]
+			annotationid = col[10]
+			imagenamelist.append(imagename)
+			imagelabellist.append(imagelabel)
+			startxlist.append(startx)
+			startylist.append(starty)
+			endxlist.append(endx)
+			endylist.append(endy)
+			toollist.append(tool)
+			colorlist.append(color)
+			annotatorlist.append(annotator)
+			annotateindexlist.append(annotateindex)
+			annotationidlist.append(annotationid)
+
+		return render_template('result.html', name=current_user.name, imagelist = imagelist, imagenamelist = imagenamelist, 
+		imagelabellist = imagelabellist, startxlist=startxlist, startylist=startylist, endxlist=endxlist, endylist=endylist, 
+		toollist=toollist, colorlist=colorlist, annotatorlist=annotatorlist, annotateindexlist=annotateindexlist, annotationidlist = annotationidlist)
+
+	# if request.method == 'POST':
 
 @main.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
 	if request.method == 'GET':
+		# print(counterlist)
 		images = os.listdir('static/images')
 		imagelist = [file for file in images]
 		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
 		c = conn.cursor()
 		c.execute("SELECT * FROM label")
 		labeldata = c.fetchall()
+		c.execute("SELECT Position FROM current_cursor")
+		cursordata = c.fetchall()
+		cursor = ""
+		for col in cursordata :
+			cursor = col[0]
+		# c.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text, Annotator text, Annotation_Index text, Annotation_ID text)")
+		c.execute("SELECT * FROM coordinates")
+		coordinatesdata = c.fetchall()
+		imagenamelist = []
+		imagelabellist = []
+		startxlist = []
+		startylist = []
+		endxlist = []
+		endylist = []
+		toollist = []
+		colorlist = []
+		annotatorlist = []
+		annotateindexlist = []
+		for col in coordinatesdata :
+			imagename = col[0]
+			imagelabel = col[1]
+			startx = col[2]
+			starty = col[3]
+			endx = col[4]
+			endy = col[5]
+			tool = col[6]
+			color = col[7]
+			annotator = col[8]
+			annotateindex =col[9]
 
-		return render_template('paint.html', name=current_user.name, cnvswidth=request.args.get('width'), cnvsheight=request.args.get('height'), imagelist=imagelist, labeldata=labeldata )
+			imagenamelist.append(imagename)
+			imagelabellist.append(imagelabel)
+			startxlist.append(startx)
+			startylist.append(starty)
+			endxlist.append(endx)
+			endylist.append(endy)
+			toollist.append(tool)
+			colorlist.append(color)
+			annotatorlist.append(annotator)
+			annotateindexlist.append(annotateindex)
+		# print(imagenamelist,annotateindexlist)
+		return render_template('paint.html', name=current_user.name, cnvswidth=request.args.get('width'), cnvsheight=request.args.get('height'), imagelist=imagelist, labeldata=labeldata, 
+		imagenamelist = imagenamelist, imagelabellist = imagelabellist, startxlist=startxlist, startylist=startylist, endxlist=endxlist, endylist=endylist, toollist=toollist, colorlist=colorlist, annotatorlist=annotatorlist, annotateindexlist=annotateindexlist , cursor=cursor)
 	
 	if request.method == 'POST':
 		imagename = request.form['save_imagename']
@@ -206,61 +341,29 @@ def profile():
 		tool = request.form['save_tool']
 		color = request.form['save_color']
 		annotator = request.form['save_annotator']
-		# jsondot = request.form['dotsvgdata']
-		# svgdot = SVGList.from_json(jsondot)
-		
-		# data_list = []
-		
-		# svgdot = json.loads(jsondot)
+		annotateindex = request.form['save_annotateindex']
+		annotationid = request.form['save_annotationid']
+		#cursor = request.form['update_cursor']
 
-		# print(json.dumps(svgdot, indent=4))
-		# loaded_json = json.loads(jsondot)
-		# for x in loaded_json:
-		# 	print("%s: %s" % (x, loaded_json))
-		# user = SVGList.from_json(jsondot)
-		# print(user.label)
-		# print(user.startx)
-
-		# for u in svgdot:
-		# 	data_list.append(u)
 		
-		# print(svgdot[0])
-		# print(data_list)
-		# data_tuple = tuple(data_list)
-		# print(data_tuple)
-		# for u in svgdot:
-		# 	data_list.append(SVGList(**u))
-		
-		# for data in data_list:
-		# 	print(data_list[data])
-		
-		# for data in data_list:
-		# 	test = data[0]
-		# tuplee = (data_list[0])
-		# print(tuplee)
-		
-		# return Response("test", status=200, mimetype= 'text/html')
 		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
 		c = conn.cursor()
 
-		# try:
-		# 	c, conn = mysqlconnection()
-		# 	return("Okay")
-		# except Exception as e:
-		# 	return(str(e))
-
-		# c.execute("SELECT * FROM flask")
-
-		dbdata = (imagename,label,startx,starty,endx,endy,tool,color,annotator)
-		# query = "INSERT INTO Coordinates(Image, Label, StartX, StartY, EndX, EndY, Tool, Color) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
 		
-		c.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text, Annotator text)")
+
+		dbdata = (imagename,label,startx,starty,endx,endy,tool,color,annotator,annotateindex,annotationid)
+		# query = "INSERT INTO Coordinates(Image, Label, StartX, StartY, EndX, EndY, Tool, Color, Annotator, Annotation_Index, Annotation_ID) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+		
+		c.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text, Annotator text, Annotation_Index text, Annotation_ID text)")
 		# c.execute("CREATE TABLE IF NOT EXISTS Coordinates_dummy(Image text)")
 		# c.execute('INSERT INTO Coordinates_dummy(Image) VALUES (%s)', data_list)
+		# c.execute("TRUNCATE TABLE current_cursor")
+		# c.execute('INSERT INTO current_cursor(Position) VALUES (%s)', [cursor])
 		
-		# # c.execute('INSERT INTO Coordinates VALUES(?, ?, ?, ?, ?, ?, ?, ?)', dbdata) > pake ini error mysql
-		c.execute('INSERT INTO Coordinates(Image, Label, StartX, StartY, EndX, EndY, Tool, Color, Annotator) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)', dbdata)
+		# c.execute('DELETE FROM Coordinates WHERE Image = "%s" and Annotator = "%s" ',imagename,annotator) > baru bs dipake kalo udah pake method post skali banyak
+		c.execute('INSERT INTO Coordinates(Image, Label, StartX, StartY, EndX, EndY, Tool, Color, Annotator, Annotation_Index, Annotation_ID) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', dbdata)
 		# c.executemany(query, data_list)
+		
 		conn.commit()
 		conn.close()
 		return 'success~'
@@ -372,3 +475,48 @@ def profile():
 	# @login_required
 	# def resize():
 	# 	return render_template('canvas-size.html')
+
+# JSON POST 
+	# try:
+		# 	c, conn = mysqlconnection()
+		# 	return("Okay")
+		# except Exception as e:
+		# 	return(str(e))
+
+		# c.execute("SELECT * FROM flask")
+	# jsondot = request.form['dotsvgdata']
+		# svgdot = SVGList.from_json(jsondot)
+		
+		# data_list = []
+		
+		# svgdot = json.loads(jsondot)
+
+		# print(json.dumps(svgdot, indent=4))
+		# loaded_json = json.loads(jsondot)
+		# for x in loaded_json:
+		# 	print("%s: %s" % (x, loaded_json))
+		# user = SVGList.from_json(jsondot)
+		# print(user.label)
+		# print(user.startx)
+
+		# for u in svgdot:
+		# 	data_list.append(u)
+		
+		# print(svgdot[0])
+		# print(data_list)
+		# data_tuple = tuple(data_list)
+		# print(data_tuple)
+
+		# for u in svgdot:
+		# 	data_list.append(SVGList(**u))
+		# print(data_list)
+		# import pdb;pdb.set_trace()
+		# for data in data_list:
+		# 	print(data_list[data])
+		
+		# for data in data_list:
+		# 	test = data[0]
+		# tuplee = (data_list[0])
+		# print(tuplee)
+		
+		# return Response("test", status=200, mimetype= 'text/html')
