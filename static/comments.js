@@ -1,5 +1,120 @@
 //commented, might be useful who knows
 //============================================
+
+function loadprevannotation() {
+    totalprevannotation = 0;
+    for (var num = 0; num < filteredimagearray.length; num++) {
+
+        if (filteredimagearray[num].imageannotationindex == getlastindex) {
+            if (filteredimagearray[num].imagetool == 'Dot Tool') {
+                ++totalprevannotation;
+                var convertstartx = filteredimagearray[num].startx * canvas.width / imgrealwidth;
+                var convertstarty = filteredimagearray[num].starty * canvas.height / imgrealheight;
+                // alert(convertstartx);
+                var svgdot = '<circle cx="' + convertstartx + '" cy="' + convertstarty + '" r="4" fill="' + filteredimagearray[num].imagecolor + '" />';
+                document.getElementById("svgprevannotation").innerHTML += svgdot; //append method using +=
+
+            } else if (filteredimagearray[num].imagetool == 'Rectangle Tool') {
+                ++totalprevannotation;
+                var convertstartx = filteredimagearray[num].startx * canvas.width / imgrealwidth;
+                var convertstarty = filteredimagearray[num].starty * canvas.height / imgrealheight;
+                var convertendx = filteredimagearray[num].endx * canvas.width / imgrealwidth;
+                var convertendy = filteredimagearray[num].endy * canvas.height / imgrealheight;
+                var width = convertendx - convertstartx;
+                var height = convertendy - convertstarty;
+                var labelY = convertstarty - 3;
+                var svgrect = '<rect x="' + convertstartx + '" y="' + convertstarty + '" width="' + width + '" height="' + height + '" fill="none" stroke="' + filteredimagearray[num].imagecolor + '" stroke-width="4"/>'
+                    + '<text x="' + convertstartx + '" y="' + labelY + '" fill="' + filteredimagearray[num].imagecolor + '">' + filteredimagearray[num].imagelabel + '</text>';
+
+                document.getElementById("svgprevannotation").innerHTML += svgrect;
+            }
+        }
+    }
+}
+
+function nextimage() {
+
+    if (svg_rectdata.length > 0) {
+        for (var i = 0; i < svg_rectdata.length; i++) {
+            $.post("/profile", {
+                save_imagename: svg_rectdata[i].image_name, save_label: svg_rectdata[i].label,
+                save_startx: svg_rectdata[i].startx, save_starty: svg_rectdata[i].starty, save_endx: svg_rectdata[i].endx,
+                save_endy: svg_rectdata[i].endy, save_tool: svg_rectdata[i].tool, save_color: svg_rectdata[i].color,
+                save_annotator: svg_rectdata[i].annotator, save_annotateindex: svg_rectdata[i].annotationindex, save_annotationid: svg_rectdata[i].annotationid
+            });
+            alert("success post rectangle");
+        }
+    } else if (svg_data.length > 0) {
+        for (var i = 0; i < svg_data.length; i++) {
+            // var data = JSON.stringify(svg_data);
+            // $.post("/profile", { dotsvgdata: data });
+            $.post("/profile", {
+                save_imagename: svg_data[i].image_name, save_label: svg_data[i].label,
+                save_startx: svg_data[i].startx, save_starty: svg_data[i].starty, save_endx: svg_data[i].endx,
+                save_endy: svg_data[i].endy, save_tool: svg_data[i].tool, save_color: svg_data[i].color,
+                save_annotator: svg_data[i].annotator, save_annotateindex: svg_data[i].annotationindex, save_annotationid: svg_data[i].annotationid
+            });
+            alert("success post dot");
+        }
+    }
+    reset();
+    document.getElementById("svgprevannotation").innerHTML = "";
+    filteredimagearray.length = 0;
+    svgprevannotation.style.zIndex = -1;
+    svg.style.display = "inline";
+    annotatecheckbox.checked = false;
+    ++counterimage;
+    for (var i = 0; i < counterimage; i++) {
+        if (counterimage <= imagearray.length) {
+            drawimage = document.getElementById('image' + i);
+            ctx.drawImage(drawimage, 0, 0, canvas.width, canvas.height);
+            imgrealwidth = drawimage.width;
+            imgrealheight = drawimage.height;
+            pushimagename = imagearray[i];
+        } else {
+            counterimage = imagearray.length;
+        }
+    }
+    var datacontent = "Image Name : " + pushimagename;
+    infobtn.setAttributeNS(null, 'data-content', datacontent);
+    document.getElementById("imagenumber").innerHTML = counterimage;
+
+    var checkimage = imagenamearray.includes(pushimagename);
+    if (checkimage == true) {
+        document.getElementById("prevannotationdiv").style.display = "inline";
+
+        for (var i = 0; i < imagenamearray.length; i++) {
+            if (pushimagename == imagenamearray[i]) {
+                filteredimagearray.push({
+                    imagename: imagenamearray[i], imagelabel: imagelabelarray[i],
+                    startx: startxarray[i], starty: startyarray[i], endx: endxarray[i], endy: endyarray[i],
+                    imagetool: toolarray[i], imagecolor: imagecolorarray[i], imageannotator: annotatorarray[i],
+                    imageannotationindex: annotateindexarray[i]
+                });
+                // alert(filteredimagearray[i].imagename + filteredimagearray[i].annotationindex);
+                // alert(imagecolorarray[i]);
+            }
+        }
+        var getlength = filteredimagearray.length;
+        getlastindex = filteredimagearray[getlength - 1].imageannotationindex;
+        var penampunglastindex = filteredimagearray[getlength - 1].imageannotationindex;
+        //var incrementclastindex = ++penampunglastindex;
+        //annotationindex = pushimagename + incrementlastindex;
+        annotationindex = ++penampunglastindex;
+        annotationid = pushimagename + "-" + annotationindex;
+        //alert("Annotation Index on " +  pushimagename   + " : "  + annotationindex);
+        loadprevannotation();
+
+    } else {
+        document.getElementById("prevannotationdiv").style.display = "none";
+        annotationindex = 1;
+        annotationid = pushimagename + "-" + annotationindex;
+        //alert("prev annot not exist! annotindex : "+ annotationindex);
+    }
+
+
+}
+
 function dotelement() {
     if (labelarray.length == 0) {
         modalbody = "Please create a label first!";
@@ -647,4 +762,154 @@ function dotelement() {
 // }
 // function closeNav() {
 //     document.getElementById("mySidepanel").style.width = "0";
+// }
+//DARI SCRIPT-RESULT
+function test(){
+     for (var i = 0; i < yourantnimgidunique.length; i++) {
+        alert(yourantnimgidunique[i].annotationid);
+        var images = '<canvas class="mr-3 mb-3 hvr-grow" id="'+yourantnimgidunique[i].annotationid +'" width="300" height="300"></canvas>';
+        document.getElementById("yourresultlist").innerHTML += images;
+        var canvas = document.getElementById(yourantnimgidunique[i].annotationid);
+        var ctx = canvas.getContext("2d");
+        var image = document.getElementById(yourantnimgidunique[i].imagename);
+        imgrealwidth = image.width;
+        imgrealheight = image.height;
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+        for (var y = 0; y < yourresultarray.length; y++) {
+            if (yourantnimgidunique[i].annotationid == yourresultarray[y].annotationid) {
+                if (yourresultarray[y].tool == 'Dot Tool') {
+                    var convertstartx = yourresultarray[y].startx * 300 / imgrealwidth;
+                    var convertstarty = yourresultarray[y].starty * 300 / imgrealheight;
+                    ctx.beginPath();
+                    ctx.arc(convertstartx, convertstarty, 4, 0, Math.PI * 2, true);
+                    ctx.fill();
+                } else {
+                    // var convertstartx = yourresultarray[y].startx * 300 / imgrealwidth;
+                    // var convertstarty = yourresultarray[y].starty * 300 / imgrealheight;
+                    // var convertendx = yourresultarray[y].endx * 300 / imgrealwidth;
+                    // var convertendy = yourresultarray[y].endy * 300 / imgrealheight;
+                    // var width = convertendx - convertstartx;
+                    // var height = convertendy - convertstarty;
+                    // images += '<rect x="'+convertstartx+'" y="'+convertstarty+'" width="'+width+'" height="'+height+'" fill="none" stroke="red" stroke-width="4"/>';
+                }
+            }
+        }
+        // alert("success");
+    }
+}
+
+function test2() {
+    for (var i = 0; i < yourantnimgidunique.length; i++) {
+        var images = '<div style="position:relative"><img src="static/images/'+yourantnimgidunique[i].imagename+'" class="mb-3 mr-3 hvr-grow" width=300 height=300>'
+				+'<svg class="hvr-fade" id="svgovercanvas" style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:pointer"width=300 height=300> ';
+        var getimage = document.getElementById(yourannotationimgid[i].imagename);
+        imgrealwidth = getimage.width;
+        imgrealheight = getimage.height;
+        for (var y = 0; y < yourresultarray.length; y++) {
+            if (yourantnimgidunique[i].annotationid == yourresultarray[y].annotationid) {
+                if (yourresultarray[y].tool == 'Dot Tool') {
+                    var convertstartx = yourresultarray[y].startx * 300 / imgrealwidth;
+                    var convertstarty = yourresultarray[y].starty * 300 / imgrealheight;
+                    images += '<circle cx="'+convertstartx+'" cy="'+convertstarty+'" r="4" fill="red" />';
+                } else {
+                    var convertstartx = yourresultarray[y].startx * 300 / imgrealwidth;
+                    var convertstarty = yourresultarray[y].starty * 300 / imgrealheight;
+                    var convertendx = yourresultarray[y].endx * 300 / imgrealwidth;
+                    var convertendy = yourresultarray[y].endy * 300 / imgrealheight;
+                    var width = convertendx - convertstartx;
+                    var height = convertendy - convertstarty;
+                    images += '<rect x="'+convertstartx+'" y="'+convertstarty+'" width="'+width+'" height="'+height+'" fill="none" stroke="red" stroke-width="4"/>';
+                }
+            }
+        }
+        images += '</svg></div>';
+        document.getElementById("yourresultlist").innerHTML += images;
+        // alert("success");
+    }
+}
+
+function loadyourresult(){
+    for (var i = 0; i < yourantnimgidunique.length; i++) {
+        var images = '<svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">';
+        images += '<image xlink:href="static/images/'+ yourantnimgidunique[i].imagename +'" width="300" height="300" x="0" y="0" />';
+        // alert("1"); //passed
+        for(var z=0;z<imagearray.length;z++){
+            if(yourantnimgidunique[i].imagename == imagearray[z]){
+                var image = document.getElementById(imagearray[z]);
+                imgrealwidth = image.width;
+                imgrealheight = image.height;
+                // alert(imgrealheight + " " + imgrealwidth);
+            }
+        }
+        for (var y = 0; y < yourresultarray.length; y++) {
+            if (yourantnimgidunique[i].annotationid == yourresultarray[y].annotationid) {
+                if (yourresultarray[y].tool == 'Dot Tool') {
+                    var convertstartx = yourresultarray[y].startx * 300 / imgrealwidth;
+                    var convertstarty = yourresultarray[y].starty * 300 / imgrealheight;
+                    images += '<circle cx="'+convertstartx+'" cy="'+convertstarty+'" r="4" fill="red" />';
+                } else {
+                    var convertstartx = yourresultarray[y].startx * 300 / imgrealwidth;
+                    var convertstarty = yourresultarray[y].starty * 300 / imgrealheight;
+                    var convertendx = yourresultarray[y].endx * 300 / imgrealwidth;
+                    var convertendy = yourresultarray[y].endy * 300 / imgrealheight;
+                    var width = convertendx - convertstartx;
+                    var height = convertendy - convertstarty;
+                    images += '<rect x="'+convertstartx+'" y="'+convertstarty+'" width="'+width+'" height="'+height+'" fill="none" stroke="red" stroke-width="4"/>';
+                }
+            }
+        }
+        images += '</svg>';
+        document.getElementById("yourresultlist").innerHTML += images;
+        // alert("success");
+    }
+
+}
+
+/ function loadresult() {
+//     // var images = '<svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">' 
+//     // 			+'<image xlink:href="static/images/images (2).jpeg" width="300" height="300" x="0" y="0" />'
+//     // 		+'</svg>';
+//     //bikin list baru dari yourresultarray untuk khusus annotationid aja, nanti dibikin unique
+//     //bikin list baru dari yourresultarray jg untuk annotationid dan image, utk di compare
+//     for (var i = 0; i < annotationidarray.length; i++) {
+//         var images = '<svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">';
+//         for(var z=0;z< imageannotationid.length; z++){
+//             if(annotationidarray[i] == imageannotationid[z].annotationid){
+//                 images+='<image xlink:href="static/images/images (2).jpeg" width="300" height="300" x="0" y="0" />';
+//             }
+//         }
+
+//         for (var y = 0; y < yourresultarray.length; i++) {
+//             if (annotationidarray[i] == yourresultarray[y].annotationid) {
+//                 if (yourresultarray[y].tool == 'Dot Tool') {
+//                     images += '<circle id="testcircle" cx="50" cy="50" r="40" fill="yellow" />';
+
+//                 } else {
+//                     images += '<rect>'
+//                 }
+//             }
+//         }
+//         images += '</svg>';
+//         document.getElementById("yourresultlist").innerHTML += images;
+//     }
+// }
+
+// function removeDuplicates(myArr, prop) {
+//     return myArr.filter((obj, pos, arr) => {
+//         return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
+//     });
+// }
+// for(var i = 0;i<yourannotationidunique.length;i++){
+//     for(var y =0;y<yourresultarray.length;y++){
+//         if(yourresultarray[y].annotationid == yourannotationidunique[i]){
+//             for( var z=0;z<yourannotationimgid.length;z++){
+//                 var check = yourannotationimgid[z].annotationid.includes(yourannotationidunique[i]);
+//                 if(check == false){
+//                     yourannotationimgid.push({ imagename: yourresultarray[i].imagename, annotationid: yourresultarray[i].annotationid });
+//                     alert("success");
+//                 }
+//             }
+//         }
+//     }
 // }
