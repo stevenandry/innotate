@@ -42,76 +42,66 @@
 		{% for annotator in annotatorlist %}
 		<li class="annotatorclass">{{annotator}}</li>
 		{% endfor %}
-		{% for annotateindex in annotateindexlist %}
-		<li class="annotateindexclass">{{annotateindex}}</li>
-		{% endfor %}
-		{% for annotationid in annotationidlist %}
-		<li class="annotationidclass">{{annotationid}}</li>
-		{% endfor %}
 	</ul>
 	<div hidden id="listimages">
 	</div>
 </head>
 
-<body onload="loadyourresult()">
+<body>
 
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
-			<a href="#yourresult" class="nav-link active" data-toggle="tab">Your Result</a>
+			<a href="#yourresult" class="nav-link active" data-toggle="tab">My Result</a>
 		</li>
 		<li class="nav-item">
 			<a href="#otherresult" class="nav-link" data-toggle="tab">Other Result</a>
 		</li>
 	</ul>
+
 	<img hidden id="images10.jpg" src="static/images/images10.jpg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
+
 	<div class="tab-content">
 		<div class="tab-pane fade show active container-fluid" id="yourresult">
-			<h4 class="mt-2 mb-3">Your Results</h4>
+			<h4 class="mt-2 mb-3">My Results</h4>
+			<form class="form-inline mb-3" role="form">
+				<div class="form-group row container-fluid">
+					<label for="imagesearchbar" class="mr-2">Search Image</label>
+					<input class="form-control input-sm" type="text" placeholder="Image Name" id="imagesearchbar">
+				</div>
+			</form>
+			<img class="loader" src="static/loadinggif.gif" width=50 height=50
+				style="position:absolute;text-align: center;z-index: 2;top:380px;left:670px">
 			<div id="yourresultlist">
-			<!-- <img src="static/images/images10.jpg" style="border-style: solid;border-width: 5px;" class="mb-3 mr-3 hvr-border-fade" width=300 height=300> -->
-		<!-- <div class="row">
-			<div class="col-1">
-			<div style="position:relative">
-				<img src="static/images/images10.jpg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
-				<svg class="hvr-fade" id="svgovercanvas" style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:pointer"
-                width=300 height=300> 
-					<rect x="0" y="0" width="50" height="50" fill="red" stroke="red" stroke-width="4"/>'
-				</svg>
 			</div>
-			</div>
-			<div class="col-2">
-			<div style="position:relative">
-				<img src="static/images/images10.jpg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
-				<svg class="hvr-fade" id="svgovercanvas" style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:pointer"
-                width=300 height=300> 
-					<rect x="0" y="0" width="50" height="50" fill="red" stroke="red" stroke-width="4"/>'
-				</svg>
-			</div>
-			</div>
-		</div> -->
-				<!-- <svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">
-					<image xlink:href="static/images/images1.jpeg" width="300" height="300" x="0" y="0" />
-				</svg>
-				<svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">
-					<image xlink:href="static/images/images1.jpeg" width="300" height="300" x="0" y="0" />
-				</svg>
-				<svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">
-					<image xlink:href="static/images/images1.jpeg" width="300" height="300" x="0" y="0" />
-				</svg>
-				<svg width="300" height="300" style="cursor:pointer" class="mr-3 mb-3 hvr-grow">
-					<image xlink:href="static/images/images1.jpeg" width="300" height="300" x="0" y="0" />
-				</svg> -->
-				<!-- <img src="static/images/images (2).jpeg" onclick="alerttest()" class="mb-3 mr-3 hvr-grow" width=300 height=300>
-			
-			<img src="static/images/images (2).jpeg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
-			<img src="static/images/images (2).jpeg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
-			<img src="static/images/images (2).jpeg" class="mb-3 mr-3 hvr-grow" width=300 height=300>
-			<img src="static/images/images (2).jpeg" class="mb-3 mr-3 hvr-grow" width=300 height=300> -->
-			</div>
-		</div>
-		<div class="tab-pane fade" id="otherresult">
-			<h4 class="mt-2">Other Results</h4>
 
+			<!-- <div style="position:relative;float:left">
+				<img src="static/images/images10.jpg" class="mb-3 mr-3" width=300 height=300>
+				<svg class="hvr-fade" id="svgovercanvas" style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:pointer"
+                width=300 height=300> 
+					<rect x="0" y="0" width="50" height="50" fill="red" stroke="red" stroke-width="4"/>'
+				</svg>
+			</div>
+			<div style="position:relative;float:left">
+				<img src="static/images/images10.jpg" class="mb-3 mr-3" width=300 height=300>
+				<svg class="hvr-fade" id="svgovercanvas" style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:pointer"
+                width=300 height=300> 
+					<rect x="0" y="0" width="50" height="50" fill="red" stroke="red" stroke-width="4"/>'
+				</svg>
+			</div> -->
+
+		</div>
+		<div class="tab-pane fade container-fluid" id="otherresult">
+			<h4 class="mt-2">Other Results</h4>
+			<form class="form-inline mb-2" role="form">
+				<div class="form-group row container-fluid">
+						<label for="selectusername" class="mr-2">Select Username </label>
+						<select class="form-control mr-2" id="selectusername">
+						</select>
+				</div>
+			</form>
+			<button class="btn btn-primary mb-3" onclick="selectusername()">Select</button>
+			<div id="otherresultlist">
+			</div>
 		</div>
 	</div>
 	<!-- <script src=" {{ url_for('static', filename='ramda.js') }}"></script> -->
