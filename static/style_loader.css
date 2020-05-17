@@ -33,8 +33,8 @@
   height: 70px;
   animation: spin 1s linear infinite;
   position: absolute;
-  top:210px;
-  left:355px;
+  top:230px;
+  left:370px;
   display:none;
   z-index: 2;
 }
@@ -42,6 +42,14 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.loadergif {
+  position:absolute;
+  text-align: center;
+  z-index: 2;
+  top:240px;
+  left:380px;
 }
 
 /* .svgwrapper {
