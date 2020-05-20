@@ -235,17 +235,23 @@ function printprevrect() {
 
         var curX = realendx - prevX; //width calculation
         var curY = realendy - prevY; //height calculation
-        
-        // var realendx = curX + prevX;
-        // var realendy = curY + prevY;
         var compensatedx = realendx - 15;
         var compensatedy = realendy - 15;
         var labelY = prevY - 3;
 
+        var fillY = prevY - 14;
+        var countlength = 0;
+        var activelabel = prevsvgrect_data[i].imagelabel;
+        for(var y = 0;y<activelabel.length;y++){
+            ++countlength;
+        }
+        var fillWidth = 10.5 * countlength;
+
         var svgrect = '<rect id=rectangle' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" fill="none" stroke="' + prevsvgrect_data[i].imagecolor + '" stroke-width="' + defaultlinewidth + '"/>';
         var svgrectborder = '<rect id=rectborder' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" style="fill:none;stroke-width:' + defaultlinewidth + ';stroke:#b30000;display:none" />';
         var svgrectdel = '<image id=rectdel' + rectcount + ' href="static/pngguru.png" x="' + compensatedx + '" y="' + compensatedy + '" height="25px" width="25px" style="display:none;cursor:pointer" onclick="removerect(' + rectcount + ')" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" />'
-            + '<text id=recttext' + rectcount + ' x="' + prevX + '" y="' + labelY + '" fill="' + prevsvgrect_data[i].imagecolor + '">' + prevsvgrect_data[i].imagelabel + '</text>';
+                + '<rect id=rectfill'+rectcount+' x="' + prevX + '" y="' + fillY + '" width="'+fillWidth+'" height="10" fill="'+prevsvgrect_data[i].imagecolor+'" stroke="' + prevsvgrect_data[i].imagecolor + '" stroke-width="' + defaultlinewidth + '"/>'
+                + '<text id=recttext' + rectcount + ' x="' + prevX + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + prevsvgrect_data[i].imagelabel + '</text>';
 
         document.getElementById("svgovercanvas").innerHTML += svgrect;
         document.getElementById("svgovercanvas").innerHTML += svgrectborder;
@@ -633,18 +639,28 @@ function rectelement() {
         var compensatedx = realendx - 15;
         var compensatedy = realendy - 15;
         var labelY = prevY - 3;
+        
         //FINDING ACTIVE LABEL
         for (var i = 0; i < labelcolorarray.length; i++) {
             if (ctx.fillStyle.toUpperCase() == labelcolorarray[i].toUpperCase()) {
                 activelabel = labelarray[i];
             }
         }
+
+        var fillY = prevY - 14;
+        var countlength = 0;
+        for(var i = 0;i<activelabel.length;i++){
+            ++countlength;
+        }
+        var fillWidth = 10.5 * countlength;
+
         svg.removeChild(rect);
         var svgrect = '<rect id=rectangle' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" fill="none" stroke="' + ctx.fillStyle + '" stroke-width="' + defaultlinewidth + '"/>';
         var svgrectborder = '<rect id=rectborder' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" style="fill:none;stroke-width:' + defaultlinewidth + ';stroke:#b30000;display:none" />';
         //var svgrectdel = '<circle style="display:none" id=rectdel' + rectcount +' cx="' + realendx + '" cy="' + realendy + '" r="10" fill="black" onclick="removerect(' + rectcount + ')" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" />';
         var svgrectdel = '<image id=rectdel' + rectcount + ' href="static/pngguru.png" x="' + compensatedx + '" y="' + compensatedy + '" height="25px" width="25px" style="display:none;cursor:pointer" onclick="removerect(' + rectcount + ')" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" />'
-            + '<text id=recttext' + rectcount + ' x="' + prevX + '" y="' + labelY + '" fill="' + ctx.fillStyle + '">' + activelabel + '</text>';
+                + '<rect id=rectfill'+rectcount+' x="' + prevX + '" y="' + fillY + '" width="'+fillWidth+'" height="10" fill="'+ctx.fillStyle+'" stroke="' + ctx.fillStyle + '" stroke-width="' + defaultlinewidth + '"/>'
+                + '<text id=recttext' + rectcount + ' x="' + prevX + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + activelabel + '</text>';
 
         //alert(svgrect);
         //alert(svgrectborder);
@@ -697,10 +713,12 @@ function removerect(rectnum) {
     var element2 = document.getElementById("rectborder" + rectnum);
     var element3 = document.getElementById("rectdel" + rectnum);
     var element4 = document.getElementById("recttext" + rectnum);
+    var element5 = document.getElementById("rectfill" + rectnum);
     element.parentNode.removeChild(element);
     element2.parentNode.removeChild(element2);
     element3.parentNode.removeChild(element3);
     element4.parentNode.removeChild(element4);
+    element5.parentNode.removeChild(element5);
     // svg.removeAttributeNS(element);
     for (var i = 0; i < temprect.length; i++) { // FOR DELETING DOT FROM DATABASE IF ANY
         if (rectnum == temprect[i].index) {
@@ -942,9 +960,13 @@ function addlabel() {
         modalbody = "Maximum label limit reached!"
         warningmodal();
         callmodal();
+    } else if (labelname.length > 15) {
+        modalbody = "Maximum character length is 15!"
+        warningmodal();
+        callmodal();
     } else {
         for (var y = 0; y < labelarray.length; y++) {
-            if (labelname == labelarray[y].label) {
+            if (labelname == labelarray[y]) {
                 modalbody = "Label already exists!";
                 warningmodal();
                 callmodal();

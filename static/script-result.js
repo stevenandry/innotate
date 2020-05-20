@@ -185,8 +185,18 @@ function createotherresult(otherusername){
                     var width = convertendx - convertstartx;
                     var height = convertendy - convertstarty;
                     var labelY = convertstarty - 3;
+
+                    var fillY = convertstarty - 13;
+                    var countlength = 0;
+                    var activelabel = otherresultarray[y].imagelabel;
+                    for(var z=0;z<activelabel.length;z++){
+                        ++countlength;
+                    }
+                    var fillWidth = 10.5 * countlength;
+
                     images += '<rect x="'+convertstartx+'" y="'+convertstarty+'" width="'+width+'" height="'+height+'" fill="none" stroke="'+otherresultarray[y].color+'" stroke-width="3"/>'
-                        + '<text x="' + convertstartx + '" y="' + labelY + '" fill="' + otherresultarray[y].color + '">' + otherresultarray[y].imagelabel + '</text>';
+                        + '<rect x="' + convertstartx + '" y="' + fillY + '" width="'+fillWidth+'" height="10" fill="'+otherresultarray[y].color+'" stroke="' + otherresultarray[y].color + '" stroke-width="3"/>'
+                        + '<text x="' + convertstartx + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + otherresultarray[y].imagelabel + '</text>';
                 }
             }
         }
@@ -253,8 +263,17 @@ function newload(){
                     var width = convertendx - convertstartx;
                     var height = convertendy - convertstarty;
                     var labelY = convertstarty - 3;
+
+                    var fillY = convertstarty - 13;
+                    var countlength = 0;
+                    var activelabel = yourresultarray[y].imagelabel;
+                    for(var z=0;z<activelabel.length;z++){
+                        ++countlength;
+                    }
+                    var fillWidth = 10.5 * countlength;
                     images += '<rect x="'+convertstartx+'" y="'+convertstarty+'" width="'+width+'" height="'+height+'" fill="none" stroke="'+yourresultarray[y].color+'" stroke-width="3"/>'
-                        + '<text x="' + convertstartx + '" y="' + labelY + '" fill="' + yourresultarray[y].color + '">' + yourresultarray[y].imagelabel + '</text>';
+                        + '<rect x="' + convertstartx + '" y="' + fillY + '" width="'+fillWidth+'" height="10" fill="'+yourresultarray[y].color+'" stroke="' + yourresultarray[y].color + '" stroke-width="3"/>'
+                        + '<text x="' + convertstartx + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + yourresultarray[y].imagelabel + '</text>';
                 }
             }
         }
