@@ -188,23 +188,22 @@ def dbdelete():
 @login_required
 def updatecursor():
 	if request.method == 'POST' :
-		cursor = request.get_data(as_text=True)
+		#cursor = request.get_data(as_text=True)
+		#print(request.is_json)
+		content = request.get_json()
+		for item in content:
+			container = (item['annotator'],item['cursor'])
+			annotator = item['annotator']
+		#print(container)
+
 		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
 		c = conn.cursor()
-		c.execute("TRUNCATE TABLE current_cursor")
-		c.execute('INSERT INTO current_cursor(Position) VALUES (%s)', [cursor])
+		#c.execute("TRUNCATE TABLE current_cursor")
+		c.execute("DELETE FROM current_cursor WHERE Annotator = %s",[annotator])
+		c.execute('INSERT INTO current_cursor(Annotator,Position) VALUES (%s,%s)', container)
 		conn.commit()
 		conn.close()
 	return 'success'
-	# if request.method == 'POST':
-	# 	cursor = request.form['update_cursor']
-	# 	conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
-	# 	c = conn.cursor()
-	# 	c.execute("TRUNCATE TABLE current_cursor")
-	# 	c.execute('INSERT INTO current_cursor(Position) VALUES (%s)', [cursor])
-	# 	conn.commit()
-	# 	conn.close()
-	# return 'success'
 
 @main.route('/result', methods=['GET', 'POST'])
 @login_required
@@ -257,20 +256,26 @@ def result():
 def profile():
 	if request.method == 'GET':
 		# print(counterlist)
+		name = current_user.name
 		images = os.listdir('static/images')
 		imagelist = [file for file in images]
 		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
 		c = conn.cursor()
+		c.execute("CREATE TABLE IF NOT EXISTS current_cursor(Annotator text, Position text)")
 		c.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text, Annotator text)")
 		c.execute("SELECT * FROM label")
 		labeldata = c.fetchall()
-
-		c.execute("SELECT Position FROM current_cursor")
+		
+		# print(name)
+		c.execute("SELECT Position FROM current_cursor WHERE Annotator = %s",[name])
 		cursordata = c.fetchall()
 		cursor = ""
-		for col in cursordata :
-			cursor = col[0]
-
+		if cursordata:
+			for col in cursordata :
+				cursor = col[0]
+		else:
+			cursor = 1
+		# print(cursor)
 		c.execute("SELECT * FROM coordinates")
 		coordinatesdata = c.fetchall()
 		imagenamelist = []
