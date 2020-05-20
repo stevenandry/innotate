@@ -278,14 +278,15 @@ function changeimage(imagedata){
     //setTimeout( function (){window.location.href = "/resize";},750);
     var xhr = new XMLHttpRequest();
     var url = "/updatecursor";
+    var data = JSON.stringify([{ "annotator": ""+username+"", "cursor": ""+updatecursor+"" }]);
     xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
                 window.location.href = "/resize";
             }
         };
-    //alert(updatecursor);
-    xhr.send(updatecursor);
+    xhr.send(data);
 }
 
 function alerttest() {

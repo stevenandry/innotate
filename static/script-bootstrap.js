@@ -41,7 +41,8 @@ var infobtn = document.getElementById("infobtn");
 var username = document.getElementById("username").textContent; //can be textcontent / innertext for < IE9 or innerHTML
 var annotatecheckbox = document.getElementById("annotatecheckbox");
 var annotationindex = 0, annotationid = 0, getlastindex = 0, totalprevannotation = 0, cursor;
-
+var svg_data = [], svg_rectdata = [], circlecount = 0, rectcount = 0;
+const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
 
 $(document).ready(function () {
     $('.imageclass').each(function (index, element) {
@@ -118,6 +119,10 @@ $(document).ready(function () {
     document.getElementById("recordannotation").innerHTML = recordannotation;
 });
 
+window.onload = function() {
+    this.currentimage();
+};
+
 function eventlistener() {
     svg.addEventListener('mousemove', function (e) {
         clientX = e.offsetX;
@@ -140,15 +145,17 @@ function changeimage(i) {
     if (i != c) {
         document.getElementById("svgloader").style.display = "inline";
         var updatecursor = ++i;
+        var data = JSON.stringify([{ "annotator": ""+username+"", "cursor": ""+updatecursor+"" }]);
         var xhr = new XMLHttpRequest();
         var url = "/updatecursor";
         xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 location.reload();
             }
         };
-        xhr.send(updatecursor);
+        xhr.send(data);
     }
 }
 
@@ -185,9 +192,11 @@ function printprevdot() {
     for (var i = 0; i < prevsvg_data.length; i++) {
         ++circlecount;
         ++recordannotation;
-
-        curX = prevsvg_data[i].startx;
-        curY = prevsvg_data[i].starty;
+        // var convertstartx = myantns[i].startx * canvas.width / imgrealwidth;
+        // var convertstarty = myantns[i].starty * canvas.height / imgrealheight;
+        curX = prevsvg_data[i].startx * canvas.width / imgrealwidth;
+        curY = prevsvg_data[i].starty * canvas.height / imgrealheight;
+        //alert(curX + " " + curY);
         delbtnposX = curX + 3;
         delbtnposY = curY - 10;
         var svgdot = '<circle id=circle' + circlecount + ' cx="' + curX + '" cy="' + curY + '" r="' + defaultlinewidth + '" fill="' + prevsvg_data[i].imagecolor + '" onmouseover="showelements(' + circlecount + ')" onmouseout="hidelements(' + circlecount + ')" />';
@@ -198,20 +207,15 @@ function printprevdot() {
         document.getElementById("svgovercanvas").innerHTML += dotborder;
         document.getElementById("svgovercanvas").innerHTML += dotdel;
         document.getElementById("recordannotation").innerHTML = recordannotation;
-
-        var xcalculation = imgrealwidth * curX;
-        var ycalculation = imgrealheight * curY;
-        var finalxcalculation = xcalculation / width;
-        var finalycalculation = ycalculation / height;
-
+        //alert(prevsvg_data[i].startx + " " + prevsvg_data[i].starty);
         pushlabel = prevsvg_data[i].imagelabel;
-        pushstartx = finalxcalculation;
-        pushstarty = finalycalculation;
+        pushstartx = prevsvg_data[i].startx;
+        pushstarty = prevsvg_data[i].starty;
         pushendx = 0;
         pushendy = 0;
         pushtool = "Dot Tool";
         pushcolor = prevsvg_data[i].imagecolor;
-
+        //alert(pushstartx + '' + pushstarty);
         tempdot.push({
             image_name: pushimagename, label: pushlabel, startx: pushstartx,
             starty: pushstarty, endx: pushendx, endy: pushendy, tool: pushtool,
@@ -224,12 +228,16 @@ function printprevrect() {
     for (var i = 0; i < prevsvgrect_data.length; i++) {
         ++rectcount;
         ++recordannotation;
-        var curX = prevsvgrect_data[i].width;
-        var curY = prevsvgrect_data[i].height;
-        var prevX = prevsvgrect_data[i].startx;
-        var prevY = prevsvgrect_data[i].starty;
-        var realendx = curX + prevX;
-        var realendy = curY + prevY;
+        var prevX = prevsvgrect_data[i].startx * canvas.width / imgrealwidth;
+        var prevY = prevsvgrect_data[i].starty * canvas.height / imgrealheight;
+        var realendx = prevsvgrect_data[i].endx * canvas.width / imgrealwidth;
+        var realendy = prevsvgrect_data[i].endy * canvas.height / imgrealheight;
+
+        var curX = realendx - prevX; //width calculation
+        var curY = realendy - prevY; //height calculation
+        
+        // var realendx = curX + prevX;
+        // var realendy = curY + prevY;
         var compensatedx = realendx - 15;
         var compensatedy = realendy - 15;
         var labelY = prevY - 3;
@@ -243,21 +251,12 @@ function printprevrect() {
         document.getElementById("svgovercanvas").innerHTML += svgrectborder;
         document.getElementById("svgovercanvas").innerHTML += svgrectdel;
         document.getElementById("recordannotation").innerHTML = recordannotation;
-        var startxcalc = imgrealwidth * prevX;
-        var startycalc = imgrealheight * prevY;
-        var endxcalc = imgrealwidth * realendx;
-        var endycalc = imgrealheight * realendy;
-
-        var finalstartxcalc = startxcalc / width;
-        var finalstartycalc = startycalc / height;
-        var finalendxcalc = endxcalc / width;
-        var finalendycalc = endycalc / height;
-
+        //alert(prevsvgrect_data[i].startx + " " + prevsvgrect_data[i].starty + " " + prevsvgrect_data[i].endx + " " + prevsvgrect_data[i].endy);
         pushlabel = prevsvgrect_data[i].imagelabel;
-        pushstartx = finalstartxcalc;
-        pushstarty = finalstartycalc;
-        pushendx = finalendxcalc;
-        pushendy = finalendycalc;
+        pushstartx = prevsvgrect_data[i].startx;
+        pushstarty = prevsvgrect_data[i].starty;
+        pushendx = prevsvgrect_data[i].endx;
+        pushendy = prevsvgrect_data[i].endy;
         pushtool = "Rectangle Tool";
         pushcolor = prevsvgrect_data[i].imagecolor;
         temprect.push({
@@ -346,22 +345,14 @@ function currentimage() {
         if (myantns[i].imagename == pushimagename) {
             if (myantns[i].imagetool == 'Dot Tool') {
                 //alert(myantns[i].startx + " " + myantns[i].starty);
-                var convertstartx = myantns[i].startx * canvas.width / imgrealwidth;
-                var convertstarty = myantns[i].starty * canvas.height / imgrealheight;
                 prevsvg_data.push({
-                    image_name: myantns[i].imagename, label: myantns[i].imagelabel, startx: convertstartx,
-                    starty: convertstarty, endx: myantns[i].endx, endy: myantns[i].endy, tool: myantns[i].imagetool, imagecolor: myantns[i].imagecolor
+                    image_name: myantns[i].imagename, label: myantns[i].imagelabel, startx: myantns[i].startx,
+                    starty: myantns[i].starty, endx: myantns[i].endx, endy: myantns[i].endy, tool: myantns[i].imagetool, imagecolor: myantns[i].imagecolor
                 });
             } else {
-                var convertstartx = myantns[i].startx * canvas.width / imgrealwidth;
-                var convertstarty = myantns[i].starty * canvas.height / imgrealheight;
-                var convertendx = myantns[i].endx * canvas.width / imgrealwidth;
-                var convertendy = myantns[i].endy * canvas.height / imgrealheight;
-                var width = convertendx - convertstartx;
-                var height = convertendy - convertstarty;
                 prevsvgrect_data.push({
-                    image_name: myantns[i].imagename, imagelabel: myantns[i].imagelabel, startx: convertstartx,
-                    starty: convertstarty, width: width, height: height, tool: myantns[i].imagetool, imagecolor: myantns[i].imagecolor
+                    image_name: myantns[i].imagename, imagelabel: myantns[i].imagelabel, startx: myantns[i].startx,
+                    starty: myantns[i].starty, endx: myantns[i].endx, endy: myantns[i].endy, tool: myantns[i].imagetool, imagecolor: myantns[i].imagecolor
                 });
             }
         }
@@ -385,7 +376,7 @@ function currentimage() {
     //PRINT ALL PREVIOUS ANNOTATIONS IF EXISTED
     if (prevsvg_data.length > 0) {
         printprevdot();
-    } else if (prevsvgrect_data.length > 0) {
+    }if (prevsvgrect_data.length > 0) {
         printprevrect();
     }
     if (printotherantns.length > 0) {
@@ -414,22 +405,11 @@ function cursornextimage() {
     var updatecursor = ++container;
     var xhr = new XMLHttpRequest();
     if (deldbdot.length > 0) {
-        // var data = JSON.stringify(Object.assign({},deldbdot));
 
-        // var json= JSON.stringify({"image_name":"images10.jpg","startx":"253.5","starty":"202.188"});
-        // alert(json);
-        // $.post("/dbdelete",{del_data : json});
-        // alert("sampe");
-        //var xhr = new XMLHttpRequest();
         var url = "/dbdelete";
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
-        // xhr.onreadystatechange = function () {
-        //     if (xhr.readyState === 4 && xhr.status === 200) {
-        //         // var json = JSON.parse(xhr.responseText);
-        //         // console.log(json.email + ", " + json.password);
-        //     }
-        // };
+      
         var data = JSON.stringify(deldbdot);
         //var data = JSON.stringify({ "email": "hey@mail.com", "password": "101010" });
         xhr.send(data);
@@ -450,7 +430,7 @@ function cursornextimage() {
         var data = JSON.stringify(svg_rectdata);
         xhr.send(data);
 
-    } else if (svg_data.length > 0) {
+    }if (svg_data.length > 0) {
         //var xhr = new XMLHttpRequest();
         var url = "/profile";
         xhr.open("POST", url, true);
@@ -463,13 +443,16 @@ function cursornextimage() {
     if (cursor != imagearray.length) {
         var xhrc = new XMLHttpRequest();
         var url = "/updatecursor";
+        var data = JSON.stringify([{ "annotator": ""+username+"", "cursor": ""+updatecursor+"" }]);
+        //alert(data);
         xhrc.open("POST", url, true);
+        xhrc.setRequestHeader("Content-Type", "application/json");
         xhrc.onreadystatechange = function () {
             if (xhrc.readyState === 4 && xhrc.status === 200) {
                 location.reload();
             }
         };
-        xhrc.send(updatecursor);
+        xhrc.send(data);
     } else {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
@@ -491,15 +474,17 @@ function cursorprevimage() {
         document.getElementById("svgloader").style.display = "inline";
         var container = cursor;
         var updatecursor = container - 1;
+        var data = JSON.stringify([{ "annotator": ""+username+"", "cursor": ""+updatecursor+"" }]);
         var xhr = new XMLHttpRequest();
         var url = "/updatecursor";
         xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 location.reload();
             }
         };
-        xhr.send(updatecursor);
+        xhr.send(data);
     }
 }
 
@@ -593,11 +578,10 @@ function callmodal() {
 //============================= SVG RECTANGLE ELEMENT!========================================== 
 //var svgrectfinal >> no need to create global var bcs creating local var 
 //without 'var' can be accessed globally.
-const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-var rectcount = 0;
-var svg_rectdata = [];
 
 function rectelement() {
+    dottoolactive = false;
+    rectoolactive = true;
     svg.onmousedown = function (e) {
         if (labelarray.length == 0) {
             modalbody = "Please create a label first!";
@@ -607,10 +591,10 @@ function rectelement() {
             modalbody = "Please choose a color based on the label!";
             warningmodal();
             callmodal();
-        } else if (dottoolactive == true) {
-            modalbody = "Pencil tool is active. Please refresh the page to change tools!";
-            warningmodal();
-            callmodal();
+        // } else if (dottoolactive == true) {
+        //     modalbody = "Pencil tool is active. Please refresh the page to change tools!";
+        //     warningmodal();
+        //     callmodal();
         } else {
             prevX = e.offsetX;
             prevY = e.offsetY;
@@ -620,7 +604,6 @@ function rectelement() {
 
     svg.onmousemove = function (e) {
         x.style.display = "inline";
-        rectoolactive = true;
         if (hold) {
             //ctx.putImageData(img, 0, 0);
             curX = e.offsetX - prevX;
@@ -678,14 +661,13 @@ function rectelement() {
         var finalstartycalc = startycalc / height;
         var finalendxcalc = endxcalc / width;
         var finalendycalc = endycalc / height;
-
         for (var i = 0; i < labelarray.length; i++) {
             if (ctx.fillStyle.toUpperCase() == labelcolorarray[i].toUpperCase()) {
                 pushlabel = labelarray[i];
-                pushstartx = finalstartxcalc;
-                pushstarty = finalstartycalc;
-                pushendx = finalendxcalc;
-                pushendy = finalendycalc;
+                pushstartx = Math.round(finalstartxcalc);
+                pushstarty = Math.round(finalstartycalc);
+                pushendx = Math.round(finalendxcalc);
+                pushendy = Math.round(finalendycalc);
                 pushtool = "Rectangle Tool";
                 pushcolor = labelcolorarray[i];
                 svg_rectdata.push({
@@ -765,6 +747,8 @@ function hiderectelements(rectnum) {
     document.getElementById("rectdel" + rectnum).style.display = "none";
     if (rectoolactive == true) {
         rectelement();
+    }else if (dottoolactive == true) {
+        dotelement();
     }
 }
 //========================================================================================
@@ -773,8 +757,6 @@ function hiderectelements(rectnum) {
 
 //============NEW SVG DOT SHOW HIDE DELETE FUNCTION================
 // var svgdot = "";
-var circlecount = 0;
-var svg_data = [];
 
 function showelements(circlenum) {
     document.getElementById("circleborder" + circlenum).style.display = "inline";
@@ -790,6 +772,8 @@ function hidelements(circlenum) {
     document.getElementById("circledel" + circlenum).style.display = "none";
     if (dottoolactive == true) {
         dotelement();
+    } else if ( rectoolactive == true){
+        rectelement();
     }
 }
 
@@ -803,6 +787,13 @@ function delelements(circlenum) {
 }
 
 function dotelement() {
+    rectoolactive = false;
+    dottoolactive = true;
+    svg.onmousemove = function (e) {
+        x.style.display = "inline";
+        //empty the onmousemove to prevent rect element to be triggered when in dot element
+    }
+
     svg.onmousedown = function (e) {
         if (labelarray.length == 0) {
             modalbody = "Please create a label first!";
@@ -812,17 +803,16 @@ function dotelement() {
             modalbody = "Please choose a color based on the label!";
             warningmodal();
             callmodal();
-        } else if (rectoolactive == true) {
-            modalbody = "Rectangle tool is currently active. Please refresh the page to change tools!";
-            warningmodal();
-            callmodal();
+        // } else if (rectoolactive == true) {
+        //     modalbody = "Rectangle tool is currently active. Please refresh the page to change tools!";
+        //     warningmodal();
+        //     callmodal();
 
         } else {
             ++circlecount;
-            dottoolactive = true;
-
             curX = e.offsetX;
             curY = e.offsetY;
+            //alert(curX + " " + curY);
             delbtnposX = curX + 3;
             delbtnposY = curY - 10;
             // svgdot = '<circle id=circle'+circlecount+' cx="'+ curX  +'" cy="'+  curY  +'" r="'+ defaultlinewidth  +'" fill="'+ ctx.fillStyle +'" onclick="removecircle('+ circlecount +')" />';
@@ -838,11 +828,13 @@ function dotelement() {
             var ycalculation = imgrealheight * curY;
             var finalxcalculation = xcalculation / width;
             var finalycalculation = ycalculation / height;
+            // alert(finalxcalculation + " " + finalycalculation);
+            // alert(Math.round(finalxcalculation) + " "  + Math.round(finalycalculation));
             for (var num = 0; num < labelcolorarray.length; num++) {
                 if (ctx.fillStyle.toUpperCase() == labelcolorarray[num].toUpperCase()) {
                     pushlabel = labelarray[num];
-                    pushstartx = finalxcalculation;
-                    pushstarty = finalycalculation;
+                    pushstartx = Math.round(finalxcalculation);
+                    pushstarty = Math.round(finalycalculation);
                     pushendx = 0;
                     pushendy = 0;
                     pushtool = "Dot Tool";
