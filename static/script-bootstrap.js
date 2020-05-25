@@ -44,7 +44,86 @@ var annotationindex = 0, annotationid = 0, getlastindex = 0, totalprevannotation
 var svg_data = [], svg_rectdata = [], circlecount = 0, rectcount = 0;
 const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
 
-$(document).ready(function () {
+// $(document).ready(function () {
+//     $('.imageclass').each(function (index, element) {
+//         imagearray.push($(element).text());
+//     });
+//     $('.labelclass').each(function (index, element) {
+//         labelarray.push($(element).text());
+//         // alert($(element).text());
+//     });
+
+//     $('.labelcolor').each(function (index, element) {
+//         labelcolorarray.push($(element).text());
+//         // alert($(element).text());
+//     });
+//     $('.imagenameclass').each(function (index, element) {
+//         imagenamearray.push($(element).text());
+//         //alert($(element).text());
+//     });
+//     $('.imagelabelclass').each(function (index, element) {
+//         imagelabelarray.push($(element).text());
+//         //alert($(element).text());
+//     });
+//     $('.startxclass').each(function (index, element) {
+//         startxarray.push($(element).text());
+//         //alert($(element).text());
+//     });
+//     $('.startyclass').each(function (index, element) {
+//         startyarray.push($(element).text());
+//         //alert($(element).text());
+//     });
+//     $('.endxclass').each(function (index, element) {
+//         endxarray.push($(element).text());
+//         //alert($(element).text());
+//     });
+//     $('.endyclass').each(function (index, element) {
+//         endyarray.push($(element).text());
+//         //alert($(element).text());
+//     });
+//     $('.toolclass').each(function (index, element) {
+//         toolarray.push($(element).text());
+//         //alert($(element).text());
+//     });
+//     $('.colorclass').each(function (index, element) {
+//         imagecolorarray.push($(element).text());
+//         //alert($(element).text());
+//     });
+//     $('.annotatorclass').each(function (index, element) {
+//         annotatorarray.push($(element).text());
+//         //alert($(element).text());
+//     });
+//     // $('.annotateindexclass').each(function (index, element) {
+//     //     annotateindexarray.push($(element).text());
+//     //     //alert($(element).text());
+//     // });
+//     $('.cursor').each(function (index, element) {
+//         cursor = $(element).text();
+//         //alert($(element).text());
+//     });
+//     $('[data-toggle="popover"]').popover();
+
+//     for (var i = 0; i < colorList.length; i++) {
+//         for (var y = 0; y < labelcolorarray.length; y++) {
+//             if (colorList[i] == labelcolorarray[y]) {
+//                 var index = colorListNew.indexOf(colorList[i]);
+//                 if (index > -1) {
+//                     colorListNew.splice(index, 1);
+//                 }
+//             }
+//         }
+//     }
+//     eventlistener();
+//     loadimage();
+//     document.getElementById("totalimagenumber").innerHTML = imagearray.length;
+//     document.getElementById("recordannotation").innerHTML = recordannotation;
+// });
+
+// window.onload = function() {
+//     this.currentimage();
+// };
+
+function loadfeature(){
     $('.imageclass').each(function (index, element) {
         imagearray.push($(element).text());
     });
@@ -52,7 +131,6 @@ $(document).ready(function () {
         labelarray.push($(element).text());
         // alert($(element).text());
     });
-
     $('.labelcolor').each(function (index, element) {
         labelcolorarray.push($(element).text());
         // alert($(element).text());
@@ -115,12 +193,42 @@ $(document).ready(function () {
     }
     eventlistener();
     loadimage();
+    // loadimage().then(currentimage);
     document.getElementById("totalimagenumber").innerHTML = imagearray.length;
     document.getElementById("recordannotation").innerHTML = recordannotation;
-});
+    // secondFunction();
+    // firstAsync();
+    setTimeout(function (){currentimage();},1000);
+    
+}
 
-window.onload = function() {
-    this.currentimage();
+const runCallback = async () => {
+  const result = await loadimage()
+  currentimage();
+  // do something else here after firstFunction completes
+}
+
+async function firstAsync() {
+    let promise = new Promise(() => {
+        loadimage();
+        return "2";
+    });
+
+    // wait until the promise returns us a value
+    let result = await promise; 
+  
+    // "Now it's done!"
+    currentimage();
+};
+
+async function firstFunction(){
+  loadimage();
+  return;
+};
+
+async function secondFunction(){
+  await firstFunction();
+  currentimage();
 };
 
 function eventlistener() {
@@ -157,6 +265,29 @@ function changeimage(i) {
         };
         xhr.send(data);
     }
+}
+
+function limitvalidation(){
+    var limit=3;
+    var imagename = "images1.jpeg";
+    var countoccur = 0;
+    var storeusername = "";
+    for(var i=0;i<imagenamearray.length;i++){
+        if(imagenamearray[i] == imagename){
+            if(storeusername != annotatorarray[i]){
+                if(countoccur < limit){
+                    storeusername = annotatorarray[i];
+                    countoccur++;
+                }else{
+                    var index = imagenamearray.indexOf(imagenamearray[i]);
+                    if(index > -1){
+                        imagenamearray.splice(index, 1);
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 function loadimage() {
@@ -400,7 +531,7 @@ function updateDiv() {
     //       $("#canvasdiv").html(returnedHtml);
     //     });},1000);
     //    alert("refreshed");
-    $("#canvasdiv").load(function () {
+    $("#canvasdiv").on("load",function () {
         alert("Image loaded.");
     });
 }
