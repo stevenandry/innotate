@@ -76,20 +76,20 @@
         </div>
 
         <!-- <div class="container"> -->
-        <div id="mySidepanel" class="row">
+        <div id="mySidepanel" class="row" style="height:100%">
                 <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
                 <div class="col">
-                        <div class="border shadow p-4 bg-white overflow-auto" style="height:280px;width:240px">
-                                <div class="form-group">
+                        <div class="border shadow p-4 bg-white overflow-auto" style="height:220px">
+                                <!-- <div style="display:none" class="form-group">
                                         <h6 for="email">Add Label :</h6>
                                         <input class="form-control input-sm" type="text" placeholder="Label Name" id="labelname">
-                                </div>
+                                </div> -->
                                 <!-- <h6>Add Label</h6>
                                 <input id="labelname" class="input-paint" type="text"> -->
-                                <button id="save" class="btn btn-sm btn-primary" onclick='addlabel()'>Add</button>
-                                <button id="deleteall" class="btn btn-sm btn-danger" onclick='deletelabelall()'>Delete All</button>
-                                <br>
-                                <div id="labellist" class="mt-2">
+                                <!-- <button style="display:none" id="save" class="btn btn-sm btn-primary" onclick='addlabel()'>Add</button>
+                                <button style="display:none" id="deleteall" class="btn btn-sm btn-danger" onclick='deletelabelall()'>Delete All</button>
+                                <br> -->
+                                <div id="labellist">
                                         <table cellpadding='5' cellspacing='5'>
                                                 <!-- <th>Label Name</th>
                                                 <th>Color</th> -->
@@ -97,14 +97,15 @@
                                                 <tr>
                                                         <td class="labelclass">{{item[0]}}</td>
                                                         <td class="labelcolor" style="display:none">{{item[1]}}</td>
-                                                        <td><button class="btn btn-sm mr-4" style='background-color:{{item[1]}}; height: 20px; width: 20px' onclick="changecolor('{{item[0]}}','{{item[1]}}')"></button></td>
-                                                        <td><button class='btn btn-danger btn-sm' id='deletelabelbtn' onclick='deletelabel("{{item[0]}}","{{item[1]}}")'style='background-color:red'>Del</td>
+                                                        <td><button class="btn btn-sm ml-4" style='background-color:{{item[1]}}; height: 20px; width: 20px'></button></td>
+                                                        <td><button class="btn btn-sm btn-outline-primary ml-4" onclick="changecolor('{{item[0]}}','{{item[1]}}')">Use</button></td>
+                                                        <!-- <td><button class='btn btn-danger btn-sm' id='deletelabelbtn' onclick='deletelabel("{{item[0]}}","{{item[1]}}")'style='background-color:red'>Del</td> -->
                                                 </tr>
                                                 {% endfor %}
                                         </table>
                                 </div>
                         </div>
-                        <div class="border shadow p-2 mt-2 bg-white overflow-auto" style="width:240px;height:272px"> 
+                        <div class="border shadow p-2 mt-2 bg-white overflow-auto" style="height:350px"> 
                                 <!-- <h6>Last Annotation</h6>
                                 <div id="annotationdata">
                                 
@@ -113,6 +114,7 @@
                                 </div>
                         </div>
                 </div>
+
                 <div id="canvasdiv" class="col">
                         <div class="border shadow bg-white" style="width:801px;height:560px">
                                 <div id="svgwrapper" style="position:relative;width:800px;height:506px" class="overflow-auto">
@@ -154,7 +156,7 @@
                                         </div>
                                         <div class="col-4 text-right mr-3">
                                                 <div style="display:inline;">
-                                                        <button onclick="location.href = 'resizeconfig';" class="btn btn-sm btn-secondary" type="button">Resize</button>
+                                                        <!-- <button onclick="location.href = 'resizeconfig';" class="btn btn-sm btn-secondary" type="button">Resize</button> -->
                                                         <button id="infobtn" class="btn btn-sm btn-primary popover-test" data-trigger="focus" data-toggle="popover" data-placement="top" title="Image Details" data-content="">
                                                                 Info
                                                         </button>     
