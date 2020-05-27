@@ -2,10 +2,17 @@ import os
 import sys
 import json
 import sqlite3
+import shutil
+import io
+import csv
 from flask import Blueprint, render_template, request, redirect, url_for, flash, Response
 from flask import Flask, redirect, url_for, request, send_file
+from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
+from .models import User
 from flask_login import login_required, current_user
+from datetime import datetime
 import MySQLdb
 # from flask_mysqldb import MySQL > ini gabisa pake connection string langsung, harus lewat app config maka nya
 # gajadi pake
@@ -15,13 +22,26 @@ import MySQLdb
 
 # import MySQLdb > jadi nya dibuat disini deh krn gw gtau cr pake connection ny dr file lain gimana jd ribet
 # from __init__ import mysqlconnection
-
+# mysql = MySQL(main) > kalo pake flask_mysqldb import MySQL
 
 main = Blueprint('main', __name__)
-# mysql = MySQL(main) > kalo pake flask_mysqldb import MySQL
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+DIRECTORY_CONFIG = "D:/Files (Work & Projects)/Campus/Flask/project/static/images"
 
 @main.route('/')
 def index():
+	#Creating Admin when app first runs
+	adminemail = "admin@admin.com"
+	adminname = "admin"
+	adminpassword = "admin"
+	username = User.query.filter_by(name=adminname).first()    
+	if username : #if admin has been created, it will not be created
+		pass
+	else :
+		new_user = User(email=adminemail, name=adminname, password=generate_password_hash(adminpassword, method='sha256'))
+		db.session.add(new_user)
+		db.session.commit()    
+
 	return render_template('index.html')
 
 @main.route('/home')
@@ -59,6 +79,7 @@ def imagez():
 	return render_template('loadimage.html', imagelist=imagelist)#,images=images)
 
 @main.route('/deletelabel', methods=['GET','POST'])
+@login_required
 def delete_label() :
 	if request.method == 'POST':
 		colorvalue = request.form['delete_labelcolor']
@@ -70,6 +91,7 @@ def delete_label() :
 		return 'success~'
 
 @main.route('/deletelabelall', methods=['GET','POST'])
+@login_required
 def delete_label_all() :
 	if request.method == 'POST':
 		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
@@ -80,6 +102,7 @@ def delete_label_all() :
 		return 'success~'
 
 @main.route('/savelabel', methods=['GET','POST'])
+@login_required
 def save_label():
 	if request.method == 'POST':
 		labelname = request.form['save_labelname']
@@ -138,6 +161,7 @@ def resize():
 		return redirect(url_for('main.resize_config'))
 
 @main.route('/dbdelete', methods=['GET', 'POST'])
+@login_required
 def dbdelete():
 	if request.method == 'POST':
 		# del_imagename = request.form['del_imagename']
@@ -331,6 +355,100 @@ def profile():
 		conn.close()
 		
 		return 'success~'
+
+@main.route('/settings')
+@login_required
+def settings():
+	if request.method == 'GET':
+		if current_user.name == 'admin' :
+			images = os.listdir('static/images')
+			imagelist = [file for file in images]
+			conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+			c = conn.cursor()
+			c.execute("SELECT * FROM label")
+			labeldata = c.fetchall()
+			c.execute("SELECT * FROM canvas")
+			canvasdata = c.fetchall()
+
+			return render_template('settings.html',labeldata=labeldata,canvasdata=canvasdata,imagelist=imagelist)
+		else :
+			return 'You do not have permission to access this page!'
+		
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@main.route('/loadimage', methods=['GET', 'POST'])
+@login_required
+def loadimage():
+	if request.method == 'POST':
+		# f = request.files['file']
+		# f.save(os.path.join('D:/Files (Work & Projects)/Campus/Flask/project/static/images', secure_filename(f.filename)))
+		# flash('Succesfully uploaded image.')
+		# return redirect(url_for('main.settings'))	
+		if 'files[]' not in request.files:
+			flash('No file part')
+			return redirect(url_for('main.settings'))
+		files = request.files.getlist('files[]')
+		for file in files:
+			if file and allowed_file(file.filename):
+				filename = secure_filename(file.filename)
+				file.save(os.path.join(DIRECTORY_CONFIG, filename))
+		flash('Files successfully uploaded.')
+		return redirect(url_for('main.settings'))
+		#sourcepath = request.form.get('file-input')
+		#testpath = "D:/Files (Work & Projects)/Campus/Flask/test.jpeg"
+		#print(sourcepath)
+		#destpath = "D:/Files (Work & Projects)/Campus/Flask/project/static/images"
+		#shutil.copy(testpath, destpath)
+		#return 'file uploaded successfully'
+		
+
+@main.route('/download/annotations/csv')
+def download_result():
+	conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+	c = conn.cursor()
+		
+	c.execute("SELECT * FROM coordinates")
+	result = c.fetchall()
+
+	output = io.StringIO()
+	writer = csv.writer(output)
+		
+	line = ['Image Name, Label, StartX, StartY, EndX, EndY, Tool, Color, Annotator']
+	writer.writerow(line)
+
+	for row in result:
+		# line = [str(row['Image']) + ',' + row['Label'] + ',' + row['StartX'] + ',' + row['StartY'] + ',' + row['EndX'] + ',' + row['EndY']
+		# + ',' + row['Tool'] + ',' + row['Color'] + ',' + row['Annotator']]
+		line = [str(row[0]) + ',' + row[1] + ',' + row[2] + ',' + row[3] + ',' + row[4] + ',' + row[5]
+		+ ',' + row[6] + ',' + row[7] + ',' + row[8]]
+		writer.writerow(line)
+	todaydate = datetime.date(datetime.now())
+	convertstrdate = todaydate.strftime("%Y-%b-%d")
+	output.seek(0)
+	c.close() 
+	conn.close()
+	#return 's'
+	return Response(output, mimetype="text/csv", headers={"Content-Disposition":"attachment;filename=data_result_"+convertstrdate+".csv"})
+	
+@main.route('/download/image')
+def download_image():
+	filename = request.args.get('filename')
+	path="static/images/"
+	print(filename)
+	#return send_file(path, as_attachment=True)
+	#return redirect(url_for('main.download', filename = filename))
+	return 'success'
+
+@main.route('/download')
+def download():
+	path = request.args.get('filename')
+	finalpath = "static/images/images1.jpeg"
+	#return send_file(finalpath, as_attachment=True)
+	return render_template('result.html')
 
 @main.route('/testget')
 def testget():
