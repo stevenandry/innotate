@@ -40,6 +40,11 @@
 			<li class="nav-item">
 				<a class="nav-link" href="{{ url_for('main.result') }}">Result</a>
 			</li>
+			{% if current_user.name == 'admin' %}
+			<li class="nav-item">
+				<a class="nav-link" href="{{ url_for('main.settings') }}">Settings</a>
+			</li>
+			{% endif %}
 			<li class="nav-item">
 				<a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
 			</li>

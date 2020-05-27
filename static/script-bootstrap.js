@@ -198,7 +198,7 @@ function loadfeature(){
     document.getElementById("recordannotation").innerHTML = recordannotation;
     // secondFunction();
     // firstAsync();
-    setTimeout(function (){currentimage();},1000);
+    setTimeout(function (){currentimage();},250);
     
 }
 
