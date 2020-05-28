@@ -27,11 +27,11 @@ Preferably, you can change all the datatypes into the ones you prefer (just make
 - Then just type in **"flask run"** and application will be opened at port 5000 @ localhost.
 
 Once you are able to see the login screen, you can start by creating a new user or logging in with the a test account that was pre-created :
-Email     : **testuser@gmail.com**
-Password  : **Test**
+- Email     : **testuser@gmail.com**
+- Password  : **Test**
 
 An Admin account was also precreated using this credentials :
-Email     : **admin@admin.com**
-Password  : **admin**
+- Email     : **admin@admin.com**
+- Password  : **admin**
 
 Log-in using the admin account and visit the **Settings** page to start loading images, create labels, and configure canvas size. Then you can start annotating through the **Annotate** page.
