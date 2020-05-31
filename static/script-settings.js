@@ -1,6 +1,6 @@
 var colorList = ["#EE0000", "#334CFF", "#52FF6D", "#AF5AFF", "#FF5A5A", "#FF7ECC", "#00C5FF", "#7EF5FF", "#FBFF00", "#FFBD00"];
 var colorListNew = ["#EE0000", "#334CFF", "#52FF6D", "#AF5AFF", "#FF5A5A", "#FF7ECC", "#00C5FF", "#7EF5FF", "#FBFF00", "#FFBD00"];
-var labelarray = [], labelcolorarray = [], imagearray = [];
+var labelarray = [], labelcolorarray = [], imagearray = [], annotatorarray = [], annotatorunique = [];
 var modaltitle, modalbody, modalfooter;
 
 $(document).ready(function () {
@@ -13,6 +13,10 @@ $(document).ready(function () {
 	});
 	$('.labelcolor').each(function (index, element) {
 		labelcolorarray.push($(element).text());
+		// alert($(element).text());
+	});
+	$('.annotator').each(function (index, element) {
+		annotatorarray.push($(element).text());
 		// alert($(element).text());
 	});
 
@@ -29,9 +33,9 @@ $(document).ready(function () {
 		}
 	}
 	//downloadtest();
+	loadannotator();
 	document.getElementById("totalimagenumber").innerHTML = imagearray.length;
 });
-
 
 function addlabel() {
 	var labeltrigger = false;
@@ -131,16 +135,16 @@ function viewimage() {
 	modaltitle = 'View Image';
 	modalbody = '<ul>';
 	for (var i = 0; i < imagearray.length; i++) {
-		modalbody += '<li >' + imagearray[i] + '</li><button onclick="clickedimage(\''+imagearray[i]+'\')" class="btn btn-sm btn-primary">View</button>';
+		modalbody += '<li >' + imagearray[i] + '</li><button onclick="clickedimage(\'' + imagearray[i] + '\')" class="btn btn-sm btn-primary">View</button>';
 	}
 	modalbody += '</ul>';
 	modalfooter = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
 	callmodal();
 }
 
-function clickedimage(filename){
+function clickedimage(filename) {
 	modaltitle = filename;
-	modalbody = '<img src="static/images/'+filename+'" style="width:450px;height:400px">';
+	modalbody = '<img src="static/images/' + filename + '" style="width:450px;height:400px">';
 	modalfooter = '<button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>';
 	document.getElementById("ModalLabel2").innerHTML = modaltitle;
 	document.getElementById("modalBody2").innerHTML = modalbody;
@@ -157,40 +161,108 @@ function loadimage() {
 	//inputNode.value = fileInput.value.replace("C:\\fakepath\\", "");
 	alert(test);
 	//$.post("/loadimage", { sourcepath: path });
-	setTimeout(function (){location.reload},250);
+	setTimeout(function () { location.reload }, 250);
 }
 
-function createdownloadlist(){
+function createdownloadlist() {
 	modaltitle = 'Download Image';
 	//modalbody = '<h6>Choose which image to download : </h6>'
 	modalbody = '<ul>';
 	for (var i = 0; i < imagearray.length; i++) {
-		modalbody += '<li class="mr-2" style="display:inline">- ' + imagearray[i] + '</li><button onclick="downloadimage(\''+imagearray[i]+'\')" class="btn btn-sm btn-success mt-2">Download</button><br>';
+		modalbody += '<li class="mr-2" style="display:inline">- ' + imagearray[i] + '</li><button onclick="downloadimage(\'' + imagearray[i] + '\')" class="btn btn-sm btn-success mt-2">Download</button><br>';
 	}
 	modalbody += '</ul>';
 	modalfooter = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
 	callmodal();
 }
 
-function downloadimage(image_name){
+function downloadimage(image_name) {
 	//alert("Hello");
 	$.post("/download/image", { filename: image_name });
 	//alert("Downloading...");
 }
 
-function downloadtest(){
+function downloadtest() {
 	modaltitle = 'Download Image';
 	//modalbody = '<h6>Choose which image to download : </h6>'
 	modalbody = '<ul>';
 	for (var i = 0; i < imagearray.length; i++) {
-		modalbody += '<a href="{{ url_for(\'.download_image\', filename=\''+imagearray[i]+'\' ) }}"><li class="mr-2" style="display:inline">- ' + imagearray[i] + '</li>';
+		modalbody += '<a href="{{ url_for(\'.download_image\', filename=\'' + imagearray[i] + '\' ) }}"><li class="mr-2" style="display:inline">- ' + imagearray[i] + '</li>';
 	}
 	modalbody += '</ul>';
 	modalfooter = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
 	document.getElementById("collapseBody").innerHTML = modalbody;
 }
 
-function viewallstatistics(){
-	modaltitle="View all statistics";
-	modalbody="";
+function viewallstatistics() {
+	modaltitle = "View all statistics";
+	modalbody = "";
+}
+
+function loadannotator() {
+	let annotatorunique = [...new Set(annotatorarray)];
+	var annotator = "";
+	for (var i = 0; i < annotatorunique.length; i++) {
+		annotator += "<option>" + annotatorunique[i] + "</option>";
+	}
+	document.getElementById("deleteUserSelection").innerHTML = annotator;
+}
+
+function deleteuservalidation() {
+	var selected = $('#deleteUserSelection').val();
+	if (selected == "") {
+		modalbody = "Please select a user!";
+		warningmodal();
+		callmodal();
+	} else {
+		modaltitle = "Please Confirm Action";
+		modalbody = "Are you sure you want to delete annotations from " + selected + " ? this action CANNOT be undone.";
+		modalfooter = '<button onclick="deleteuserdata()" class="btn btn-danger">Delete</button>'
+			+ '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>';
+		callmodal();
+	}
+}
+
+function deleteallvalidation() {
+	var selected = $('#deleteUserSelection').val();
+	if (annotatorarray.length == 0) {
+		modalbody = "No annotations were found!";
+		warningmodal();
+		callmodal();
+	} else {
+		modaltitle = "Please Confirm Action";
+		modalbody = "Are you sure you want to delete all annotations? this action CANNOT be undone.";
+		modalfooter = '<a href="delete/alldata"><button type="button" class="btn btn-danger">Delete All</button></a>'
+			+ '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>';
+		callmodal();
+	}
+}
+
+function deleteuserdata() {
+	var selected = ''+$('#deleteUserSelection').val();+'';
+	// $.post("/delete/userdata", { annotator_name : ""+selected+"" });
+	var container = selected.split(',');
+	var selectedArray = [];
+	for(var i=0;i<container.length;i++){
+		selectedArray.push({name : container[i]});
+	}
+	//alert(selectedArray);
+	var xhr = new XMLHttpRequest();
+	var url = "/delete/userdata";
+	
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+			location.reload();
+		}
+	};
+	var data = JSON.stringify(selectedArray);
+	//alert(data);
+	xhr.send(data);
+
+}
+
+function deletealldata() {
+
 }

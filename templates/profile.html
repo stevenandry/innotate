@@ -1,8 +1,80 @@
-{% extends "base.html" %}
-
+{% extends "base-bootstrap.html" %}
 {% block content %}
-<h1 class="title">
-  Welcome, {{ name }}!
-</h1>
-<h2>Welcome to your dashboard</h2>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+</head>
+<body>
+	<div class="modal fade" id="ModalAlert" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="ModalLabel"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="modalBody">
+				</div>
+				<div class="modal-footer" id="modalFooter">
+				</div>
+			</div>
+		</div>
+	</div>
+	<h6 class="display-4 mb-3 container" style="font-size: 40px;">Profile</h6>
+
+	<div class="container">
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+		{% if messages[0] == 'Failed to update password! Please try again later.' or messages[0] == 'Password cant be empty!' or messages[0] == 'Password is not the same! Please try again.' %}
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ messages[0] }}
+		</div>
+		{% else %}
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			{{ messages[0] }}
+		</div>
+		{% endif %}
+		{% endif %}
+		{% endwith %}
+	</div>
+
+	<div class="container border shadow p-4">
+		<h6>Email 		: {{email}}</h6>
+		<h6>Username	: {{name}}</h6>
+		<h6>Change Password</h6>
+		<form class="form-inline mb-3" role="form" method="POST" action="/update/password">
+			<div class="form-group row container-fluid">
+				<label for="imagesearchbar" class="mr-2">New Password</label>
+				<input class="form-control input-sm" type="password" placeholder="Input Password" id="password" name="password">
+			</div>
+			<div class="form-group row container-fluid mt-2">
+				<label for="imagesearchbar" class="mr-2">Repeat Password</label>
+				<input class="form-control input-sm" type="password" placeholder="Repeat Password" id="rptpassword" name="rptpassword">
+			</div>
+			<button class="btn btn-primary btn-sm mt-2">Change Password</button>
+		</form>
+		
+	</div>
+
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src=" {{ url_for('static', filename='script-profile.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> 
+</body>
+</html>
 {% endblock %}

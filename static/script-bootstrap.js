@@ -43,85 +43,8 @@ var annotatecheckbox = document.getElementById("annotatecheckbox");
 var annotationindex = 0, annotationid = 0, getlastindex = 0, totalprevannotation = 0, cursor;
 var svg_data = [], svg_rectdata = [], circlecount = 0, rectcount = 0;
 const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-
-// $(document).ready(function () {
-//     $('.imageclass').each(function (index, element) {
-//         imagearray.push($(element).text());
-//     });
-//     $('.labelclass').each(function (index, element) {
-//         labelarray.push($(element).text());
-//         // alert($(element).text());
-//     });
-
-//     $('.labelcolor').each(function (index, element) {
-//         labelcolorarray.push($(element).text());
-//         // alert($(element).text());
-//     });
-//     $('.imagenameclass').each(function (index, element) {
-//         imagenamearray.push($(element).text());
-//         //alert($(element).text());
-//     });
-//     $('.imagelabelclass').each(function (index, element) {
-//         imagelabelarray.push($(element).text());
-//         //alert($(element).text());
-//     });
-//     $('.startxclass').each(function (index, element) {
-//         startxarray.push($(element).text());
-//         //alert($(element).text());
-//     });
-//     $('.startyclass').each(function (index, element) {
-//         startyarray.push($(element).text());
-//         //alert($(element).text());
-//     });
-//     $('.endxclass').each(function (index, element) {
-//         endxarray.push($(element).text());
-//         //alert($(element).text());
-//     });
-//     $('.endyclass').each(function (index, element) {
-//         endyarray.push($(element).text());
-//         //alert($(element).text());
-//     });
-//     $('.toolclass').each(function (index, element) {
-//         toolarray.push($(element).text());
-//         //alert($(element).text());
-//     });
-//     $('.colorclass').each(function (index, element) {
-//         imagecolorarray.push($(element).text());
-//         //alert($(element).text());
-//     });
-//     $('.annotatorclass').each(function (index, element) {
-//         annotatorarray.push($(element).text());
-//         //alert($(element).text());
-//     });
-//     // $('.annotateindexclass').each(function (index, element) {
-//     //     annotateindexarray.push($(element).text());
-//     //     //alert($(element).text());
-//     // });
-//     $('.cursor').each(function (index, element) {
-//         cursor = $(element).text();
-//         //alert($(element).text());
-//     });
-//     $('[data-toggle="popover"]').popover();
-
-//     for (var i = 0; i < colorList.length; i++) {
-//         for (var y = 0; y < labelcolorarray.length; y++) {
-//             if (colorList[i] == labelcolorarray[y]) {
-//                 var index = colorListNew.indexOf(colorList[i]);
-//                 if (index > -1) {
-//                     colorListNew.splice(index, 1);
-//                 }
-//             }
-//         }
-//     }
-//     eventlistener();
-//     loadimage();
-//     document.getElementById("totalimagenumber").innerHTML = imagearray.length;
-//     document.getElementById("recordannotation").innerHTML = recordannotation;
-// });
-
-// window.onload = function() {
-//     this.currentimage();
-// };
+var deldbarray = [];
+var svgdataarray = [];
 
 function loadfeature(){
     $('.imageclass').each(function (index, element) {
@@ -129,55 +52,39 @@ function loadfeature(){
     });
     $('.labelclass').each(function (index, element) {
         labelarray.push($(element).text());
-        // alert($(element).text());
     });
     $('.labelcolor').each(function (index, element) {
         labelcolorarray.push($(element).text());
-        // alert($(element).text());
     });
     $('.imagenameclass').each(function (index, element) {
         imagenamearray.push($(element).text());
-        //alert($(element).text());
     });
     $('.imagelabelclass').each(function (index, element) {
         imagelabelarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.startxclass').each(function (index, element) {
         startxarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.startyclass').each(function (index, element) {
         startyarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.endxclass').each(function (index, element) {
         endxarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.endyclass').each(function (index, element) {
         endyarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.toolclass').each(function (index, element) {
         toolarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.colorclass').each(function (index, element) {
         imagecolorarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.annotatorclass').each(function (index, element) {
         annotatorarray.push($(element).text());
-        //alert($(element).text());
     });
-    // $('.annotateindexclass').each(function (index, element) {
-    //     annotateindexarray.push($(element).text());
-    //     //alert($(element).text());
-    // });
     $('.cursor').each(function (index, element) {
         cursor = $(element).text();
-        //alert($(element).text());
     });
     $('[data-toggle="popover"]').popover();
 
@@ -193,43 +100,11 @@ function loadfeature(){
     }
     eventlistener();
     loadimage();
-    // loadimage().then(currentimage);
     document.getElementById("totalimagenumber").innerHTML = imagearray.length;
     document.getElementById("recordannotation").innerHTML = recordannotation;
-    // secondFunction();
-    // firstAsync();
-    setTimeout(function (){currentimage();},250);
+    setTimeout(function (){currentimage();},300);
     
 }
-
-const runCallback = async () => {
-  const result = await loadimage()
-  currentimage();
-  // do something else here after firstFunction completes
-}
-
-async function firstAsync() {
-    let promise = new Promise(() => {
-        loadimage();
-        return "2";
-    });
-
-    // wait until the promise returns us a value
-    let result = await promise; 
-  
-    // "Now it's done!"
-    currentimage();
-};
-
-async function firstFunction(){
-  loadimage();
-  return;
-};
-
-async function secondFunction(){
-  await firstFunction();
-  currentimage();
-};
 
 function eventlistener() {
     svg.addEventListener('mousemove', function (e) {
@@ -315,19 +190,14 @@ function nextimagevalidation() {
     }
 }
 
-//THINGS TO IMPROVE :
-// CONVERT X Y NYA BISA PAS DIA MAU DI PRINT, BIAR KT BISA MASUKIN X Y ASLI LANGSUNG DARI PREVSVG_DATA.
-// JADI NYA GAPERLU CONVERT X Y ABIS ITU BALIKIN CONVERT LAGI PAS MASUKIN KE DB TEMP, jd lebih pendek dan simple code nya
-//sama ganti data yg masuk ke db di rect jadi width and height dr endx and endy ( kalo emg masi beneficial for ur purpose)
 function printprevdot() {
     for (var i = 0; i < prevsvg_data.length; i++) {
         ++circlecount;
         ++recordannotation;
-        // var convertstartx = myantns[i].startx * canvas.width / imgrealwidth;
-        // var convertstarty = myantns[i].starty * canvas.height / imgrealheight;
+        
         curX = prevsvg_data[i].startx * canvas.width / imgrealwidth;
         curY = prevsvg_data[i].starty * canvas.height / imgrealheight;
-        //alert(curX + " " + curY);
+        
         delbtnposX = curX + 3;
         delbtnposY = curY - 10;
         var svgdot = '<circle id=circle' + circlecount + ' cx="' + curX + '" cy="' + curY + '" r="' + defaultlinewidth + '" fill="' + prevsvg_data[i].imagecolor + '" onmouseover="showelements(' + circlecount + ')" onmouseout="hidelements(' + circlecount + ')" />';
@@ -401,14 +271,14 @@ function printprevrect() {
             starty: pushstarty, endx: pushendx, endy: pushendy, tool: pushtool, color: pushcolor,
             index: rectcount, annotator: username//, annotationindex: annotationindex, annotationid: annotationid
         });
-        // alert("success rect");
+       
     }
 }
 
 function printotherannotations() {
     document.getElementById("prevannotationdiv").style.display = "inline";
     document.getElementById("prevannotator").innerHTML = printotherantns[0].imageannotator;
-    //alert(printotherantns[0].imageannotator);
+    
     for (var i = 0; i < printotherantns.length; i++) {
         ++totalprevannotation;
         if (printotherantns[i].tool == "Dot Tool") {
@@ -449,13 +319,6 @@ function currentimage() {
     infobtn.setAttributeNS(null, 'data-content', datacontent);
     document.getElementById("imagenumber").innerHTML = cursor;
 
-    //GETTING LAST OVERALL ANNOTATION INDEX ON CURRENT IMAGE
-    // for (var i = 0; i < imagenamearray.length; i++) {
-    //     if (imagenamearray[i] == pushimagename) {
-    //         annotationindex = annotateindexarray[i];
-    //     }
-    // }
-
     //SORT ALL YOUR ANNOTATIONS INTO 1 ARRAY
     for (var i = 0; i < annotatorarray.length; i++) {
         //YOUR ANNOTATIONS
@@ -481,7 +344,6 @@ function currentimage() {
         //IF EXISTS, PUSH INTO DIFFERENT ARRAY AND PREPARE FOR PRINTING THE ANNOTATIONS
         if (myantns[i].imagename == pushimagename) {
             if (myantns[i].imagetool == 'Dot Tool') {
-                //alert(myantns[i].startx + " " + myantns[i].starty);
                 prevsvg_data.push({
                     image_name: myantns[i].imagename, label: myantns[i].imagelabel, startx: myantns[i].startx,
                     starty: myantns[i].starty, endx: myantns[i].endx, endy: myantns[i].endy, tool: myantns[i].imagetool, imagecolor: myantns[i].imagecolor
@@ -498,17 +360,14 @@ function currentimage() {
     if (otherantns.length > 0) {
         var temp = otherantns.length - 1;
         var otherlastannotator = otherantns[temp].imageannotator;
-        //alert("Most recent annotator on this image: " + otherlastannotator);
     }
     for (var i = 0; i < otherantns.length; i++) {
-        // if(otherantns[i].imagename == pushimagename){
         if (otherantns[i].imageannotator == otherlastannotator) {
             printotherantns.push({
                 image_name: otherantns[i].imagename, imagelabel: otherantns[i].imagelabel, startx: otherantns[i].startx,
                 starty: otherantns[i].starty, endx: otherantns[i].endx, endy: otherantns[i].endy, tool: otherantns[i].imagetool, imagecolor: otherantns[i].imagecolor, imageannotator: otherantns[i].imageannotator
             });
         }
-        //}
     }
     //PRINT ALL PREVIOUS ANNOTATIONS IF EXISTED
     if (prevsvg_data.length > 0) {
@@ -519,21 +378,40 @@ function currentimage() {
     if (printotherantns.length > 0) {
         printotherannotations();
     }
-    // annotationindex = ++annotationindex;
-    // annotationid = pushimagename + annotationindex;
 }
 
-function updateDiv() {
-    $("#canvasdiv").load(window.location.href + " #canvasdiv");
-    //alert("refreshed");
-    //     setInterval(function(){$.get("/profile", {},
-    //       function (returnedHtml) {
-    //       $("#canvasdiv").html(returnedHtml);
-    //     });},1000);
-    //    alert("refreshed");
-    $("#canvasdiv").on("load",function () {
-        alert("Image loaded.");
-    });
+function combinedbdelete(){
+    if(deldbdot.length > 0){
+        for(var i=0;i<deldbdot.length;i++){
+             deldbarray.push({ image_name: deldbdot[i].image_name, startx: deldbdot[i].startx, starty: deldbdot[i].starty });
+        }
+    }
+    if(deldbrect.length > 0){
+         for(var i=0;i<deldbrect.length;i++){
+             deldbarray.push({ image_name: deldbrect[i].image_name, startx: deldbrect[i].startx, starty: deldbrect[i].starty });
+        }
+    }
+}
+
+function combinesvgdata(){
+    if(svg_data.length > 0){
+        for(var i=0;i<svg_data.length;i++){
+             svgdataarray.push({
+                    image_name: svg_data[i].image_name, label: svg_data[i].label, startx: svg_data[i].startx,
+                    starty: svg_data[i].starty, endx: svg_data[i].endx, endy: svg_data[i].endy, tool: svg_data[i].tool, color: svg_data[i].color,
+                    annotator: svg_data[i].annotator//, annotationindex: annotationindex, annotationid: annotationid
+                });
+        }
+    }
+    if(svg_rectdata.length > 0){
+        for(var i=0;i<svg_rectdata.length;i++){
+            svgdataarray.push({
+                    image_name: svg_rectdata[i].image_name, label: svg_rectdata[i].label, startx: svg_rectdata[i].startx,
+                    starty: svg_rectdata[i].starty, endx: svg_rectdata[i].endx, endy: svg_rectdata[i].endy, tool: svg_rectdata[i].tool, color: svg_rectdata[i].color,
+                    annotator: svg_rectdata[i].annotator//, annotationindex: annotationindex, annotationid: annotationid
+                });
+        }
+    }
 }
 
 function cursornextimage() {
@@ -541,47 +419,26 @@ function cursornextimage() {
     var container = cursor;
     var updatecursor = ++container;
     var xhr = new XMLHttpRequest();
-    if (deldbdot.length > 0) {
-
+    combinedbdelete();
+    combinesvgdata();
+    if (deldbarray.length > 0) {
         var url = "/dbdelete";
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
-      
-        var data = JSON.stringify(deldbdot);
-        //var data = JSON.stringify({ "email": "hey@mail.com", "password": "101010" });
+        var data = JSON.stringify(deldbarray);
         xhr.send(data);
     }
-    if (deldbrect.length > 0) {
-        //var xhr = new XMLHttpRequest();
-        var url = "/dbdelete";
+    if (svgdataarray.length > 0) {
+        var url = "/annotation";
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
-        var data = JSON.stringify(deldbrect);
+        var data = JSON.stringify(svgdataarray);
         xhr.send(data);
     }
-    if (svg_rectdata.length > 0) {
-        //var xhr = new XMLHttpRequest();
-        var url = "/profile";
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        var data = JSON.stringify(svg_rectdata);
-        xhr.send(data);
-
-    }if (svg_data.length > 0) {
-        //var xhr = new XMLHttpRequest();
-        var url = "/profile";
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        var data = JSON.stringify(svg_data);
-        xhr.send(data);
-    }
-    //$.post("/updatecursor", { update_cursor: updatecursor });
-    //setTimeout(() => { location.reload(); }, 1000);
     if (cursor != imagearray.length) {
         var xhrc = new XMLHttpRequest();
         var url = "/updatecursor";
         var data = JSON.stringify([{ "annotator": ""+username+"", "cursor": ""+updatecursor+"" }]);
-        //alert(data);
         xhrc.open("POST", url, true);
         xhrc.setRequestHeader("Content-Type", "application/json");
         xhrc.onreadystatechange = function () {
@@ -681,9 +538,6 @@ function resetvalidation() {
 }
 
 function reset() {
-    //ctx.clearRect(0, 0, canvas.width, canvas.height);
-    //ctx.drawImage(drawimage, 0, 0, canvas.width, canvas.height);
-    //canvas_data = { "pencil": [], "rectangle": [] }
     for (var i = 0; i < tempdot.length; i++) {
         deldbdot.push({ image_name: tempdot[i].image_name, startx: tempdot[i].startx, starty: tempdot[i].starty });
     }
@@ -728,10 +582,6 @@ function rectelement() {
             modalbody = "Please choose a color based on the label!";
             warningmodal();
             callmodal();
-        // } else if (dottoolactive == true) {
-        //     modalbody = "Pencil tool is active. Please refresh the page to change tools!";
-        //     warningmodal();
-        //     callmodal();
         } else {
             prevX = e.offsetX;
             prevY = e.offsetY;
@@ -742,11 +592,10 @@ function rectelement() {
     svg.onmousemove = function (e) {
         x.style.display = "inline";
         if (hold) {
-            //ctx.putImageData(img, 0, 0);
+            
             curX = e.offsetX - prevX;
             curY = e.offsetY - prevY;
-            //ctx.strokeRect(prevX, prevY, curX, curY);
-
+            
             rect.setAttributeNS(null, 'x', prevX);
             rect.setAttributeNS(null, 'y', prevY);
             rect.setAttributeNS(null, 'width', curX);
@@ -756,8 +605,6 @@ function rectelement() {
             rect.setAttributeNS(null, 'stroke-width', 5);
 
             svg.appendChild(rect);
-            //document.getElementById("svgovercanvas").innerHTML = svgrect;
-            // svgrectfinal = svgrect;
         }
 
     }
@@ -788,13 +635,10 @@ function rectelement() {
         svg.removeChild(rect);
         var svgrect = '<rect id=rectangle' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" fill="none" stroke="' + ctx.fillStyle + '" stroke-width="' + defaultlinewidth + '"/>';
         var svgrectborder = '<rect id=rectborder' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" style="fill:none;stroke-width:' + defaultlinewidth + ';stroke:#b30000;display:none" />';
-        //var svgrectdel = '<circle style="display:none" id=rectdel' + rectcount +' cx="' + realendx + '" cy="' + realendy + '" r="10" fill="black" onclick="removerect(' + rectcount + ')" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" />';
         var svgrectdel = '<image id=rectdel' + rectcount + ' href="static/pngguru.png" x="' + compensatedx + '" y="' + compensatedy + '" height="25px" width="25px" style="display:none;cursor:pointer" onclick="removerect(' + rectcount + ')" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" />'
                 + '<rect id=rectfill'+rectcount+' x="' + prevX + '" y="' + fillY + '" width="'+fillWidth+'" height="10" fill="'+ctx.fillStyle+'" stroke="' + ctx.fillStyle + '" stroke-width="' + defaultlinewidth + '"/>'
                 + '<text id=recttext' + rectcount + ' x="' + prevX + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + activelabel + '</text>';
 
-        //alert(svgrect);
-        //alert(svgrectborder);
         document.getElementById("svgovercanvas").innerHTML += svgrect;
         document.getElementById("svgovercanvas").innerHTML += svgrectborder;
         document.getElementById("svgovercanvas").innerHTML += svgrectdel;
@@ -824,9 +668,7 @@ function rectelement() {
                 });
             }
         }
-        // for(var i=0;i<svg_rectdata.length;i++){
-        //     alert(svg_rectdata[i].image_name+" "+svg_rectdata[i].label+" "+svg_rectdata[i].startx+" "+svg_rectdata[i].starty+" "+svg_rectdata[i].endx+" "+svg_rectdata[i].endy+" "+svg_rectdata[i].tool+" "+svg_rectdata[i].color+"||");
-        // }
+
         var arraylength = svg_data.length;
         var data = '<h6 style="font-size:13px">Image Name : <font color="red">' + pushimagename + '</font></h6>'
             + '<h6 style="font-size:13px"> X :  <font color="red">' + finalstartxcalc + '</font></h6>'
@@ -850,11 +692,10 @@ function removerect(rectnum) {
     element3.parentNode.removeChild(element3);
     element4.parentNode.removeChild(element4);
     element5.parentNode.removeChild(element5);
-    // svg.removeAttributeNS(element);
+    
     for (var i = 0; i < temprect.length; i++) { // FOR DELETING DOT FROM DATABASE IF ANY
         if (rectnum == temprect[i].index) {
             deldbrect.push({ image_name: temprect[i].image_name, startx: temprect[i].startx, starty: temprect[i].starty });
-            // alert(temprect[i].startx + " " + temprect[i].starty);
         }
     }
 
@@ -863,9 +704,6 @@ function removerect(rectnum) {
             svg_rectdata.splice(num, 1);
         }
     }
-    // for(var i=0;i<svg_rectdata.length;i++){
-    //     alert(svg_rectdata[i].image_name+" "+svg_rectdata[i].label+" "+svg_rectdata[i].startx+" "+svg_rectdata[i].starty+" "+svg_rectdata[i].endx+" "+svg_rectdata[i].endy+" "+svg_rectdata[i].tool+" "+svg_rectdata[i].color+"||");
-    // }
 
     --recordannotation;
     document.getElementById("recordannotation").innerHTML = recordannotation;
@@ -927,9 +765,6 @@ function hidelements(circlenum) {
 }
 
 function delelements(circlenum) {
-    //var element = document.getElementById("circle"+circlenum);
-    //element.parentNode.removeChild(element);
-    //element.remove();
     $("#circle" + circlenum).remove();
     $("#circleborder" + circlenum).remove();
     $("#circledel" + circlenum).remove();
@@ -952,23 +787,19 @@ function dotelement() {
             modalbody = "Please choose a color based on the label!";
             warningmodal();
             callmodal();
-        // } else if (rectoolactive == true) {
-        //     modalbody = "Rectangle tool is currently active. Please refresh the page to change tools!";
-        //     warningmodal();
-        //     callmodal();
 
         } else {
             ++circlecount;
             curX = e.offsetX;
             curY = e.offsetY;
-            //alert(curX + " " + curY);
+            
             delbtnposX = curX + 3;
             delbtnposY = curY - 10;
-            // svgdot = '<circle id=circle'+circlecount+' cx="'+ curX  +'" cy="'+  curY  +'" r="'+ defaultlinewidth  +'" fill="'+ ctx.fillStyle +'" onclick="removecircle('+ circlecount +')" />';
+            
             var svgdot = '<circle id=circle' + circlecount + ' cx="' + curX + '" cy="' + curY + '" r="' + defaultlinewidth + '" fill="' + ctx.fillStyle + '" onmouseover="showelements(' + circlecount + ')" onmouseout="hidelements(' + circlecount + ')" />';
             var dotborder = '<circle style="display:none;z-index:2" id=circleborder' + circlecount + ' cx="' + curX + '" cy="' + curY + '" r="' + defaultlinewidth + '" fill="none" stroke=#b30000 stroke-width="4" />';
-            //var dotdel = '<circle style="display:none" id=circledel' + circlecount + ' cx="' + delbtnposX + '" cy="' + delbtnposY + '" r="10" fill="black" onclick="removecircle(' + circlecount + ')" onmouseover="showelements(' + circlecount + ')" onmouseout="hidelements(' + circlecount + ')" />';
             var dotdel = '<image id=circledel' + circlecount + ' href="static/pngguru.png" x="' + delbtnposX + '" y="' + delbtnposY + '" height="25px" width="25px" style="display:none;cursor:pointer" onclick="removecircle(' + circlecount + ')" onmouseover="showelements(' + circlecount + ')" onmouseout="hidelements(' + circlecount + ')" />'
+            
             document.getElementById("svgovercanvas").innerHTML += svgdot; //append method using +=
             document.getElementById("svgovercanvas").innerHTML += dotborder;
             document.getElementById("svgovercanvas").innerHTML += dotdel;
@@ -977,8 +808,7 @@ function dotelement() {
             var ycalculation = imgrealheight * curY;
             var finalxcalculation = xcalculation / width;
             var finalycalculation = ycalculation / height;
-            // alert(finalxcalculation + " " + finalycalculation);
-            // alert(Math.round(finalxcalculation) + " "  + Math.round(finalycalculation));
+            
             for (var num = 0; num < labelcolorarray.length; num++) {
                 if (ctx.fillStyle.toUpperCase() == labelcolorarray[num].toUpperCase()) {
                     pushlabel = labelarray[num];
@@ -995,10 +825,7 @@ function dotelement() {
                     });
                 }
             }
-            //PRINT THE WHOLE ARRAY FOR SEEING RESULT
-            // for(var i=0;i<svg_data.length;i++){
-            //     alert(svg_data[i].image_name+" "+svg_data[i].label+" "+svg_data[i].startx+" "+svg_data[i].starty+" "+svg_data[i].endx+" "+svg_data[i].endy+" "+svg_data[i].tool+" "+svg_data[i].color+"||");
-            // }
+            
             var arraylength = svg_data.length;
             var data = '<h6 style="font-size:13px">Image Name : <font color="red">' + pushimagename + '</font></h6>'
                 + '<h6 style="font-size:13px"> X :  <font color="red">' + finalxcalculation + '</font></h6>'
@@ -1018,7 +845,7 @@ function removecircle(circlenum) {
     element.parentNode.removeChild(element);
     element2.parentNode.removeChild(element2);
     element3.parentNode.removeChild(element3);
-    // alert(circlenum);
+    
     //compare the number passed with the index column. index column has the same number with the one that 
     //was assigned to the button on creation.
     for (var i = 0; i < tempdot.length; i++) { // FOR DELETING DOT FROM DATABASE IF ANY
@@ -1034,13 +861,11 @@ function removecircle(circlenum) {
         }
     }
 
-    //PRINT THE WHOLE ARRAY FOR SEEING RESULT
-    // for(var i=0;i<svg_data.length;i++){
-    //     alert(svg_data[i].image_name+" "+svg_data[i].label+" "+svg_data[i].startx+" "+svg_data[i].starty+" "+svg_data[i].endx+" "+svg_data[i].endy+" "+svg_data[i].tool+" "+svg_data[i].color+"||");
-    // }
     --recordannotation;
     document.getElementById("recordannotation").innerHTML = recordannotation;
-    dotelement();
+    if (dottoolactive == true) {
+        dotelement();
+    }
 }
 //==================================================================
 
@@ -1050,33 +875,6 @@ function getannotationdata() {
     } else if (dottoolactive == true) {
 
     }
-}
-
-function savepost() {
-    $.post("/profile", { save_imagename: pushimagename, save_label: pushlabel, save_startx: pushstartx, save_starty: pushstarty, save_endx: pushendx, save_endy: pushendy, save_tool: pushtool, save_color: pushcolor });
-}
-
-function savedot() {
-    $.post("/profile", { save_label: pushlabel, save_startx: pushstartx, save_starty: pushstarty, save_endx: pushendx, save_endy: pushendy, save_tool: pushtool, save_color: pushcolor });
-}
-
-function save() {
-    var filename = document.getElementById("fname").value;
-    var data = JSON.stringify(canvas_data);
-    var image = canvas.toDataURL();
-
-    if (filename == "") {
-        alert("Image name must be filled!");
-
-    } else {
-
-        $.post("/profile", { save_fname: filename, save_cdata: data, save_image: image });
-        alert(filename + " saved");
-    }
-    // else {
-    //     $.post("/"+imagename.value,{imagename:imagename.value, string:JSON.stringify(data)});
-    // 	alert("saved");
-    // }
 }
 
 function addlabel() {
@@ -1129,49 +927,6 @@ function addlabel() {
     }
 }
 
-//BACKUP OLD ADDLABEL FUNCTION
-// function addlabel() {
-//     var labeltrigger = false;
-//     var labelname = document.getElementById("labelname").value;
-
-//     if (labelname == "") {
-//         modalbody = "Label name must be filled!"
-//         warningmodal();
-//         callmodal();
-//     } else if (labelarray.length >= 10) {
-//         modalbody = "Maximum label limit reached!"
-//         warningmodal();
-//         callmodal();
-//     } else {
-//         for (var y = 0; y < labelarray.length; y++) {
-//             if (labelname == labelarray[y].label) {
-//                 modalbody = "Label already exists!";
-//                 warningmodal();
-//                 callmodal();
-//                 labeltrigger = true;
-//             }
-//         }
-//         if (labeltrigger == false) {
-//             count2++;
-
-//             // for(var i = 0;i<labelarray.length;i++){
-//             //     ++count2;
-//             // }
-//             var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-
-//             // for(var i = 0;i<10;i++){
-//             // var colorIncrement = '#EE000' + i;
-//             // }
-//             labelarray.push({ label: labelname, value: colorList[count2] });
-//             // colorList.pop();
-
-//             labelname = "";
-//             document.getElementById("labelname").value = labelname;
-//             printlabelarray();
-//         }
-//     }
-// }
-
 function deletelabelall() {
     if (labelarray.length == 0) {
         modalbody = "No labels to delete!";
@@ -1218,29 +973,10 @@ function changecolor(labelname, labelcolor) {
     colorchanged = true;
     labeling.style.color = labelcolor;
 
-    // for(var num = 0;num<labelarray.length;num++){
-    //     if(i == labelcolorarray[num]){
-    //         var changecurrentactivelabel = " " + labelarray[num];
-    //         document.getElementById("currentlabel").innerHTML = changecurrentactivelabel;
-    //         alert(labelcolorarray[num] + i + labelarray[num]);
-    //     }
-    // }
+   
     var changecurrentactivelabel = " " + labelname;
     document.getElementById("currentlabel").innerHTML = changecurrentactivelabel;
 }
-
-//BACKUP OLD CHANGECOLOR before save label to db
-// function changecolor(i) {
-//     color(labelarray[i].value);
-//     var labeling = document.getElementById("currentlabel");
-//     var labeling2 = document.getElementById("currentlabel2");
-//     labeling2.style.display = "inline";
-
-//     labeling.style.color = labelarray[i].value;
-
-//     var changecurrentactivelabel = " " + labelarray[i].label;
-//     document.getElementById("currentlabel").innerHTML = changecurrentactivelabel;
-// }
 
 function deletelabel(labelname, labelcolor) {
     modaltitle = "Please Confirm Action";
@@ -1248,25 +984,6 @@ function deletelabel(labelname, labelcolor) {
     modalfooter = '<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="deletelabelconfirmed(\'' + labelcolor + '\')">Delete</button>'
         + '<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>';
     callmodal();
-
-
-    // if (confirm("Are you sure you want to delete  " + labelarray[y].label + "  ?")) {
-    //     if (labelarray[y].value == ctx.fillStyle) {
-    //         color('transparent');
-    //         ctx.fillStyle = "transparent";
-    //         colorList.push(labelarray[y].value);
-
-    //         labelarray.splice(y, 1);
-    //         printlabelarray();
-    //         alert("Same");
-    //     } else {
-    //         colorList.push(labelarray[y].value);
-
-    //         labelarray.splice(y, 1);
-    //         printlabelarray();
-    //         alert("Different");
-    //     }
-    // }
 }
 
 function deletelabelconfirmed(labelcolor) {
@@ -1279,13 +996,6 @@ function postdefaultcanvas() {
     var defaultheight = 500;
     document.getElementById("canvas-width").value = defaultwidth;
     document.getElementById("canvas-height").value = defaultheight;
-    //$.post("/resizeconfig", { 'canvas-width': defaultwidth, 'canvas-height': defaultheight });
-}
-
-function alerttest() {
-    alert("success! image width :" + imgrealwidth + "and height : " + imgrealheight);
-    var data = JSON.stringify(svg_data);
-    alert(data);
 }
 
 

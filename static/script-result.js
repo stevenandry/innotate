@@ -19,47 +19,36 @@ $(document).ready(function () {
     });
     $('.labelclass').each(function (index, element) {
         labelarray.push($(element).text());
-        // alert($(element).text());
     });
     $('.labelcolor').each(function (index, element) {
         labelcolorarray.push($(element).text());
-        // alert($(element).text());
     });
     $('.imagenameclass').each(function (index, element) {
         imagenamearray.push($(element).text());
-        //alert($(element).text());
     });
     $('.imagelabelclass').each(function (index, element) {
         imagelabelarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.startxclass').each(function (index, element) {
         startxarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.startyclass').each(function (index, element) {
         startyarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.endxclass').each(function (index, element) {
         endxarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.endyclass').each(function (index, element) {
         endyarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.toolclass').each(function (index, element) {
         toolarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.colorclass').each(function (index, element) {
         colorarray.push($(element).text());
-        //alert($(element).text());
     });
     $('.annotatorclass').each(function (index, element) {
         annotatorarray.push($(element).text());
-        //alert($(element).text());
     });
 
     $('[data-toggle="popover"]').popover();
@@ -83,10 +72,6 @@ $(document).ready(function () {
     createyourresult();
     createotherresult();
     listotherannotator();
-    // createyourannotationid();
-    // createyourimgid();
-
-    
 });
 
 function listotherannotator(){
@@ -207,36 +192,6 @@ function createotherresult(otherusername){
     otherusernameholder = otherusername;
 }
 
-function createyourannotationid() {
-    for (var i = 0; i < yourresultarray.length; i++) {
-        yourannotationid.push(yourresultarray[i].annotationid);
-        // alert(yourannotationid[i]);
-    }
-
-    let yourannotationidunique = [...new Set(yourannotationid)];
-    // for(var i=0;i<yourannotationidunique.length;i++){
-
-    //     alert(yourannotationidunique[i]);
-    // }
-}
-
-function createyourimgid() {
-    for (var i = 0; i < yourresultarray.length; i++) {
-        yourannotationimgid.push({ imagename: yourresultarray[i].imagename, annotationid: yourresultarray[i].annotationid });
-        // alert(yourannotationimgid[i].imagename + yourannotationimgid[i].annotationid);
-    }
-    // yourannotationimgidunique = R.uniqWith(R.eqProps, yourannotationimgid);
-    for (var i = 0; i < yourannotationimgid.length; i++) {
-        //alert(yourannotationimgid[i].imagename + yourannotationimgid[i].annotationid);
-    }
-    yourantnimgidunique = _.uniqBy(yourannotationimgid, function (e) {
-        return e.annotationid;
-    });
-    // for(var i =0;i<yourantnimgidunique.length;i++){
-    //     alert(yourantnimgidunique[i].imagename + " " + yourantnimgidunique[i].annotationid);
-    // }
-
-}
 
 function newload(){
     for (var i = 0; i < yourimageunique.length; i++) {
