@@ -79,19 +79,22 @@
                                 
                                 <div id="labellist">
                                         <table cellpadding='5' cellspacing='5'>
-                                                
-                                                {% for item in labeldata %}
-                                                <tr>
-                                                        <td class="labelclass">{{item[0]}}</td>
-                                                        <td class="labelcolor" style="display:none">{{item[1]}}</td>
-                                                        <td><button class="btn btn-sm ml-4" style='background-color:{{item[1]}}; height: 20px; width: 20px'></button></td>
-                                                        <td><button class="btn btn-sm btn-outline-primary ml-4" onclick="changecolor('{{item[0]}}','{{item[1]}}')">Use</button></td>
-                                                </tr>
-                                                {% endfor %}
+                                                {% if labeldata|length %}
+                                                        {% for item in labeldata %}
+                                                        <tr>
+                                                                <td class="labelclass">{{item[0]}}</td>
+                                                                <td class="labelcolor" style="display:none">{{item[1]}}</td>
+                                                                <td><button class="btn btn-sm ml-4" style='background-color:{{item[1]}}; height: 20px; width: 20px'></button></td>
+                                                                <td><button class="btn btn-sm btn-outline-primary ml-4" onclick="changecolor('{{item[0]}}','{{item[1]}}')">Use</button></td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                {% else %}
+                                                        <h6 class="display-4" style="font-size: 18px;font-weight: bold;">Oops! It looks like no label was created :(</h6>
+                                                {% endif %}
                                         </table>
                                 </div>
                         </div>
-                        <div class="border shadow p-2 mt-2 bg-white overflow-auto" style="height:350px"> 
+                        <div class="border shadow p-2 mt-2 bg-white overflow-auto" style="height:330px"> 
                                 <div id="navigateimages">
                                 </div>
                         </div>
