@@ -46,7 +46,7 @@ const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
 var deldbarray = [];
 var svgdataarray = [];
 
-function loadfeature(){
+function loadfeature() {
     $('.imageclass').each(function (index, element) {
         imagearray.push($(element).text());
     });
@@ -102,8 +102,8 @@ function loadfeature(){
     loadimage();
     document.getElementById("totalimagenumber").innerHTML = imagearray.length;
     document.getElementById("recordannotation").innerHTML = recordannotation;
-    setTimeout(function (){currentimage();},300);
-    
+    setTimeout(function () { currentimage(); }, 300);
+
 }
 
 function eventlistener() {
@@ -128,7 +128,7 @@ function changeimage(i) {
     if (i != c) {
         document.getElementById("svgloader").style.display = "inline";
         var updatecursor = ++i;
-        var data = JSON.stringify([{ "annotator": ""+username+"", "cursor": ""+updatecursor+"" }]);
+        var data = JSON.stringify([{ "annotator": "" + username + "", "cursor": "" + updatecursor + "" }]);
         var xhr = new XMLHttpRequest();
         var url = "/updatecursor";
         xhr.open("POST", url, true);
@@ -142,20 +142,20 @@ function changeimage(i) {
     }
 }
 
-function limitvalidation(){
-    var limit=3;
+function limitvalidation() {
+    var limit = 3;
     var imagename = "images1.jpeg";
     var countoccur = 0;
     var storeusername = "";
-    for(var i=0;i<imagenamearray.length;i++){
-        if(imagenamearray[i] == imagename){
-            if(storeusername != annotatorarray[i]){
-                if(countoccur < limit){
+    for (var i = 0; i < imagenamearray.length; i++) {
+        if (imagenamearray[i] == imagename) {
+            if (storeusername != annotatorarray[i]) {
+                if (countoccur < limit) {
                     storeusername = annotatorarray[i];
                     countoccur++;
-                }else{
+                } else {
                     var index = imagenamearray.indexOf(imagenamearray[i]);
-                    if(index > -1){
+                    if (index > -1) {
                         imagenamearray.splice(index, 1);
                     }
                 }
@@ -194,10 +194,10 @@ function printprevdot() {
     for (var i = 0; i < prevsvg_data.length; i++) {
         ++circlecount;
         ++recordannotation;
-        
+
         curX = prevsvg_data[i].startx * canvas.width / imgrealwidth;
         curY = prevsvg_data[i].starty * canvas.height / imgrealheight;
-        
+
         delbtnposX = curX + 3;
         delbtnposY = curY - 10;
         var svgdot = '<circle id=circle' + circlecount + ' cx="' + curX + '" cy="' + curY + '" r="' + defaultlinewidth + '" fill="' + prevsvg_data[i].imagecolor + '" onmouseover="showelements(' + circlecount + ')" onmouseout="hidelements(' + circlecount + ')" />';
@@ -243,7 +243,7 @@ function printprevrect() {
         var fillY = prevY - 14;
         var countlength = 0;
         var activelabel = prevsvgrect_data[i].imagelabel;
-        for(var y = 0;y<activelabel.length;y++){
+        for (var y = 0; y < activelabel.length; y++) {
             ++countlength;
         }
         var fillWidth = 10.5 * countlength;
@@ -251,8 +251,8 @@ function printprevrect() {
         var svgrect = '<rect id=rectangle' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" fill="none" stroke="' + prevsvgrect_data[i].imagecolor + '" stroke-width="' + defaultlinewidth + '"/>';
         var svgrectborder = '<rect id=rectborder' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" style="fill:none;stroke-width:' + defaultlinewidth + ';stroke:#b30000;display:none" />';
         var svgrectdel = '<image id=rectdel' + rectcount + ' href="static/pngguru.png" x="' + compensatedx + '" y="' + compensatedy + '" height="25px" width="25px" style="display:none;cursor:pointer" onclick="removerect(' + rectcount + ')" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" />'
-                + '<rect id=rectfill'+rectcount+' x="' + prevX + '" y="' + fillY + '" width="'+fillWidth+'" height="10" fill="'+prevsvgrect_data[i].imagecolor+'" stroke="' + prevsvgrect_data[i].imagecolor + '" stroke-width="' + defaultlinewidth + '"/>'
-                + '<text id=recttext' + rectcount + ' x="' + prevX + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + prevsvgrect_data[i].imagelabel + '</text>';
+            + '<rect id=rectfill' + rectcount + ' x="' + prevX + '" y="' + fillY + '" width="' + fillWidth + '" height="10" fill="' + prevsvgrect_data[i].imagecolor + '" stroke="' + prevsvgrect_data[i].imagecolor + '" stroke-width="' + defaultlinewidth + '"/>'
+            + '<text id=recttext' + rectcount + ' x="' + prevX + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + prevsvgrect_data[i].imagelabel + '</text>';
 
         document.getElementById("svgovercanvas").innerHTML += svgrect;
         document.getElementById("svgovercanvas").innerHTML += svgrectborder;
@@ -271,14 +271,14 @@ function printprevrect() {
             starty: pushstarty, endx: pushendx, endy: pushendy, tool: pushtool, color: pushcolor,
             index: rectcount, annotator: username//, annotationindex: annotationindex, annotationid: annotationid
         });
-       
+
     }
 }
 
 function printotherannotations() {
     document.getElementById("prevannotationdiv").style.display = "inline";
     document.getElementById("prevannotator").innerHTML = printotherantns[0].imageannotator;
-    
+
     for (var i = 0; i < printotherantns.length; i++) {
         ++totalprevannotation;
         if (printotherantns[i].tool == "Dot Tool") {
@@ -294,8 +294,17 @@ function printotherannotations() {
             var rectwidth = convertendx - convertstartx;
             var rectheight = convertendy - convertstarty;
             var labelY = convertstarty - 3;
+
+            var fillY = convertstarty - 14;
+            var activelabel = printotherantns[i].imagelabel;
+            var countlength = 0;
+            for (var y = 0; y < activelabel.length; y++) {
+                ++countlength;
+            }
+            var fillWidth = 10.5 * countlength;
             var svgrect = '<rect x="' + convertstartx + '" y="' + convertstarty + '" width="' + rectwidth + '" height="' + rectheight + '" fill="none" stroke="' + printotherantns[i].imagecolor + '" stroke-width="4"/>'
-                + '<text x="' + convertstartx + '" y="' + labelY + '" fill="' + printotherantns[i].imagecolor + '">' + printotherantns[i].imagelabel + '</text>';
+                + '<rect x="' + convertstartx + '" y="' + fillY + '" width="' + fillWidth + '" height="10" fill="' + printotherantns[i].imagecolor + '" stroke="' + printotherantns[i].imagecolor + '" stroke-width="' + defaultlinewidth + '"/>'
+                + '<text x="' + convertstartx + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + printotherantns[i].imagelabel + '</text>';
             document.getElementById("svgprevannotation").innerHTML += svgrect;
         }
     }
@@ -372,7 +381,7 @@ function currentimage() {
     //PRINT ALL PREVIOUS ANNOTATIONS IF EXISTED
     if (prevsvg_data.length > 0) {
         printprevdot();
-    }if (prevsvgrect_data.length > 0) {
+    } if (prevsvgrect_data.length > 0) {
         printprevrect();
     }
     if (printotherantns.length > 0) {
@@ -380,36 +389,36 @@ function currentimage() {
     }
 }
 
-function combinedbdelete(){
-    if(deldbdot.length > 0){
-        for(var i=0;i<deldbdot.length;i++){
-             deldbarray.push({ image_name: deldbdot[i].image_name, startx: deldbdot[i].startx, starty: deldbdot[i].starty });
+function combinedbdelete() {
+    if (deldbdot.length > 0) {
+        for (var i = 0; i < deldbdot.length; i++) {
+            deldbarray.push({ image_name: deldbdot[i].image_name, startx: deldbdot[i].startx, starty: deldbdot[i].starty });
         }
     }
-    if(deldbrect.length > 0){
-         for(var i=0;i<deldbrect.length;i++){
-             deldbarray.push({ image_name: deldbrect[i].image_name, startx: deldbrect[i].startx, starty: deldbrect[i].starty });
+    if (deldbrect.length > 0) {
+        for (var i = 0; i < deldbrect.length; i++) {
+            deldbarray.push({ image_name: deldbrect[i].image_name, startx: deldbrect[i].startx, starty: deldbrect[i].starty });
         }
     }
 }
 
-function combinesvgdata(){
-    if(svg_data.length > 0){
-        for(var i=0;i<svg_data.length;i++){
-             svgdataarray.push({
-                    image_name: svg_data[i].image_name, label: svg_data[i].label, startx: svg_data[i].startx,
-                    starty: svg_data[i].starty, endx: svg_data[i].endx, endy: svg_data[i].endy, tool: svg_data[i].tool, color: svg_data[i].color,
-                    annotator: svg_data[i].annotator//, annotationindex: annotationindex, annotationid: annotationid
-                });
+function combinesvgdata() {
+    if (svg_data.length > 0) {
+        for (var i = 0; i < svg_data.length; i++) {
+            svgdataarray.push({
+                image_name: svg_data[i].image_name, label: svg_data[i].label, startx: svg_data[i].startx,
+                starty: svg_data[i].starty, endx: svg_data[i].endx, endy: svg_data[i].endy, tool: svg_data[i].tool, color: svg_data[i].color,
+                annotator: svg_data[i].annotator//, annotationindex: annotationindex, annotationid: annotationid
+            });
         }
     }
-    if(svg_rectdata.length > 0){
-        for(var i=0;i<svg_rectdata.length;i++){
+    if (svg_rectdata.length > 0) {
+        for (var i = 0; i < svg_rectdata.length; i++) {
             svgdataarray.push({
-                    image_name: svg_rectdata[i].image_name, label: svg_rectdata[i].label, startx: svg_rectdata[i].startx,
-                    starty: svg_rectdata[i].starty, endx: svg_rectdata[i].endx, endy: svg_rectdata[i].endy, tool: svg_rectdata[i].tool, color: svg_rectdata[i].color,
-                    annotator: svg_rectdata[i].annotator//, annotationindex: annotationindex, annotationid: annotationid
-                });
+                image_name: svg_rectdata[i].image_name, label: svg_rectdata[i].label, startx: svg_rectdata[i].startx,
+                starty: svg_rectdata[i].starty, endx: svg_rectdata[i].endx, endy: svg_rectdata[i].endy, tool: svg_rectdata[i].tool, color: svg_rectdata[i].color,
+                annotator: svg_rectdata[i].annotator//, annotationindex: annotationindex, annotationid: annotationid
+            });
         }
     }
 }
@@ -438,7 +447,7 @@ function cursornextimage() {
     if (cursor != imagearray.length) {
         var xhrc = new XMLHttpRequest();
         var url = "/updatecursor";
-        var data = JSON.stringify([{ "annotator": ""+username+"", "cursor": ""+updatecursor+"" }]);
+        var data = JSON.stringify([{ "annotator": "" + username + "", "cursor": "" + updatecursor + "" }]);
         xhrc.open("POST", url, true);
         xhrc.setRequestHeader("Content-Type", "application/json");
         xhrc.onreadystatechange = function () {
@@ -450,10 +459,10 @@ function cursornextimage() {
     } else {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
-                 location.reload();
+                location.reload();
             }
-        }; 
-        if(deldbdot.length == 0 && deldbrect.length == 0 && svg_data.length == 0 && svg_rectdata.length == 0){
+        };
+        if (deldbdot.length == 0 && deldbrect.length == 0 && svg_data.length == 0 && svg_rectdata.length == 0) {
             location.reload();
         }
     }
@@ -468,7 +477,7 @@ function cursorprevimage() {
         document.getElementById("svgloader").style.display = "inline";
         var container = cursor;
         var updatecursor = container - 1;
-        var data = JSON.stringify([{ "annotator": ""+username+"", "cursor": ""+updatecursor+"" }]);
+        var data = JSON.stringify([{ "annotator": "" + username + "", "cursor": "" + updatecursor + "" }]);
         var xhr = new XMLHttpRequest();
         var url = "/updatecursor";
         xhr.open("POST", url, true);
@@ -592,10 +601,10 @@ function rectelement() {
     svg.onmousemove = function (e) {
         x.style.display = "inline";
         if (hold) {
-            
+
             curX = e.offsetX - prevX;
             curY = e.offsetY - prevY;
-            
+
             rect.setAttributeNS(null, 'x', prevX);
             rect.setAttributeNS(null, 'y', prevY);
             rect.setAttributeNS(null, 'width', curX);
@@ -617,7 +626,7 @@ function rectelement() {
         var compensatedx = realendx - 15;
         var compensatedy = realendy - 15;
         var labelY = prevY - 3;
-        
+
         //FINDING ACTIVE LABEL
         for (var i = 0; i < labelcolorarray.length; i++) {
             if (ctx.fillStyle.toUpperCase() == labelcolorarray[i].toUpperCase()) {
@@ -627,7 +636,7 @@ function rectelement() {
 
         var fillY = prevY - 14;
         var countlength = 0;
-        for(var i = 0;i<activelabel.length;i++){
+        for (var i = 0; i < activelabel.length; i++) {
             ++countlength;
         }
         var fillWidth = 10.5 * countlength;
@@ -636,8 +645,8 @@ function rectelement() {
         var svgrect = '<rect id=rectangle' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" fill="none" stroke="' + ctx.fillStyle + '" stroke-width="' + defaultlinewidth + '"/>';
         var svgrectborder = '<rect id=rectborder' + rectcount + ' x="' + prevX + '" y="' + prevY + '" width="' + curX + '" height="' + curY + '" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" style="fill:none;stroke-width:' + defaultlinewidth + ';stroke:#b30000;display:none" />';
         var svgrectdel = '<image id=rectdel' + rectcount + ' href="static/pngguru.png" x="' + compensatedx + '" y="' + compensatedy + '" height="25px" width="25px" style="display:none;cursor:pointer" onclick="removerect(' + rectcount + ')" onmouseover="showrectelements(' + rectcount + ')" onmouseout="hiderectelements(' + rectcount + ')" />'
-                + '<rect id=rectfill'+rectcount+' x="' + prevX + '" y="' + fillY + '" width="'+fillWidth+'" height="10" fill="'+ctx.fillStyle+'" stroke="' + ctx.fillStyle + '" stroke-width="' + defaultlinewidth + '"/>'
-                + '<text id=recttext' + rectcount + ' x="' + prevX + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + activelabel + '</text>';
+            + '<rect id=rectfill' + rectcount + ' x="' + prevX + '" y="' + fillY + '" width="' + fillWidth + '" height="10" fill="' + ctx.fillStyle + '" stroke="' + ctx.fillStyle + '" stroke-width="' + defaultlinewidth + '"/>'
+            + '<text id=recttext' + rectcount + ' x="' + prevX + '" y="' + labelY + '" fill="black" style="font-weight:bold">' + activelabel + '</text>';
 
         document.getElementById("svgovercanvas").innerHTML += svgrect;
         document.getElementById("svgovercanvas").innerHTML += svgrectborder;
@@ -692,7 +701,7 @@ function removerect(rectnum) {
     element3.parentNode.removeChild(element3);
     element4.parentNode.removeChild(element4);
     element5.parentNode.removeChild(element5);
-    
+
     for (var i = 0; i < temprect.length; i++) { // FOR DELETING DOT FROM DATABASE IF ANY
         if (rectnum == temprect[i].index) {
             deldbrect.push({ image_name: temprect[i].image_name, startx: temprect[i].startx, starty: temprect[i].starty });
@@ -734,7 +743,7 @@ function hiderectelements(rectnum) {
     document.getElementById("rectdel" + rectnum).style.display = "none";
     if (rectoolactive == true) {
         rectelement();
-    }else if (dottoolactive == true) {
+    } else if (dottoolactive == true) {
         dotelement();
     }
 }
@@ -759,7 +768,7 @@ function hidelements(circlenum) {
     document.getElementById("circledel" + circlenum).style.display = "none";
     if (dottoolactive == true) {
         dotelement();
-    } else if ( rectoolactive == true){
+    } else if (rectoolactive == true) {
         rectelement();
     }
 }
@@ -792,14 +801,14 @@ function dotelement() {
             ++circlecount;
             curX = e.offsetX;
             curY = e.offsetY;
-            
+
             delbtnposX = curX + 3;
             delbtnposY = curY - 10;
-            
+
             var svgdot = '<circle id=circle' + circlecount + ' cx="' + curX + '" cy="' + curY + '" r="' + defaultlinewidth + '" fill="' + ctx.fillStyle + '" onmouseover="showelements(' + circlecount + ')" onmouseout="hidelements(' + circlecount + ')" />';
             var dotborder = '<circle style="display:none;z-index:2" id=circleborder' + circlecount + ' cx="' + curX + '" cy="' + curY + '" r="' + defaultlinewidth + '" fill="none" stroke=#b30000 stroke-width="4" />';
             var dotdel = '<image id=circledel' + circlecount + ' href="static/pngguru.png" x="' + delbtnposX + '" y="' + delbtnposY + '" height="25px" width="25px" style="display:none;cursor:pointer" onclick="removecircle(' + circlecount + ')" onmouseover="showelements(' + circlecount + ')" onmouseout="hidelements(' + circlecount + ')" />'
-            
+
             document.getElementById("svgovercanvas").innerHTML += svgdot; //append method using +=
             document.getElementById("svgovercanvas").innerHTML += dotborder;
             document.getElementById("svgovercanvas").innerHTML += dotdel;
@@ -808,7 +817,7 @@ function dotelement() {
             var ycalculation = imgrealheight * curY;
             var finalxcalculation = xcalculation / width;
             var finalycalculation = ycalculation / height;
-            
+
             for (var num = 0; num < labelcolorarray.length; num++) {
                 if (ctx.fillStyle.toUpperCase() == labelcolorarray[num].toUpperCase()) {
                     pushlabel = labelarray[num];
@@ -825,7 +834,7 @@ function dotelement() {
                     });
                 }
             }
-            
+
             var arraylength = svg_data.length;
             var data = '<h6 style="font-size:13px">Image Name : <font color="red">' + pushimagename + '</font></h6>'
                 + '<h6 style="font-size:13px"> X :  <font color="red">' + finalxcalculation + '</font></h6>'
@@ -845,7 +854,7 @@ function removecircle(circlenum) {
     element.parentNode.removeChild(element);
     element2.parentNode.removeChild(element2);
     element3.parentNode.removeChild(element3);
-    
+
     //compare the number passed with the index column. index column has the same number with the one that 
     //was assigned to the button on creation.
     for (var i = 0; i < tempdot.length; i++) { // FOR DELETING DOT FROM DATABASE IF ANY
@@ -973,7 +982,7 @@ function changecolor(labelname, labelcolor) {
     colorchanged = true;
     labeling.style.color = labelcolor;
 
-   
+
     var changecurrentactivelabel = " " + labelname;
     document.getElementById("currentlabel").innerHTML = changecurrentactivelabel;
 }
