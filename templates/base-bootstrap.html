@@ -7,24 +7,32 @@
 	<title>AI Annotation App</title>
 	<link rel="stylesheet" href="static/styles.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-	
+
 </head>
 
 <body>
 	<nav class="navbar navbar-dark navbar-expand-sm bg-primary">
 		<!-- Links -->
 		{% if not current_user.is_authenticated %}
-			<a class="navbar-brand" href="/">Innotate</a>
+		<a class="navbar-brand" href="/"  style=" font-family:Lucida Console, Monaco, monospace"><svg class="bi bi-bounding-box" width="1.2em" height="1.2em" viewBox="0 0 16 16"
+				fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd"
+					d="M5 2V0H0v5h2v6H0v5h5v-2h6v2h5v-5h-2V5h2V0h-5v2H5zm6 1H5v2H3v6h2v2h6v-2h2V5h-2V3zm1-2v3h3V1h-3zm3 11h-3v3h3v-3zM4 15v-3H1v3h3zM1 4h3V1H1v3z" />
+			</svg> Innotate</a>
 		{% endif %}
 		{% if current_user.is_authenticated %}
-			<a class="navbar-brand" href="/home">Innotate</a>
+		<a class="navbar-brand" href="/home"  style=" font-family:Lucida Console, Monaco, monospace"><svg class="bi bi-bounding-box" width="1.2em" height="1.2em"
+				viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+				<path fill-rule="evenodd"
+					d="M5 2V0H0v5h2v6H0v5h5v-2h6v2h5v-5h-2V5h2V0h-5v2H5zm6 1H5v2H3v6h2v2h6v-2h2V5h-2V3zm1-2v3h3V1h-3zm3 11h-3v3h3v-3zM4 15v-3H1v3h3zM1 4h3V1H1v3z" />
+			</svg> Innotate</a>
 		{% endif %}
 		<ul class="navbar-nav mr-auto">
 			{% if not current_user.is_authenticated %}
 			<li class="nav-item" id="homepage">
 				<a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
 			</li>
-			<li class="nav-item" id="loginpage" >
+			<li class="nav-item" id="loginpage">
 				<a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
 			</li>
 			<li class="nav-item" id="signuppage">
@@ -54,39 +62,39 @@
 				<a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
 			</li>
 			{% endif %}
-			
+
 		</ul>
 		<div class="navbar-text"></div>
-			<span class="text-light mr-1">Server Time </span>
-  			<div class="text-light" id="servertime"> </div>   
+		<span class="text-light mr-1">Server Time </span>
+		<div class="text-light" id="servertime"> </div>
 		</div>
 	</nav>
 	<div class="container-fluid pt-2">
-	{% block content %}
-	{% endblock %}
+		{% block content %}
+		{% endblock %}
 	</div>
 </body>
 
 </html>
 
 <script>
-$(document).ready(function () {
-	startTime();
-});
+	$(document).ready(function () {
+		startTime();
+	});
 
-function startTime() {
-      var today = new Date();
-      var h = today.getHours();
-      var m = today.getMinutes();
-      var s = today.getSeconds();
-      m = checkTime(m);
-      s = checkTime(s);
-      document.getElementById('servertime').innerHTML = h + ":" + m + ":" + s;
-      var t = setTimeout(startTime, 500);
-}
+	function startTime() {
+		var today = new Date();
+		var h = today.getHours();
+		var m = today.getMinutes();
+		var s = today.getSeconds();
+		m = checkTime(m);
+		s = checkTime(s);
+		document.getElementById('servertime').innerHTML = h + ":" + m + ":" + s;
+		var t = setTimeout(startTime, 500);
+	}
 
-function checkTime(i) {
-    if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
-    return i;
-}
+	function checkTime(i) {
+		if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+		return i;
+	}
 </script>
