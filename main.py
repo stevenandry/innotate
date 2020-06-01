@@ -100,14 +100,6 @@ def index_loggedin():
 		annotator = col[8]
 		image_list.append(image_name)
 		annotatorlist.append(annotator)
-		# print(image_list + annotatorlist)
-		# label = col[1]
-		# startx = col[2]
-		# starty = col[3]
-		# endx = col[4]
-		# endy = col[5]
-		# tool = col[6]
-		# color = col[7]
 	return render_template('index.html', name=current_user.name, imagelist=imagelist, image_name=image_list, annotator=annotatorlist)
 
 @main.route('/deletelabel', methods=['GET','POST'])
