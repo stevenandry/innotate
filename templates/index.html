@@ -17,6 +17,9 @@
   <div class="container">
     <div class="text-center mt-3">
       {% if not current_user.is_authenticated %}
+      <script>
+          $("#homepage").addClass("active");
+      </script>
       <h3 class="display-4" style="font-size: 35px;">
         Welcome to AI Data Annotation Application.
       </h3>
@@ -152,11 +155,10 @@
 
   $(document).ready(function () {
     //startTime();
+    $("#homepage_loggedin").addClass("active");
+
     $(".totalimages").each(function (index, element) {
-      //alert(index + " : " + $(element).text());
-      //testis += $(element).text();
       totalimages.push($(element).text());
-      //totalforcomparison.push($(element).text());
       ++counter;
     });
     $(".annotatedimage").each(function (index, element) {
@@ -180,21 +182,6 @@
       }
 
     }
-
-    // for (var i = 0; i < annotatedimages.length; i++) {
-    //   for (var y = 0; y < totalforcomparison.length; y++) {
-    //     if (annotatedimages[i] == totalforcomparison[y]) {
-    //       var index = totalforcomparison.indexOf(annotatedimages[i]);
-    //       if (index > -1) {
-    //         //splice for delete image names that are annotated, so that un touched images are left in the list
-    //         totalforcomparison.splice(index, 1);
-    //         ++annotatedcounter;
-    //         //Annotated counter for counting annotated images
-    //       }
-    //     }
-    //   }
-    // }
-
 
     for (var i = 0; i < annotatorname.length; i++) {
       if (annotatorname[i] == username) {

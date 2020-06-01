@@ -14,6 +14,8 @@ $(window).on("load", function () {
 });
 
 $(document).ready(function () {
+    $("#resultpage").addClass("active");
+
     $('.imageclass').each(function (index, element) {
         imagearray.push($(element).text());
     });

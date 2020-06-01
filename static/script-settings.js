@@ -4,6 +4,8 @@ var labelarray = [], labelcolorarray = [], imagearray = [], annotatorarray = [],
 var modaltitle, modalbody, modalfooter;
 
 $(document).ready(function () {
+	$("#settingspage").addClass("active");
+
 	$('.imageclass').each(function (index, element) {
 		imagearray.push($(element).text());
 	});
@@ -119,17 +121,6 @@ function callmodal() {
 	document.getElementById("modalFooter").innerHTML = modalfooter;
 	$('#exampleModal').modal('toggle');
 }
-
-// function viewimage() {
-// 	modaltitle = 'View Image';
-// 	modalbody = '<ul>';
-// 	for (var i = 0; i < imagearray.length; i++) {
-// 		modalbody += '<a href="static/images/' + imagearray[i] + '"><li >' + imagearray[i] + '</li>';
-// 	}
-// 	modalbody += '</ul>';
-// 	modalfooter = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>';
-// 	callmodal();
-// }
 
 function viewimage() {
 	modaltitle = 'View Image';

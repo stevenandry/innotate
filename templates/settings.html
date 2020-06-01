@@ -24,10 +24,7 @@
 				<div class="modal-body" id="modalBody">
 				</div>
 				<div class="modal-footer" id="modalFooter">
-					<!-- <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Dismiss</button> -->
-					<!-- <button type="button" class="btn btn-primary">Save
-                                                changes</button> -->
+					
 				</div>
 			</div>
 		</div>
@@ -88,8 +85,22 @@
 					<h6 for="email">Add Label :</h6>
 					<input class="form-control input-sm" type="text" placeholder="Label Name" id="labelname">
 				</div>
-				<button id="save" class="btn btn-sm btn-primary" onclick='addlabel()'>Add</button>
-				<button id="deleteall" class="btn btn-sm btn-danger" onclick='deletelabelall()'>Delete All</button>
+				<button id="save" class="btn btn-sm btn-primary" onclick='addlabel()'><svg class="bi bi-plus"
+						width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+						xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd"
+							d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z" />
+						<path fill-rule="evenodd"
+							d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z" />
+					</svg> Add</button>
+				<button id="deleteall" class="btn btn-sm btn-danger" onclick='deletelabelall()'><svg class="bi bi-trash" width="1.2em"
+									height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+									<path fill-rule="evenodd"
+										d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+								</svg> Delete All</button>
 				<br>
 				<br>
 				<div class="border border-dark p-4 bg-white overflow-auto" style="height:220px">
@@ -106,7 +117,12 @@
 										style='background-color:{{item[1]}}; height: 20px; width: 20px'></button></td>
 								<td><button class='btn btn-danger btn-sm' id='deletelabelbtn'
 										onclick='deletelabel("{{item[0]}}","{{item[1]}}")'
-										style='background-color:red'>Del
+										style='background-color:red'><svg class="bi bi-trash-fill" width="1.3em"
+											height="1.3em" viewBox="0 0 16 16" fill="currentColor"
+											xmlns="http://www.w3.org/2000/svg">
+											<path fill-rule="evenodd"
+												d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z" />
+										</svg>
 								</td>
 							</tr>
 							{% endfor %}
@@ -128,8 +144,12 @@
 				<h6> Canvas Height : Not Set</h6>
 				<font color="red">Please set canvas dimensions before accessing annotations page!</font>
 				{% endif %}
-				<button onclick="location.href = 'resizeconfig';" class="btn btn-sm btn-primary mt-2" type="button">Resize
-					Canvas</button>
+				<button onclick="location.href = 'resizeconfig';" class="btn btn-sm btn-primary mt-2" type="button"><svg
+						class="bi bi-aspect-ratio-fill" width="1.2em" height="1.2em" viewBox="0 0 16 16"
+						fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd"
+							d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm1 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 1 0V5h2.5a.5.5 0 0 0 0-1h-3zm11 8a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-1 0V11h-2.5a.5.5 0 0 0 0 1h3z" />
+					</svg> Resize Canvas</button>
 			</div>
 		</div>
 		<div class="mb-2">
@@ -149,19 +169,36 @@
 								{% endfor %}
 							</select>
 							<br>
-							<button class="btn btn-sm btn-danger mt-2">Delete</button>
-							<!-- <button class="btn btn-sm btn-danger mt-2" >Delete All</button> -->
-							<!-- <input type="button" value="Select multiple options"> -->
+							<button class="btn btn-sm btn-danger mt-2"><svg class="bi bi-trash" width="1.2em"
+									height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+									xmlns="http://www.w3.org/2000/svg">
+									<path
+										d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+									<path fill-rule="evenodd"
+										d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+								</svg> Delete</button>
+
 						</form>
 					</div>
 				</div>
 				<button onclick="viewimage()" class="btn btn-sm btn-primary mt-2" type="button">View Image</button>
 				<button class="btn btn-sm btn-danger mt-2" type="button" data-toggle="collapse"
-					data-target="#collapseDeleteimage" aria-expanded="false" aria-controls="collapseDeleteimage">Delete
-					Image</button>
+					data-target="#collapseDeleteimage" aria-expanded="false" aria-controls="collapseDeleteimage"><svg
+						class="bi bi-trash" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+						xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+						<path fill-rule="evenodd"
+							d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+					</svg> Delete Image</button>
 
 				<form method="POST" action="/loadimage" enctype="multipart/form-data">
-					<button class="btn btn-sm btn-success mt-2">Load Image</button>
+					<button class="btn btn-sm btn-success mt-2"><svg class="bi bi-upload" width="1.2em" height="1.2em"
+							viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd"
+								d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8zM5 4.854a.5.5 0 0 0 .707 0L8 2.56l2.293 2.293A.5.5 0 1 0 11 4.146L8.354 1.5a.5.5 0 0 0-.708 0L5 4.146a.5.5 0 0 0 0 .708z" />
+							<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 2z" />
+						</svg> Load Image</button>
 					<input class="mt-2" id="file-input" type="file" name="files[]" multiple />
 				</form>
 
@@ -176,17 +213,11 @@
 						<div class="collapse" id="collapseDownloadimage">
 							<div class="card card-body mt-2" id="collapseBody">
 								<h6>Choose which image to download :</h6>
-								<!-- <ul>
-									{% for images in imagelist %}
-									<a href="{{ url_for('.download_image', filename='{{images}}' ) }}">
-										<li>{{images}}</li>
-									</a>
-									{% endfor %}
-								</ul> -->
+
 								<form method="POST" action="/download/image">
 									<select id="downloadImage" name="downloadImage">
 										{% for images in imagelist %}
-											<option>{{images}}</option>
+										<option>{{images}}</option>
 										{% endfor %}
 									</select>
 									<br>
@@ -199,27 +230,61 @@
 						<div class="collapse" id="collapseDeletedata">
 							<div class="card card-body mt-2" id="collapseBody">
 								<h6>Delete Annotation</h6>
-								<font class="mb-2" color="red">Choose which user to delete / delete all annotations within
+								<font class="mb-2" color="red">Choose which user to delete / delete all annotations
+									within
 									the application.</font>
 								<select id="deleteUserSelection" multiple name="deleteUserSelection">
 								</select>
 								<br>
-								<button class="btn btn-sm btn-danger mt-2 w-50" onclick="deleteuservalidation()">Delete User
-									Annotation</button>
-								<button class="btn btn-sm btn-danger mt-2 w-50" onclick="deleteallvalidation()">Delete All
-									Annotation</button>
+								<button class="btn btn-sm btn-danger mt-2 w-50" onclick="deleteuservalidation()"><svg
+										class="bi bi-trash" width="1.2em" height="1.2em" viewBox="0 0 16 16"
+										fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+										<path fill-rule="evenodd"
+											d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+									</svg> Delete User Annotation</button>
+								<button class="btn btn-sm btn-danger mt-2 w-50" onclick="deleteallvalidation()"><svg
+										class="bi bi-trash" width="1.2em" height="1.2em" viewBox="0 0 16 16"
+										fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+										<path fill-rule="evenodd"
+											d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+									</svg> Delete All Annotation</button>
 							</div>
 						</div>
 					</div>
 				</div>
 				<button class="btn btn-sm btn-success mt-2" data-toggle="collapse" data-target="#collapseDownloadimage"
-					aria-expanded="false" aria-controls="collapseDownloadimage">Download Image</button>
+					aria-expanded="false" aria-controls="collapseDownloadimage"><svg class="bi bi-download"
+						width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+						xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd"
+							d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z" />
+						<path fill-rule="evenodd"
+							d="M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z" />
+						<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z" />
+					</svg> Download Image</button>
 				<a href="{{ url_for('.download_result') }}"><button class="btn btn-sm btn-success mt-2"
-						type="button">Download CSV</button></a>
-				<button class="btn btn-sm btn-danger mt-2" data-toggle="collapse" data-target="#collapseDeletedata">Delete
-					Annotation</button>
+						type="button"><svg class="bi bi-download" width="1.2em" height="1.2em" viewBox="0 0 16 16"
+							fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd"
+								d="M.5 8a.5.5 0 0 1 .5.5V12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8.5a.5.5 0 0 1 1 0V12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8.5A.5.5 0 0 1 .5 8z" />
+							<path fill-rule="evenodd"
+								d="M5 7.5a.5.5 0 0 1 .707 0L8 9.793 10.293 7.5a.5.5 0 1 1 .707.707l-2.646 2.647a.5.5 0 0 1-.708 0L5 8.207A.5.5 0 0 1 5 7.5z" />
+							<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0v-8A.5.5 0 0 1 8 1z" />
+						</svg> Download CSV</button></a>
+				<button class="btn btn-sm btn-danger mt-2" data-toggle="collapse" data-target="#collapseDeletedata"><svg
+						class="bi bi-trash" width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+						xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+						<path fill-rule="evenodd"
+							d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+					</svg> Delete Annotation</button>
 			</div>
-			<!-- <button class="btn btn-sm btn-success mt-2" type="button">View All Statistics</button> -->
+
 		</div>
 	</div>
 

@@ -47,6 +47,8 @@ var deldbarray = [];
 var svgdataarray = [];
 
 function loadfeature() {
+    $("#annotatepage").addClass("active");
+
     $('.imageclass').each(function (index, element) {
         imagearray.push($(element).text());
     });
@@ -582,6 +584,7 @@ function callmodal() {
 function rectelement() {
     dottoolactive = false;
     rectoolactive = true;
+    document.getElementById("activetool").innerHTML = "Rectangle";
     svg.onmousedown = function (e) {
         if (labelarray.length == 0) {
             modalbody = "Please create a label first!";
@@ -782,6 +785,7 @@ function delelements(circlenum) {
 function dotelement() {
     rectoolactive = false;
     dottoolactive = true;
+    document.getElementById("activetool").innerHTML = "Dot";
     svg.onmousemove = function (e) {
         x.style.display = "inline";
         //empty the onmousemove to prevent rect element to be triggered when in dot element

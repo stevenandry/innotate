@@ -41,10 +41,10 @@
                 {% endfor %}
                 {% for annotator in annotatorlist %}
                 <li class="annotatorclass">{{annotator}}</li>
-                {% endfor %}    
-                <li class="cursor">{{cursor}}</li>  
+                {% endfor %}
+                <li class="cursor">{{cursor}}</li>
         </ul>
-        
+
         <div hidden id="listimages">
         </div>
 
@@ -73,28 +73,33 @@
         </div>
 
         <div id="mySidepanel" class="row" style="height:100%">
-              
+
                 <div class="col">
                         <div class="border shadow p-4 bg-white overflow-auto" style="height:220px">
-                                
+
                                 <div id="labellist">
                                         <table cellpadding='5' cellspacing='5'>
                                                 {% if labeldata|length %}
-                                                        {% for item in labeldata %}
-                                                        <tr>
-                                                                <td class="labelclass">{{item[0]}}</td>
-                                                                <td class="labelcolor" style="display:none">{{item[1]}}</td>
-                                                                <td><button class="btn btn-sm ml-4" style='background-color:{{item[1]}}; height: 20px; width: 20px'></button></td>
-                                                                <td><button class="btn btn-sm btn-outline-primary ml-4" onclick="changecolor('{{item[0]}}','{{item[1]}}')">Use</button></td>
-                                                        </tr>
-                                                        {% endfor %}
+                                                {% for item in labeldata %}
+                                                <tr>
+                                                        <td class="labelclass">{{item[0]}}</td>
+                                                        <td class="labelcolor" style="display:none">{{item[1]}}</td>
+                                                        <td><button class="btn btn-sm ml-4"
+                                                                        style='background-color:{{item[1]}}; height: 20px; width: 20px'></button>
+                                                        </td>
+                                                        <td><button class="btn btn-sm btn-outline-primary ml-4"
+                                                                        onclick="changecolor('{{item[0]}}','{{item[1]}}')">Use</button>
+                                                        </td>
+                                                </tr>
+                                                {% endfor %}
                                                 {% else %}
-                                                        <h6 class="display-4" style="font-size: 18px;font-weight: bold;">Oops! It looks like no label was created :(</h6>
+                                                <h6 class="display-4" style="font-size: 18px;font-weight: bold;">Oops!
+                                                        It looks like no label was created :(</h6>
                                                 {% endif %}
                                         </table>
                                 </div>
                         </div>
-                        <div class="border shadow p-2 mt-2 bg-white overflow-auto" style="height:330px"> 
+                        <div class="border shadow p-2 mt-2 bg-white overflow-auto" style="height:330px">
                                 <div id="navigateimages">
                                 </div>
                         </div>
@@ -102,58 +107,61 @@
 
                 <div id="canvasdiv" class="col">
                         <div class="border shadow bg-white" style="width:801px;height:560px">
-                                <div id="svgwrapper" style="position:relative;width:800px;height:506px" class="overflow-auto">
+                                <div id="svgwrapper" style="position:relative;width:800px;height:506px"
+                                        class="overflow-auto">
                                         <img class="loadergif" src="static/loadinggif.gif" width=50 height=50>
                                         <canvas id="paint" width={{cnvswidth}} height={{cnvsheight}}></canvas>
-                                        <svg id="svgovercanvas" 
+                                        <svg id="svgovercanvas"
                                                 style="position:absolute;left: 0px; top:0px;z-index: 2;cursor:crosshair"
                                                 width={{cnvswidth}} height={{cnvsheight}}>
-                                                <!-- <img id="deletebtnimage" src="static/pngguru.com.png" width=100px height=100px style="position:absolute;top:50px; left:50px;display:none" > -->
-                                                <!-- <circle id="testcircle" cx="50" cy="50" r="40" fill="yellow" onclick="alerttest()" onmouseover="dummyjs()" onmouseout="hidedummyjs()"/>
-                                                <circle style="display:none" id="testcircle1" cx="50" cy="50" r="40" fill="none" stroke="green" stroke-width="4" />
-                                                <circle style="display:none" id="deltestcircle1" cx="90" cy="30" r="20" fill="red" onclick="deldummyjs()"/>  -->
                                         </svg>
                                         <div id="svgloader" class="svgloader"></div>
-                                        <svg id="svgprevannotation" 
+                                        <svg id="svgprevannotation"
                                                 style="position:absolute;left: 0px; top:0px;z-index: -1;cursor:crosshair"
                                                 width={{cnvswidth}} height={{cnvsheight}}>
-                                                 
+
                                         </svg>
                                         <div id="overcanvasrect"></div>
 
                                         <div id="overcanvas">
-                                                <!-- <div style="position:absolute;width:100px;height:100px;top:100px;left:300px;border-radius:50%;background-color:#555">   </div> -->
-                                                <!-- <button style="position:absolute;top:50px;right:350px">test</button> -->
+
                                         </div>
                                 </div>
                                 <div class="row mt-2 ">
                                         <div class="col ml-3">
                                                 <div id="currentlabel2" style="display:none">
-                                                        <h6 style="display:inline">Currently Labeling <font color="red" id="currentlabel"></font>
+                                                        <h6 style="display:inline">Currently Labeling <font color="red"
+                                                                        id="currentlabel"></font>
                                                         </h6>
-                                                        
+
                                                 </div>
                                                 <div id="previnfo" style="display:none">
-                                                        <h6 style="display:inline">Annotations by <font color="red" id="prevannotator"></font>
+                                                        <h6 style="display:inline">Annotations by <font color="red"
+                                                                        id="prevannotator"></font>
                                                         </h6>
-                                                        
+
                                                 </div>
                                         </div>
                                         <div class="col-4 text-right mr-3">
                                                 <div style="display:inline;">
                                                         <!-- <button onclick="location.href = 'resizeconfig';" class="btn btn-sm btn-secondary" type="button">Resize</button> -->
-                                                        <button id="infobtn" class="btn btn-sm btn-primary popover-test" data-trigger="focus" data-toggle="popover" data-placement="top" title="Image Details" data-content="">
-                                                                Info
-                                                        </button>     
+                                                        <button id="infobtn" class="btn btn-sm btn-primary popover-test"
+                                                                data-trigger="focus" data-toggle="popover"
+                                                                data-placement="top" title="Image Details"
+                                                                data-content=""><svg class="bi bi-info-circle-fill"
+                                                                        width="1.1em" height="1.1em" viewBox="0 0 16 16"
+                                                                        fill="currentColor"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path fill-rule="evenodd"
+                                                                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                                                                </svg> Info</button>
                                                 </div>
                                         </div>
                                 </div>
-                                <!-- <div id="colortoolset">
-                                </div> -->
                         </div>
                 </div>
                 <div class="col">
-                        <div class="border shadow p-4 mb-2 bg-white" style="height:220px">
+                        <div class="border shadow p-4 mb-2 bg-white" style="height:250px">
                                 <h6 style="font-size:14px" class="mb-3">Canvas Width <font color="red">{{cnvswidth}}
                                         </font>
                                 </h6>
@@ -175,6 +183,9 @@
                                         <font color="red" id="totalimagenumber">
                                         </font>
                                 </h6>
+                                <h6 style="font-size:14px" class="mb-3">Active Tool
+                                        <font color="red" id="activetool">None</font>
+                                </h6>
                                 <div id="showcoordinate" style="display:none">
                                         <h6 style="font-size:14px">
                                                 <label>Coordinates</label>
@@ -187,22 +198,59 @@
                         </div>
                         <div class="border shadow p-3 bg-white text-center">
                                 <button id="penciltool" type="button" class="btn btn-sm btn-success mt-2 w-100"
-                                        onclick="dotelement()">Dot</button>
+                                        onclick="dotelement()">Dot <svg class="bi bi-circle-fill" width="1.2em"
+                                                height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="8" cy="8" r="8" />
+                                        </svg></button>
                                 <br>
                                 <button id="rectangletool" type="button" class="btn btn-success mt-2 w-100"
-                                        onclick="rectelement()">Rectangle</button>
+                                        onclick="rectelement()">Rectangle <svg class="bi bi-bounding-box-circles"
+                                                width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                        d="M12.5 2h-9V1h9v1zm-10 1.5v9h-1v-9h1zm11 9v-9h1v9h-1zM3.5 14h9v1h-9v-1z" />
+                                                <path fill-rule="evenodd"
+                                                        d="M14 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM2 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 1a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                                        </svg></button>
                                 <br>
                                 <button id="resettool" type="button" class="btn btn-warning mt-2 w-100"
-                                        onclick="resetvalidation()">Reset</button>
+                                        onclick="resetvalidation()">Reset <svg class="bi bi-arrow-counterclockwise"
+                                                width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                        d="M12.83 6.706a5 5 0 0 0-7.103-3.16.5.5 0 1 1-.454-.892A6 6 0 1 1 2.545 5.5a.5.5 0 1 1 .91.417 5 5 0 1 0 9.375.789z" />
+                                                <path fill-rule="evenodd"
+                                                        d="M7.854.146a.5.5 0 0 0-.708 0l-2.5 2.5a.5.5 0 0 0 0 .708l2.5 2.5a.5.5 0 1 0 .708-.708L5.707 3 7.854.854a.5.5 0 0 0 0-.708z" />
+                                        </svg></button>
                                 <br>
                                 <button id="nextbtn" class="btn btn-primary mt-2 w-100" type="button"
-                                        onclick="nextimagevalidation()">Submit</button>
+                                        onclick="nextimagevalidation()">Submit <svg class="bi bi-arrow-right-square"
+                                                width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                        d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                                <path fill-rule="evenodd"
+                                                        d="M7.646 11.354a.5.5 0 0 1 0-.708L10.293 8 7.646 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0z" />
+                                                <path fill-rule="evenodd"
+                                                        d="M4.5 8a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5z" />
+                                        </svg></button>
                                 <br>
                                 <button id="prevbtn" class="btn btn-primary mt-2 w-100" type="button"
-                                        onclick="cursorprevimage()">Previous</button>
+                                        onclick="cursorprevimage()">Previous <svg class="bi bi-arrow-left-square"
+                                                width="1.2em" height="1.2em" viewBox="0 0 16 16" fill="currentColor"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd"
+                                                        d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+                                                <path fill-rule="evenodd"
+                                                        d="M8.354 11.354a.5.5 0 0 0 0-.708L5.707 8l2.647-2.646a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708 0z" />
+                                                <path fill-rule="evenodd"
+                                                        d="M11.5 8a.5.5 0 0 0-.5-.5H6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5z" />
+                                        </svg></button>
                                 <br>
                                 <div style="display:none" id="prevannotationdiv">
-                                        <input onclick="togglepreviousannotation()" id="annotatecheckbox" type="checkbox"> Other Annotations
+                                        <input onclick="togglepreviousannotation()" id="annotatecheckbox"
+                                                type="checkbox"> Other Annotations
                                 </div>
                                 <br>
                         </div>
@@ -211,7 +259,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src=" {{ url_for('static', filename='script-bootstrap.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> 
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
