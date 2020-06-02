@@ -32,7 +32,7 @@ This is what you will see when you succesfully logged in as an **Admin** :
 
 ![Home_Page_Logged_In](https://i.ibb.co/3vx8pRx/2020-06-02-16-57-15.png)
 
-You can start annotating once you loaded images into the application :
+You can see that i had a few annotations already from the statistics in the **Home Page**. You can then start/continue annotating once you loaded images into the application :
 
 ![Annotate Page](https://i.ibb.co/fQxGZWV/2020-06-02-16-59-28-Movies-TV.png)
 
