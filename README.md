@@ -1,5 +1,4 @@
-# nanasskripsi
-## Team Skripsi Nanas dan Team Skripsi Online Selama Covid-19
+# Innotate Data Annotation Tool
 
 What you need to get this App working :
 - **XAMPP MySQL Database**
