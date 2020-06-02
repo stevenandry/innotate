@@ -20,8 +20,20 @@ You need to set the **'root@localhost'** default account at MySQL with a passwor
 - After Virtual Environment has been succesfully executed, type in **"set FLASK_APP=underscoreunderscoreinitunderscoreunderscore.py"** change the underscore to an actual underscore (because i can't write it in here)
 - Then just type in **"flask run"** and application will be opened at port 5000 @ localhost.
 
-Once you are able to see the login screen, you can start by creating a new user or logging in with the pre-created admin account :
+![Home Page](https://i.ibb.co/HTJT6Kt/2020-06-02-16-52-57-Movies-TV.png)
+
+Once you are able to see the home page, you can start by creating a new user or logging in with the pre-created admin account :
 - Email     : **admin@admin.com**
 - Password  : **admin**
 
 Log-in using the admin account and visit the **Settings** page to start loading images, create labels, and configure canvas size. Then you can start annotating through the **Annotate** page.
+
+This is what you will see when you succesfully logged in as an **Admin** :
+
+![Home_Page_Logged_In](https://i.ibb.co/3vx8pRx/2020-06-02-16-57-15.png)
+
+You can start annotating once you loaded images into the application :
+
+![Annotate Page](https://i.ibb.co/fQxGZWV/2020-06-02-16-59-28-Movies-TV.png)
+
+The app is very user friendly and easy to use, and im sure you'll know what to do next. **Have Fun!**
