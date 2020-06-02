@@ -21,11 +21,7 @@ You need to set the **'root@localhost'** default account at MySQL with a passwor
 - After Virtual Environment has been succesfully executed, type in **"set FLASK_APP=underscoreunderscoreinitunderscoreunderscore.py"** change the underscore to an actual underscore (because i can't write it in here)
 - Then just type in **"flask run"** and application will be opened at port 5000 @ localhost.
 
-Once you are able to see the login screen, you can start by creating a new user or logging in with the a test account that was pre-created :
-- Email     : **testuser@gmail.com**
-- Password  : **Test**
-
-An Admin account was also precreated using this credentials :
+Once you are able to see the login screen, you can start by creating a new user or logging in with the pre-created admin account :
 - Email     : **admin@admin.com**
 - Password  : **admin**
 
