@@ -17,7 +17,7 @@ You need to set the **'root@localhost'** default account at MySQL with a passwor
 ### After all the fuss, you can now start running the App. If you are not using an IDE (Visual Studio Code and so on) you need to run the App manually from command prompt. Here's how to do it :
 - Open command prompt on the project directory
 - Type in **"Venv\Scripts\Activate"**
-- After Virtual Environment has been succesfully executed, type in **"set FLASK_APP=\_\_init\_\_.py"** change the underscore to an actual underscore (because i can't write it in here)
+- After Virtual Environment has been succesfully executed, type in **"set FLASK_APP=\_\_init\_\_.py"**
 - Then just type in **"flask run"** and application will be opened at port 5000 @ localhost.
 
 ![Home Page](https://i.ibb.co/HTJT6Kt/2020-06-02-16-52-57-Movies-TV.png)
