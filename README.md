@@ -37,3 +37,25 @@ You can see that i had a few annotations already from the statistics in the **Ho
 ![Annotate Page](https://i.ibb.co/fQxGZWV/2020-06-02-16-59-28-Movies-TV.png)
 
 The app is very user friendly and easy to use, and im sure you'll know what to do next. **Have Fun!**
+
+## Deployment
+
+To deploy this app, we have provided files needed in order to deploy both in **Windows** and **Linux**.
+
+### Windows
+- Open a command prompt in the project directory
+- Type in **"nssm install Innotate"**
+- Click Yes in any administrator prompt
+- Then, on application path, browse and head to the directory of **run.bat** . this file is provided in the project directory.
+- Click install service
+
+And you're done! to run the service, go ahead to services and start **Innotate** service. the application will be available in **localhost:8080**
+
+### Linux
+- First, type in **chmod +x runlinux.sh** in the project folder to make the script executable.
+- Type in **"cd /etc/systemd/system"** to go to the services directory.
+- Copy **innotate.service** file onto the directory.
+- Edit **innotate.service** file, change the directory of **ExecStart** into directory of **runlinux.sh** file which is provided inside project folder.
+- Finally, type in **systemctl start innotate** to start the application!
+- Check service status by typing **systemctl status innotate**. the service is supposed to be active and running. Try to visit **127.0.0.1:8080** to see the application.
+- If above does not work, try to type in **systemctl enable innotate.service** and **systemctl start innotate.service**. Then check the status and visit the link above to open the application.
