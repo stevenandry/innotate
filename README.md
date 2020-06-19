@@ -4,6 +4,8 @@ What you need to get this App working :
 - **XAMPP MySQL Database**
 - **Flask Python Framework**
 
+See **modules.txt** file in project folder to view modules used with their respective versions in order to run this app.
+
 Download XAMPP. Then, run Apache and PHPMYADMIN. Then enter MySQL Database 
 You need to set the **'root@localhost'** default account at MySQL with a password. This Application accepts **'root'** as the username and password.
 
