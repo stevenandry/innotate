@@ -21,6 +21,8 @@ main = Blueprint('main', __name__)
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 DIRECTORY_CONFIG = "D:/Files (Work & Projects)/Campus/Flask/project/static/images"
 DOWNLOAD_PATH = "static/images/"
+dbuser = "flaskadmin"
+dbpass = "D3f@u1tP@ssw0rd729"
 
 @main.route('/')
 def index():
@@ -87,7 +89,7 @@ def update_password():
 def index_loggedin():
 	images = os.listdir('static/images')
 	imagelist = [file for file in images]
-	conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+	conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 	c = conn.cursor()
 	c.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text, Annotator text)")
 	c.execute('SELECT * FROM coordinates')
@@ -107,7 +109,7 @@ def index_loggedin():
 def delete_label() :
 	if request.method == 'POST':
 		colorvalue = request.form['delete_labelcolor']
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		c.execute('DELETE FROM label WHERE colorvalue = %s ', [colorvalue])
 		conn.commit()
@@ -118,7 +120,7 @@ def delete_label() :
 @login_required
 def delete_label_all() :
 	if request.method == 'POST':
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		c.execute('TRUNCATE TABLE label')
 		conn.commit()
@@ -131,7 +133,7 @@ def save_label():
 	if request.method == 'POST':
 		labelname = request.form['save_labelname']
 		colorvalue = request.form['save_colorvalue']
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		c.execute("CREATE TABLE IF NOT EXISTS label(labelname varchar(100),colorvalue varchar(100))")
 		c.execute('INSERT INTO label(labelname, colorvalue) VALUES (%s,%s)', (labelname,colorvalue))
@@ -152,7 +154,7 @@ def resize_config():
 			flash("Please fill all the forms!")
 			return redirect(url_for('main.resize_config'))
 
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		c.execute("CREATE TABLE IF NOT EXISTS canvas(canvaswidth varchar(100),canvasheight varchar(100))")
 		c.execute('TRUNCATE TABLE canvas')
@@ -164,7 +166,7 @@ def resize_config():
 @main.route('/resize')
 @login_required
 def resize():
-	conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+	conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 	c = conn.cursor()
 	c.execute("CREATE TABLE IF NOT EXISTS canvas(canvaswidth varchar(100),canvasheight varchar(100))")
 	c.execute("SELECT * FROM canvas")
@@ -190,7 +192,7 @@ def dbdelete():
 			datalist.append(container)
 
 		query = """ DELETE FROM coordinates WHERE Image = %s AND StartX = %s AND StartY = %s """
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		c.executemany(query,datalist)
 		conn.commit()
@@ -209,7 +211,7 @@ def updatecursor():
 			annotator = item['annotator']
 		#print(container)
 
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		#c.execute("TRUNCATE TABLE current_cursor")
 		c.execute("DELETE FROM current_cursor WHERE Annotator = %s",[annotator])
@@ -224,7 +226,7 @@ def result():
 	if request.method == 'GET':
 		images = os.listdir('static/images')
 		imagelist = [file for file in images]
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		c.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text, Annotator text)")
 		c.execute("SELECT * FROM coordinates")
@@ -272,7 +274,7 @@ def annotation():
 		name = current_user.name
 		images = os.listdir('static/images')
 		imagelist = [file for file in images]
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		c.execute("CREATE TABLE IF NOT EXISTS current_cursor(Annotator text, Position text)")
 		c.execute("CREATE TABLE IF NOT EXISTS Coordinates(Image text,Label text, StartX text, StartY text, EndX text, EndY text, Tool text, Color text, Annotator text)")
@@ -330,7 +332,7 @@ def annotation():
 				,item['annotator'])
 			datalist.append(container)
 		query = """ INSERT INTO Coordinates(Image, Label, StartX, StartY, EndX, EndY, Tool, Color, Annotator) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		c.executemany(query,datalist)
 		conn.commit()
@@ -344,7 +346,7 @@ def settings():
 		if current_user.name == 'admin' :
 			images = os.listdir('static/images')
 			imagelist = [file for file in images]
-			conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+			conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 			c = conn.cursor()
 			c.execute("CREATE TABLE IF NOT EXISTS label(labelname varchar(100),colorvalue varchar(100))")
 			c.execute("CREATE TABLE IF NOT EXISTS canvas(canvaswidth varchar(100),canvasheight varchar(100))")
@@ -401,7 +403,7 @@ def deleteimage():
 @main.route('/download/annotations/csv')
 @login_required
 def download_result():
-	conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+	conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 	c = conn.cursor()
 	
 	c.execute("SELECT * FROM coordinates")
@@ -440,7 +442,7 @@ def download_image():
 @login_required
 def delete_alldata():
 	if current_user.name == 'admin' :
-		conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+		conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 		c = conn.cursor()
 		c.execute("TRUNCATE TABLE coordinates")
 		conn.commit()
@@ -462,7 +464,7 @@ def delete_userdata():
 				container = (item['name'])
 				datalist.append(container)
 				counter += 1
-			conn = MySQLdb.connect(host="localhost",user = "root",password = "root",db = "flask")
+			conn = MySQLdb.connect(host="localhost",user = dbuser,password = dbpass,db = "flask")
 			c = conn.cursor()
 			query = """ DELETE FROM coordinates WHERE Annotator = %s """
 			for item in datalist:

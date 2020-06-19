@@ -2,6 +2,8 @@ from flask import Flask
 #from flask_mysqldb import MySQL
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask import request
+from waitress import serve
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
@@ -39,7 +41,8 @@ def create_app():
 	from .main import main as main_blueprint
 	app.register_blueprint(main_blueprint)
 
-	return app
+	#return app
+	return serve(app, host='0.0.0.0', port=8080)
 
 # def mysqlconnection():
 #     conn = MySQLdb.connect(host="localhost:81",user = "root",password = "root",db = "flask")
